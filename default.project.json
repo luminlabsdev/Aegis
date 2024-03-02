@@ -1,7 +1,6 @@
 {
 	"name": "Robax",
 	"tree": {
-		"$className": "Folder",
 		"$path": "src"
 	}
 }
