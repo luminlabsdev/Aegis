@@ -1,9 +1,6 @@
--- // Folders
-local Keys = script.Parent.Keys
-
 -- // Dependencies
 local Debugger = require(script.Parent.Debugger)
-local Children = require(Keys.Children)
+local Utils = require(script.Parent.Utils)
 
 -- // Functions
 local function Build(className: string, props: { [any]: any }): Instance?
@@ -11,11 +8,15 @@ local function Build(className: string, props: { [any]: any }): Instance?
 
 	if Success then
 		for prop, value in props do
-			if type(prop) == "string" and prop == "Parent" then
-				continue
-			end
+			if type(prop) == "string" then
+				if prop == "Parent" then
+					continue
+				end
 
-			Children:Apply(Result, prop, value)
+				Utils.ApplyNormalProperty(Result, prop, value)
+			elseif type(prop) == "table" and prop.ClassName == "Robax.Keys" and prop.SubClass then
+				Utils.ApplySpecialKeyProperty(Result, prop, value)
+			end
 		end
 
 		if props.Parent ~= nil then

@@ -1,5 +1,6 @@
 -- // Dependencies
-local Debugger = require(script.Parent.Debugger)
+-- local Debugger = require(script.Parent.Debugger)
+local Utils = require(script.Parent.Utils)
 
 -- // Variables
 local Class = {}
@@ -14,43 +15,12 @@ local function TriggerListeners(self: self, path: string, value: any): ()
 	end
 end
 
-local function GetAndSetAtPath(self: self, path: string, optionalValue: any?): any
-	-- Split the path by "/" and create a new variable to reference the self.__state table
-	local Paths = string.split(path, "/")
-	local Current = self.__state
-
-	for index, key in Paths do
-		--[[
-			If the index is at the last index of the Paths table and optionalValue is provided
-			and after indexing, Current[key] is not nil, set it to the new value.
-		]]
-		if index == #Paths then
-			local Old = Current[key] -- A variable just needed for checking Current[key]
-
-			if optionalValue and Old then
-				if self.__protectType and typeof(Old) ~= typeof(optionalValue) then
-					Debugger.Warn("TypeMismatch", typeof(Old), typeof(optionalValue))
-					continue
-				else
-					Current[key] = optionalValue
-				end
-			end
-
-			Current = Current[key] -- Optional value wasn't provided, set it regardless
-		end
-
-		Current = Current[key] -- If it does not meet the above checks just set it normally.
-	end
-
-	return Current
-end
-
 --[[
 	@param key if provided, will return the specific value of that provided key.
 	@param defaultValue if provided, will return the defaultValue if key is nil.
 ]]
 function Class.Get<T>(self: self, path: string?, defaultValue: T?): T
-	return if path then GetAndSetAtPath(self, path) elseif defaultValue then defaultValue else self.__state
+	return if path then Utils.GetAndSetAtPath(self, path) elseif defaultValue then defaultValue else self.__state
 end
 
 --[[
@@ -64,7 +34,7 @@ function Class.Set(
 	}
 ): ()
 	for _, info in { ... } do
-		GetAndSetAtPath(self, info.path, info.value)
+		Utils.GetAndSetAtPath(self, info.path, info.value)
 		TriggerListeners(self, info.path, info.value)
 	end
 end
