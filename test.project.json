@@ -1,0 +1,15 @@
+{
+	"name": "Robax Testing",
+	"servePort": 38000,
+	"tree": {
+		"$className": "DataModel",
+		"ReplicatedStorage": {
+			"Robax": {
+				"$path": "src"
+			}
+		},
+		"ServerScriptService": {
+			"$path": "Test/server"
+		}
+	}
+}

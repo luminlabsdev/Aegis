@@ -17,6 +17,8 @@ local MyPart = Build("Part", {
 	Position = Vector3.new(0, 5, 0),
 	Size = Vector3.new(4, 4, 4),
 	BrickColor = BrickColor.Random(),
+	BottomSurface = Enum.SurfaceType.Smooth,
+	TopSurface = Enum.SurfaceType.Smooth,
 	[Tags] = { "RobaxPart", "BasePart", "TagTested" },
 	[Children] = {
 		Build("Folder", {
@@ -31,8 +33,6 @@ local MyPart = Build("Part", {
 		}),
 		Build("Decal", {
 			Texture = "rbxasset://textures/SpawnLocation.png",
-			BottomSurface = Enum.SurfaceType.Smooth,
-			TopSurface = Enum.SurfaceType.Smooth,
 			Face = Enum.NormalId.Top,
 		}),
 	},
@@ -52,7 +52,7 @@ local MyPart = Build("Part", {
 task.wait(10)
 print("changing transparency")
 
-for i = 1, 0, -0.01 do
+for i = 0, 1, 0.01 do
 	task.wait(0.1)
 	MyPart.Transparency = i
 end

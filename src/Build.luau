@@ -1,30 +1,29 @@
 -- // Dependencies
 local Debugger = require(script.Parent.Debugger)
 local Utils = require(script.Parent.Utils)
+local Keys = require(script.Parent.Keys)
+local Children = Keys.Children
 
 -- // Functions
-local function Build(className: string, props: { [any]: any }): Instance?
-	local Success, Result = pcall(Instance.new, className)
+local function Build(className: string, props: { [any]: any }?): Instance?
+	local Success, Result = pcall(Instance.new, className) -- Create the instance wrapped inside pcall
 
-	if Success then
-		for prop, value in props do
-			if type(prop) == "string" then
-				if prop == "Parent" then
-					continue
-				end
-
-				Utils.ApplyNormalProperty(Result, prop, value)
-			elseif type(prop) == "table" and prop.ClassName == "Robax.Keys" and prop.SubClass then
-				Utils.ApplySpecialKeyProperty(Result, prop, value)
+	if Success then -- if it's successfully created
+		if props then
+			for prop, value in props do
+				-- loop over props table if provided, and apply the Children key to the result
+				Children.Apply(Result, prop, value, Utils)
 			end
-		end
 
-		if props.Parent ~= nil then
-			Result.Parent = props.Parent
+			if props.Parent ~= nil then
+				-- If parent property is given, then set it.
+				Result.Parent = props.Parent
+			end
 		end
 
 		return Result
 	else
+		-- If it wasn't successful, error it because instance creation has to be complete.
 		Debugger.Error("FailedToBuild", className, Result)
 		return nil
 	end

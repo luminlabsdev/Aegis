@@ -1,5 +1,13 @@
+-- // Functions
+local function CheckTypeAndParent(instance: Instance, ancestor: Instance)
+	if typeof(instance) == "Instance" and typeof(ancestor) == "Instance" then
+		instance.Parent = ancestor
+	end
+end
+
 -- // Returning
 return {
+	ClassName = "Robax.Keys",
 	SubClass = "Children",
 	Apply = function(
 		instance: Instance,
@@ -10,10 +18,20 @@ return {
 			ApplySpecialKeyProperty: (Instance, any, any) -> (),
 		}
 	)
-		if type(index) == "string" then
+		if type(index) == "string" and index ~= "Parent" then
 			Utils.ApplyNormalProperty(instance, index, value)
-		elseif type(index) == "table" then
-			Utils.ApplySpecialKeyProperty(instance, index, value)
+		elseif type(index) == "table" and index.ClassName == "Robax.Keys" and index.SubClass then
+			if index.SubClass == "Children" then
+				if type(value) == "table" then
+					for _, v: Instance in value do
+						CheckTypeAndParent(v, instance)
+					end
+				elseif typeof(value) == "Instance" then
+					CheckTypeAndParent(value, instance)
+				end
+			else
+				Utils.ApplySpecialKeyProperty(instance, index, value)
+			end
 		end
 	end,
 }
