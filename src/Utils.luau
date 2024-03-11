@@ -29,10 +29,7 @@ function Utils.ApplySpecialKeyProperty(instance: Instance, prop: {}, value: any)
 	-- local Key = Keys:FindFirstChild((prop :: any).SubClass) or nil
 	local Key = Keys[(prop :: any).SubClass] or nil
 
-	print(Key)
-
 	if Key ~= nil then
-		print(Key)
 		Key.Apply(instance, prop, value, Utils)
 	else
 		Debugger.Warn("MissingChild", `Robax.Keys.{(prop :: any).SubClass}`, script.Parent.Keys:GetFullName())

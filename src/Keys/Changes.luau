@@ -8,9 +8,9 @@ return {
 	Apply = function(instance: Instance, _, value: { [string]: () -> () })
 		for propertyName, fn in value do
 			if type(propertyName) == "string" and type(fn) == "function" then
-				continue
+				-- Check the types and connect
+				instance:GetPropertyChangedSignal(propertyName):Connect(fn)
 			end
-			instance:GetPropertyChangedSignal(propertyName):Connect(fn) -- and connect
 		end
 	end,
 }
