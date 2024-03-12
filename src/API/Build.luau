@@ -1,7 +1,8 @@
 -- // Dependencies
-local Debugger = require(script.Parent.Debugger)
-local Utils = require(script.Parent.Utils)
-local Keys = require(script.Parent.Keys)
+local Utility = script.Parent.Parent.Utility
+local Debugger = require(Utility.Debugger)
+local Utils = require(Utility.Utils)
+local Keys = require(script.Parent.Parent.Keys)
 local Children = Keys.Children
 
 -- // Functions

@@ -1,5 +1,5 @@
 -- // Dependencies
-local Debugger = require(script.Parent.Parent.Debugger)
+local Debugger = require(script.Parent.Parent.Utility.Debugger)
 
 -- // Returning
 return {

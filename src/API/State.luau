@@ -1,6 +1,6 @@
 -- // Dependencies
 -- local Debugger = require(script.Parent.Debugger)
-local Utils = require(script.Parent.Utils)
+local Utils = require(script.Parent.Parent.Utility.Utils)
 
 -- // Variables
 local Class = {}

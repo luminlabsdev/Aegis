@@ -1,6 +1,6 @@
 -- // Dependencies
 local Debugger = require(script.Parent.Debugger)
-local Keys = require(script.Parent.Keys)
+local Keys = require(script.Parent.Parent.Keys)
 
 -- // Variables
 local Utils = {}
@@ -13,16 +13,7 @@ function Utils.ApplyNormalProperty(instance: Instance, prop: string, value: any)
 		return
 	end
 
-	-- Check if the value is same or not; if it is, don't assign it.
-	-- TODO: Benchmark with and without this `if` statement
-	-- UPDATE: As of right now, an unnecessary if statement.
-	--[[
-		if (instance :: any)[prop] == value then
-			return
-		end
-	]]
-
-	(instance :: any)[prop] = value
+	(instance :: any)[prop] = value -- And set the value
 end
 
 function Utils.ApplySpecialKeyProperty(instance: Instance, prop: {}, value: any): ()
