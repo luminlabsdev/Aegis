@@ -7,8 +7,7 @@ end
 
 -- // Returning
 return {
-	ClassName = "Robax.Keys",
-	SubClass = "Children",
+	AegisType = "Keys.Children",
 	Apply = function(
 		instance: Instance,
 		index: any,
@@ -20,8 +19,8 @@ return {
 	)
 		if type(index) == "string" and index ~= "Parent" then
 			Utils.ApplyNormalProperty(instance, index, value)
-		elseif type(index) == "table" and index.ClassName == "Robax.Keys" and index.SubClass then
-			if index.SubClass == "Children" then
+		elseif type(index) == "table" and index.AegisType then
+			if index.AegisType == "Keys.Children" then
 				if type(value) == "table" then
 					for _, v: Instance in value do
 						CheckTypeAndParent(v, instance)

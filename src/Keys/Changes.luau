@@ -3,8 +3,7 @@
 
 -- // Returning
 return {
-	ClassName = "Robax.Keys",
-	SubClass = "Changes",
+	AegisType = "Keys.Changes",
 	Apply = function(instance: Instance, _, value: { [string]: () -> () })
 		for propertyName, fn in value do
 			if type(propertyName) == "string" and type(fn) == "function" then

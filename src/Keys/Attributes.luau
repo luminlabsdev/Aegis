@@ -1,7 +1,6 @@
 -- // Returning
 return {
-	ClassName = "Robax.Keys",
-	SubClass = "Attributes",
+	AegisType = "Keys.Attributes",
 	Apply = function(instance: Instance, _, value: { [string]: any })
 		for attributeName, val in value do
 			-- Loop over provided attributes and set it to instance

@@ -3,8 +3,7 @@ local Debugger = require(script.Parent.Parent.Utility.Debugger)
 
 -- // Returning
 return {
-	ClassName = "Robax.Keys",
-	SubClass = "Events",
+	AegisType = "Keys.Events",
 	Apply = function(instance: Instance, _, value: { [string]: () -> () })
 		local CurrentType: string -- A variable so that same types do not take extra memory
 

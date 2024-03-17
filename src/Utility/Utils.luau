@@ -17,13 +17,12 @@ function Utils.ApplyNormalProperty(instance: Instance, prop: string, value: any)
 end
 
 function Utils.ApplySpecialKeyProperty(instance: Instance, prop: {}, value: any): ()
-	-- local Key = Keys:FindFirstChild((prop :: any).SubClass) or nil
-	local Key = Keys[(prop :: any).SubClass] or nil
+	local Key = Keys[(prop :: any).AegisType] or nil
 
 	if Key ~= nil then
 		Key.Apply(instance, prop, value, Utils)
 	else
-		Debugger.Warn("MissingChild", `Robax.Keys.{(prop :: any).SubClass}`, script.Parent.Keys:GetFullName())
+		Debugger.Warn("MissingChild", `Aegis.Keys.{(prop :: any).AegisType}`, script.Parent.Keys:GetFullName())
 	end
 end
 

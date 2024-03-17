@@ -3,7 +3,10 @@
 local Utils = require(script.Parent.Parent.Utility.Utils)
 
 -- // Variables
-local Class = {}
+local State = {}
+
+-- // Modification
+State.__index = State
 
 -- // Functions
 local function TriggerListeners(self: self, path: string, value: any): ()
@@ -16,17 +19,33 @@ local function TriggerListeners(self: self, path: string, value: any): ()
 end
 
 --[[
+	@param initialState Create an empty state table
+	@param protectType Whether to do type checking when setting value
+]]
+function State.new(initialState: { [string]: any }, protectType: boolean?): State
+	local self = setmetatable({} :: self, State)
+
+	self.AegisType = "State"
+
+	self.__state = initialState or {}
+	self.__listeners = {}
+	self.__protectType = protectType or true
+
+	return self
+end
+
+--[[
 	@param key if provided, will return the specific value of that provided key.
 	@param defaultValue if provided, will return the defaultValue if key is nil.
 ]]
-function Class.Get<T>(self: self, path: string?, defaultValue: T?): T
+function State.Get<T>(self: self, path: string?, defaultValue: T?): T
 	return if path then Utils.GetAndSetAtPath(self, path) elseif defaultValue then defaultValue else self.__state
 end
 
 --[[
 	@param ...:{path:string,value:any} Provide table with 2 indexes; path and value. The path to change, and the value to change to.
 ]]
-function Class.Set(
+function State.Set(
 	self: self,
 	...: {
 		path: string,
@@ -43,32 +62,16 @@ end
 	@param paths The paths to have the listener function.
 	@param fn The listener function that the paths will listen to.
 ]]
-function Class.Listen(self: self, paths: { string }, fn: (pathChanged: string, newValue: any) -> ()): ()
+function State.Listen(self: self, paths: { string }, fn: (pathChanged: string, newValue: any) -> ()): ()
 	for _, path in paths do
 		self.__listeners[path] = self.__listeners[path] or {}
 		table.insert(self.__listeners[path], fn)
 	end
 end
 
---[[
-	@param initialState Create an empty state table
-	@param protectType Whether to do type checking when setting value
-]]
-local function State(initialState: { [string]: any }, protectType: boolean?): State
-	local self = setmetatable({} :: self, { __index = Class })
-
-	self.ClassName = "Robax.State"
-
-	self.__state = initialState or {}
-	self.__listeners = {}
-	self.__protectType = protectType or true
-
-	return self
-end
-
 -- // Types
 type self = {
-	ClassName: "Robax.State",
+	AegisType: "State",
 
 	__state: { [string]: any },
 	__listeners: {},
@@ -79,7 +82,7 @@ type self = {
 	Listen: (self: self, paths: { string }, fn: (pathChanged: string, newValue: any) -> ()) -> (),
 }
 
-export type State = typeof(setmetatable({} :: self, { __index = Class }))
+export type State = typeof(setmetatable({} :: self, State))
 
 -- // Returning
 return State
