@@ -6,6 +6,11 @@ local Keys = require(script.Parent.Parent.Keys)
 local Children = Keys.Children
 
 -- // Functions
+--[[
+	@param className The class name of the instance to create
+	@param props The property table of the instance which is to be applied
+	@return Instance
+]]
 local function Build(className: string, props: { [any]: any }?): Instance?
 	local Success, Result = pcall(Instance.new, className) -- Create the instance wrapped inside pcall
 

@@ -1,6 +1,7 @@
 -- // Returning
 return {
-	AegisType = "Keys.Tags",
+	AegisClass = "Keys",
+	AegisName = "Tags",
 	Apply = function(instance: Instance, _, value: { string })
 		for _, tag in value do
 			-- Loop over provided tags and add it to instance

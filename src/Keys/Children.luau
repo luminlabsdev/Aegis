@@ -7,7 +7,8 @@ end
 
 -- // Returning
 return {
-	AegisType = "Keys.Children",
+	AegisClass = "Keys",
+	AegisName = "Children",
 	Apply = function(
 		instance: Instance,
 		index: any,
@@ -19,8 +20,8 @@ return {
 	)
 		if type(index) == "string" and index ~= "Parent" then
 			Utils.ApplyNormalProperty(instance, index, value)
-		elseif type(index) == "table" and index.AegisType then
-			if index.AegisType == "Keys.Children" then
+		elseif type(index) == "table" and index.AegisName then
+			if index.AegisName == "Keys.Children" then
 				if type(value) == "table" then
 					for _, v: Instance in value do
 						CheckTypeAndParent(v, instance)

@@ -3,7 +3,8 @@
 
 -- // Returning
 return {
-	AegisType = "Keys.Changes",
+	AegisClass = "Keys",
+	AegisName = "Changes",
 	Apply = function(instance: Instance, _, value: { [string]: () -> () })
 		for propertyName, fn in value do
 			if type(propertyName) == "string" and type(fn) == "function" then

@@ -1,6 +1,7 @@
 -- // Returning
 return {
-	AegisType = "Keys.Attributes",
+	AegisClass = "Keys",
+	AegisName = "Attributes",
 	Apply = function(instance: Instance, _, value: { [string]: any })
 		for attributeName, val in value do
 			-- Loop over provided attributes and set it to instance
