@@ -1,5 +1,6 @@
 -- // Dependencies
 local Debugger = require(script.Parent.Debugger)
+local Keys = require(script.Parent.Parent.Keys)
 local Aegis = script.Parent.Parent
 
 -- // Variables
@@ -37,18 +38,27 @@ function Utils.ApplySpecialProperty(instance: Instance, prop: {}, value: any): (
 	end
 end
 
---[[
-	function Utils.ApplySpecialKeyProperty(instance: Instance, prop: {}, value: any): ()
-		local Key = Keys[(prop :: any).AegisName] or nil
+function Utils.ApplySpecialKey(instance: Instance, prop: {}, value: any): ()
+	local Key = Keys[(prop :: any).AegisName] or nil
 
-		if Key ~= nil then
-			Key.Apply(instance, prop, value, Utils)
-		else
-		end
+	if Key ~= nil then
+		Key.Apply(instance, prop, value, Utils)
+	else
+		Debugger.Warn("MissingChild", `Aegis.Keys.{(prop :: any).AegisName}`, script.Parent.Parent.Keys:GetFullName())
+		return
 	end
-]]
+end
 
-function Utils.ApplyAPIProperty(instance: Instance, prop: {}, value: any): () end
+function Utils.ApplyAPIProperty(instance: Instance, prop: {}, value: any): ()
+	local Key = Keys[(prop :: any).AegisName] or nil
+
+	if Key ~= nil then
+		Key.Apply(instance, prop, value, Utils)
+	else
+		Debugger.Warn("MissingChild", `Aegis.Keys.{(prop :: any).AegisName}`, script.Parent.Parent.Keys:GetFullName())
+		return
+	end
+end
 
 function Utils.GetAndSetAtPath(self: {}, path: string, optionalValue: any?): any
 	-- Split the path by "/" and create a new variable to reference the self._state table

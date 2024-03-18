@@ -1,70 +1,78 @@
+-- // Folders
+local Utility = script.Parent.Parent.Utility
+
 -- // Dependencies
--- local Debugger = require(script.Parent.Debugger)
-local Utils = require(script.Parent.Parent.Utility.Utils)
+local Debugger = require(Utility.Debugger)
 
 -- // Variables
 local Class = {}
 
 -- // Functions
-local function TriggerListeners(self: self, path: string, value: any): ()
-	self._listeners[path] = self._listeners[path] or {}
-
-	-- Loop through self._listeners[path] and call every function each of them have.
-	for _, fn: (pathChanged: string, newValue: any) -> () in self._listeners[path] do
-		fn(path, value)
+local function TriggerListeners(listeners: { (oldValue: any, newValue: any) -> () }, oldValue: any, value: any): ()
+	-- Loop through the listeners table and call every function each of them have.
+	for _, fn in listeners do
+		fn(oldValue, value)
 	end
 end
 
 --[[
-	@param key if provided, will return the specific value of that provided key.
-	@param defaultValue if provided, will return the defaultValue if key is nil.
-	@return any
+	@return T
 ]]
-function Class.Get<T>(self: self, path: string?, defaultValue: T?): T
-	return if path then Utils.GetAndSetAtPath(self, path) elseif defaultValue then defaultValue else self._state
+function Class.Get<T>(self: self): T
+	return self._state
 end
 
 --[[
-	@param ...:{path:string,value:any} Provide table with 2 indexes; path and value. The path to change, and the value to change to.
+	@param newValue The value to change to
 ]]
-function Class.Set(
-	self: self,
-	...: {
-		path: string,
-		value: any,
-	}
-): ()
-	for _, info in { ... } do
-		Utils.GetAndSetAtPath(self, info.path, info.value)
-		TriggerListeners(self, info.path, info.value)
+function Class.Set(self: self, newValue: any): ()
+	local OldValue = self._state
+
+	-- Normal checks
+	if self._state == newValue then
+		return
 	end
+	if self._protectType == true and typeof(OldValue) ~= typeof(newValue) then
+		Debugger.Warn("TypeMismatch", typeof(OldValue), typeof(newValue))
+		return
+	end
+
+	-- Setting the actual value and triggering the listeners
+	self._state = newValue
+	TriggerListeners(self._listeners, OldValue, newValue)
 end
 
 --[[
-	@param paths The paths to have the listener function.
 	@param fn The listener function that the paths will listen to.
 ]]
-function Class.Listen(self: self, paths: { string }, fn: (pathChanged: string, newValue: any) -> ()): ()
-	for _, path in paths do
-		self._listeners[path] = self._listeners[path] or {}
-		table.insert(self._listeners[path], fn)
-	end
+function Class.Listen(self: self, fn: (oldValue: any, newValue: any) -> ()): ()
+	table.insert(self._listeners, fn) -- Add a listener
 end
 
-function Class._apply(self: self, prop: string, instance: Instance) end
+-- TODO: Complete ._apply function
+function Class._apply(self: self, prop: string, instance: Instance)
+	self:Listen(function(_, newValue)
+		(instance :: any)[prop] = newValue
+	end)
+end
 
 --[[
 	@param initialState Create an empty state table
 	@param protectType Whether to do type checking when setting value
 	@return State
 ]]
-local function State(initialState: { [string]: any }, protectType: boolean?): State
+local function State(initialState: any, protectType: boolean?): State?
+	if not initialState then
+		Debugger.Error("EmptyState")
+		return nil
+	end
+
 	local self = setmetatable({} :: self, { __index = Class })
 
 	self.AegisClass = "API"
 	self.AegisName = "State"
 
-	self._state = initialState or {}
+	self._state = initialState or nil
 	self._listeners = {}
 	self._protectType = protectType or true
 
@@ -76,14 +84,14 @@ type self = {
 	AegisClass: "API",
 	AegisName: "State",
 
-	_state: { [string]: any },
-	_listeners: {},
+	_state: any,
+	_listeners: { (oldValue: any, newValue: any) -> () },
 	_protectType: boolean,
 
-	Get: <T>(key: string?, defaultValue: T?) -> T,
-	Set: (self: self, ...{ path: string, value: any }) -> (),
-	Listen: (self: self, paths: { string }, fn: (pathChanged: string, newValue: any) -> ()) -> (),
-	_apply: (self: self, instance: Instance) -> (),
+	Get: <T>(self: self) -> T,
+	Set: (self: self, newValue: any) -> (),
+	Listen: (self: self, fn: (oldValue: any, newValue: any) -> ()) -> (),
+	_apply: (self: self, prop: string, instance: Instance) -> (),
 }
 
 export type State = typeof(setmetatable({} :: self, { __index = Class }))

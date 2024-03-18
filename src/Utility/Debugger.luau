@@ -3,6 +3,7 @@ local Logs = {
 	TypeMismatch = "Expected type (%s); received (%s)",
 	MissingChild = "Could not find (%s) in (%s).",
 	FailedToBuild = "Failed to create instance with class name (%s); Result: %s",
+	EmptyState = "Cannot create an empty state.",
 	-- FailedToAssignProp = "Failed to assign property (%s)",
 }
 local Debugger = {}
