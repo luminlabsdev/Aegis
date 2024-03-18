@@ -62,11 +62,6 @@ end
 	@return State
 ]]
 local function State(initialState: any, protectType: boolean?): State?
-	if not initialState then
-		Debugger.Error("EmptyState")
-		return nil
-	end
-
 	local self = setmetatable({} :: self, { __index = Class })
 
 	self.AegisClass = "API"

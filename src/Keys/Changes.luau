@@ -3,7 +3,7 @@
 
 -- // Returning
 return {
-	AegisClass = "Keys",
+	AegisClass = "Key",
 	AegisName = "Changes",
 	Apply = function(instance: Instance, _, value: { [string]: () -> () })
 		for propertyName, fn in value do

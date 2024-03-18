@@ -1,25 +1,30 @@
+local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local Robax = require(ReplicatedStorage.Robax)
+local Aegis = require(ReplicatedStorage.Packages.Aegis) :: any
 
-local Build = Robax.Build
-local State = Robax.State
-local Keys = Robax.Keys
+local Build = Aegis.Build
+local State = Aegis.State
+local Keys = Aegis.Keys
 
 local Children = Keys.Children
 local Events = Keys.Events
 local Changes = Keys.Changes
 local Attributes = Keys.Attributes
 local Tags = Keys.Tags
+local Ref = Keys.Ref
+
+local RefTest = State()
 
 local MyPart = Build("Part", {
 	Name = "MyPart",
-	Parent = workspace, -- Robax will skip over this and parent the instance at the end!
+	Parent = workspace, -- Aegis will skip over this and parent the instance at the end!
 	Position = Vector3.new(0, 5, 0),
 	Size = Vector3.new(4, 4, 4),
-	BrickColor = BrickColor.Random(),
+	BrickColor = BrickColor.random(),
 	BottomSurface = Enum.SurfaceType.Smooth,
 	TopSurface = Enum.SurfaceType.Smooth,
-	[Tags] = { "RobaxPart", "BasePart", "TagTested" },
+	[Ref] = RefTest,
+	[Tags] = { "AegisPart", "BasePart", "TagTested" },
 	[Children] = {
 		Build("Folder", {
 			Name = "MyFolder",
@@ -37,8 +42,11 @@ local MyPart = Build("Part", {
 		}),
 	},
 	[Events] = {
-		Touched = function()
-			print("A player touched MyPart!")
+		Touched = function(part: Part)
+			print(part.Name)
+			if Players:GetPlayerFromCharacter(part:FindFirstAncestorOfClass("Model")) ~= nil then
+				workspace.Baseplate.Size -= Vector3.new(1, 1, 1)
+			end
 		end,
 	},
 
@@ -49,10 +57,4 @@ local MyPart = Build("Part", {
 	},
 })
 
-task.wait(10)
-print("changing transparency")
-
-for i = 0, 1, 0.01 do
-	task.wait(0.1)
-	MyPart.Transparency = i
-end
+print(RefTest:Get():GetFullName())

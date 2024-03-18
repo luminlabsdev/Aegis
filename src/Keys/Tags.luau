@@ -1,6 +1,6 @@
 -- // Returning
 return {
-	AegisClass = "Keys",
+	AegisClass = "Key",
 	AegisName = "Tags",
 	Apply = function(instance: Instance, _, value: { string })
 		for _, tag in value do

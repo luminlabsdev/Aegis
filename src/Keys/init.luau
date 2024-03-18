@@ -5,4 +5,5 @@ return {
 	Changes = require(script.Changes),
 	Attributes = require(script.Attributes),
 	Tags = require(script.Tags),
+	Ref = require(script.Ref),
 }

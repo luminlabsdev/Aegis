@@ -1,0 +1,24 @@
+{
+	"emitLegacyScripts": false,
+	"name": "aegis-dev",
+	"tree": {
+		"$className": "DataModel",
+		"ReplicatedStorage": {
+			"$path": "test/shared",
+			"Packages": {
+				"$className": "Folder",
+				"Aegis": {
+					"$path": "src"
+				}
+			}
+		},
+		"ServerScriptService": {
+			"$path": "test/server"
+		},
+		"StarterPlayer": {
+			"StarterPlayerScripts": {
+				"$path": "test/client"
+			}
+		}
+	}
+}

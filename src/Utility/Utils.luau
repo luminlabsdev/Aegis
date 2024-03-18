@@ -17,39 +17,30 @@ function Utils.ApplyNormalProperty(instance: Instance, prop: string, value: any)
 	(instance :: any)[prop] = value -- And set the value
 end
 
-function Utils.ApplySpecialProperty(instance: Instance, prop: {}, value: any): ()
-	local AegisClass = (prop :: any).AegisClass
-	local AegisName = (prop :: any).AegisName
+--[[
+	function Utils.ApplySpecialProperty(instance: Instance, prop: {}, value: any): ()
+		local AegisClass = (prop :: any).AegisClass
+		local AegisName = (prop :: any).AegisName
 
-	if AegisClass and AegisName then
-		local SpecialIndex = Aegis[AegisClass][AegisName]
+		if AegisClass and AegisName then
+			local SpecialIndex = Aegis[AegisClass][AegisName]
 
-		if AegisClass == "Keys" then
-			if SpecialIndex ~= nil then
-				(require(SpecialIndex) :: any).Apply(instance, prop, value, Utils)
-			else
-				Debugger.Warn("MissingChild", `Aegis.Keys.{(prop :: any).AegisName}`, script.Parent.Keys:GetFullName())
-			end
-		elseif AegisClass == "API" then
-			if SpecialIndex ~= nil then
-				-- (require(SpecialIndex) :: any)._apply()
+			if AegisClass == "Key" then
+				if SpecialIndex ~= nil then
+					(require(SpecialIndex) :: any).Apply(instance, prop, value, Utils)
+				else
+					Debugger.Warn("MissingChild", `Aegis.Keys.{(prop :: any).AegisName}`, script.Parent.Keys:GetFullName())
+				end
+			elseif AegisClass == "API" then
+				if SpecialIndex ~= nil then
+					-- (require(SpecialIndex) :: any)._apply()
+				end
 			end
 		end
 	end
-end
+]]
 
-function Utils.ApplySpecialKey(instance: Instance, prop: {}, value: any): ()
-	local Key = Keys[(prop :: any).AegisName] or nil
-
-	if Key ~= nil then
-		Key.Apply(instance, prop, value, Utils)
-	else
-		Debugger.Warn("MissingChild", `Aegis.Keys.{(prop :: any).AegisName}`, script.Parent.Parent.Keys:GetFullName())
-		return
-	end
-end
-
-function Utils.ApplyAPIProperty(instance: Instance, prop: {}, value: any): ()
+function Utils.ApplySpecialKeyProperty(instance: Instance, prop: {}, value: any): ()
 	local Key = Keys[(prop :: any).AegisName] or nil
 
 	if Key ~= nil then
