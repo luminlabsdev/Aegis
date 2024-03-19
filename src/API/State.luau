@@ -3,6 +3,8 @@ local Utility = script.Parent.Parent.Utility
 
 -- // Dependencies
 local Debugger = require(Utility.Debugger)
+local InternalTypes = require(Utility.InternalTypes)
+local PublicTypes = require(Utility.PublicTypes)
 
 -- // Variables
 local Class = {}
@@ -18,14 +20,14 @@ end
 --[[
 	@return T
 ]]
-function Class.Get<T>(self: self): T
+function Class.Get<T>(self: InternalTypes.StateInternal): T
 	return self._state
 end
 
 --[[
 	@param newValue The value to change to
 ]]
-function Class.Set(self: self, newValue: any): ()
+function Class.Set(self: InternalTypes.StateInternal, newValue: any): ()
 	local OldValue = self._state
 
 	-- Normal checks
@@ -45,12 +47,12 @@ end
 --[[
 	@param fn The listener function that the paths will listen to.
 ]]
-function Class.Listen(self: self, fn: (oldValue: any, newValue: any) -> ()): ()
+function Class.Listen(self: InternalTypes.StateInternal, fn: (oldValue: any, newValue: any) -> ()): ()
 	table.insert(self._listeners, fn) -- Add a listener
 end
 
 -- TODO: Complete ._apply function
-function Class._apply(self: self, prop: string, instance: Instance)
+function Class._apply(self: InternalTypes.StateInternal, prop: string, instance: Instance)
 	self:Listen(function(_, newValue)
 		(instance :: any)[prop] = newValue
 	end)
@@ -61,8 +63,8 @@ end
 	@param protectType Whether to do type checking when setting value
 	@return State
 ]]
-local function State(initialState: any, protectType: boolean?): State?
-	local self = setmetatable({} :: self, { __index = Class })
+local function State(initialState: any, protectType: boolean?): PublicTypes.State
+	local self = setmetatable({} :: InternalTypes.StateInternal, { __index = Class })
 
 	self.AegisClass = "API"
 	self.AegisName = "State"
@@ -73,23 +75,6 @@ local function State(initialState: any, protectType: boolean?): State?
 
 	return self
 end
-
--- // Types
-type self = {
-	AegisClass: "API",
-	AegisName: "State",
-
-	_state: any,
-	_listeners: { (oldValue: any, newValue: any) -> () },
-	_protectType: boolean,
-
-	Get: <T>(self: self) -> T,
-	Set: (self: self, newValue: any) -> (),
-	Listen: (self: self, fn: (oldValue: any, newValue: any) -> ()) -> (),
-	_apply: (self: self, prop: string, instance: Instance) -> (),
-}
-
-export type State = typeof(setmetatable({} :: self, { __index = Class }))
 
 -- // Returning
 return State

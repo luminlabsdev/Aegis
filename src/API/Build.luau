@@ -1,7 +1,6 @@
 -- // Dependencies
 local Utility = script.Parent.Parent.Utility
 local Debugger = require(Utility.Debugger)
-local Utils = require(Utility.Utils)
 local Keys = require(script.Parent.Parent.Keys)
 local Children = Keys.Children
 
@@ -18,7 +17,7 @@ local function Build(className: string, props: { [any]: any }?): Instance?
 		if props then
 			for prop, value in props do
 				-- loop over props table if provided, and apply the Children key to the result
-				Children.Apply(Result, prop, value, Utils)
+				Children.Apply(Result, prop, value)
 			end
 
 			if props.Parent ~= nil then

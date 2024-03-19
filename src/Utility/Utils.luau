@@ -1,7 +1,7 @@
 -- // Dependencies
 local Debugger = require(script.Parent.Debugger)
-local Keys = require(script.Parent.Parent.Keys)
-local Aegis = script.Parent.Parent
+local Keys = script.Parent.Parent.Keys
+local InternalTypes = require(script.Parent.InternalTypes)
 
 -- // Variables
 local Utils = {}
@@ -17,34 +17,11 @@ function Utils.ApplyNormalProperty(instance: Instance, prop: string, value: any)
 	(instance :: any)[prop] = value -- And set the value
 end
 
---[[
-	function Utils.ApplySpecialProperty(instance: Instance, prop: {}, value: any): ()
-		local AegisClass = (prop :: any).AegisClass
-		local AegisName = (prop :: any).AegisName
-
-		if AegisClass and AegisName then
-			local SpecialIndex = Aegis[AegisClass][AegisName]
-
-			if AegisClass == "Key" then
-				if SpecialIndex ~= nil then
-					(require(SpecialIndex) :: any).Apply(instance, prop, value, Utils)
-				else
-					Debugger.Warn("MissingChild", `Aegis.Keys.{(prop :: any).AegisName}`, script.Parent.Keys:GetFullName())
-				end
-			elseif AegisClass == "API" then
-				if SpecialIndex ~= nil then
-					-- (require(SpecialIndex) :: any)._apply()
-				end
-			end
-		end
-	end
-]]
-
 function Utils.ApplySpecialKeyProperty(instance: Instance, prop: {}, value: any): ()
 	local Key = Keys[(prop :: any).AegisName] or nil
 
 	if Key ~= nil then
-		Key.Apply(instance, prop, value, Utils)
+		(require(Key) :: InternalTypes.Key).Apply(instance, prop, value)
 	else
 		Debugger.Warn("MissingChild", `Aegis.Keys.{(prop :: any).AegisName}`, script.Parent.Parent.Keys:GetFullName())
 		return

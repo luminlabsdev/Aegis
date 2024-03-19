@@ -1,8 +1,11 @@
+-- // Dependencies
+local PublicTypes = require(script.Parent.Parent.Utility.PublicTypes)
+
 -- // Returning
 return {
 	AegisClass = "Key",
 	AegisName = "Ref",
-	Apply = function(instance: Instance, _, value: any)
+	Apply = function(instance: Instance, _, value: PublicTypes.State)
 		if value.AegisClass == "API" and value.AegisName == "State" then
 			value._protectType = false
 			value:Set(instance)

@@ -1,3 +1,6 @@
+-- // Dependencies
+local Utils = require(script.Parent.Parent.Utility.Utils)
+
 -- // Functions
 local function CheckTypeAndParent(instance: Instance, ancestor: Instance)
 	if typeof(instance) == "Instance" and typeof(ancestor) == "Instance" then
@@ -9,15 +12,7 @@ end
 return {
 	AegisClass = "Key",
 	AegisName = "Children",
-	Apply = function(
-		instance: Instance,
-		index: any,
-		value: any,
-		Utils: {
-			ApplyNormalProperty: (Instance, string, any) -> (),
-			ApplySpecialKeyProperty: (Instance, any, any) -> (),
-		}
-	)
+	Apply = function(instance: Instance, index: any, value: any)
 		if type(index) == "string" and index ~= "Parent" then
 			Utils.ApplyNormalProperty(instance, index, value)
 		elseif type(index) == "table" and index.AegisClass and index.AegisName then
