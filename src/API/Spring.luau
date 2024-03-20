@@ -14,58 +14,43 @@ local Debugger = require(Utility.Debugger)
 local Class = {}
 
 -- // Functions
-function Class.Update(self: InternalTypes.SpringInternal<PublicTypes.State>, deltaTime: number)
-	--[[ Displacement calculation:
-
-		Here, we first find out the difference of the displacement between its current position and the target position
-		Next, we multiply it with speed to get the ultimate result.
-	]]
-	-- local Displacement = (self._velocity * deltaTime) + 0.5 * self._speed * (deltaTime ^ 2)
-	--[[ TotalForce calculation:
-
-		According to Hooke's law,
-		Force_Spring,	F = -k * x
-		where,	k = spring constant (elasticity)
-				x = displacement
-		
-		To calculate the displacement of the spring, we find out the difference between its current position and the target position
-
-		Again, damping force is considered in a damped spring-mass system, which is proportional to the velocity of the mass. The damping force is given by:
-
-		Force_Damping,	F = -c * v
-		where,			c = damping co-efficient
-						v = velocity
-
-		Therefore, total force acting on the object will be:
-		Force_Total	= Force_Spring + Force_Damping
-					= -k * x + - c * v
-	]]
-	-- local TotalForce = -self._elasticity * Displacement - self._damping * self._velocity
+function Class.Update(self: InternalTypes.SpringInternal<PublicTypes.State>, t: number, instance: any, prop: string)
+	-- Mathematical terms
+	local u = self._speed -- speed
+	local v = self._velocity -- velocity
+	local c = self._damping -- damping
+	local x = (self._target - self._position) -- position
+	local m = self._mass -- mass
+	local k = self._elasticity -- spring constant
 
 	--[[ Acceleration calculation:
 
-		According to Newton's second law of motion:
-		Force,	F = m * a
-		where,	m = mass of the body
-				a = acceleration
+		We know,	F = -kx
+		Again,		F = -cv
 
-		Here,	F = m * a
-		Therefore,	a = F / m
+		If we add the 2,	F = -kx - cv
+						or, F = -(kx + cv)
+						or, ma = -(kx + cv)
+				Therefore,	a = -(kx + cv) / m
 	]]
-	-- local Acceleration = TotalForce / self._mass
+	local a = -((k * x) + (c * u)) / m
+
+	--[[ Displacement calculation:
+
+		We know, S = ut + (0.5 * at^2)
+	]]
+	local S = (u * t) + (0.5 * a * (t ^ 2))
 
 	--[[ Velocity calculation
 
-		We know,
-			Velocity, v = u + at
-			where,	u = initial velocity
-					a = acceleration
-					t = time
+		We know, velocity,	v = u + at
+		where,				u = initial velocity
+							a = acceleration
+							t = time
 
 		Here, u is the previous velocity and deltaTime is the time (seconds)
 	]]
-
-	-- self._velocity = self._velocity + Acceleration * deltaTime
+	self._velocity = v + (a * t)
 
 	--[[ Position calculation:
 
@@ -74,14 +59,25 @@ function Class.Update(self: InternalTypes.SpringInternal<PublicTypes.State>, del
 							t = time
 							a = acceleration
 		
-		We add self._position again so that it changes its position with respect to previous position
+		We add the displacement to the current position
 	]]
-	-- self._position = self._position + (self._velocity * deltaTime) + (0.5 * Acceleration * (deltaTime ^ 2))
+	self._position = self._position + S
+	instance[prop] = self._position
+end
+
+function Class.Get(self: InternalTypes.SpringInternal<PublicTypes.State>)
+	return self._position
 end
 
 function Class._apply(self: InternalTypes.SpringInternal<PublicTypes.State>, prop: string, instance: Instance)
 	self._state:Listen(function(_, newValue)
+		print(newValue)
 		self._target = newValue
+	end)
+
+	RunService.Heartbeat:Connect(function(deltaTime)
+		self:Update(deltaTime, instance, prop)
+		print(self._position)
 	end)
 end
 
@@ -108,10 +104,6 @@ local function Spring(state: PublicTypes.State, springInfo: PublicTypes.SpringIn
 	self._position = 0
 	self._target = 0
 	self._velocity = 0
-
-	RunService:BindToRenderStep("__aegis.spring", Enum.RenderPriority.Input.Value + 1, function(deltaTime: number)
-		self:Update(deltaTime)
-	end)
 
 	return self
 end

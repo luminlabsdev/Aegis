@@ -18,7 +18,8 @@ export type StateInternal = {
 
 -- Spring types
 export type SpringClass<State> = {
-	Update: (self: SpringInternal<State>, deltaTime: number) -> (),
+	Update: (self: SpringInternal<State>, t: number, instance: any, prop: string) -> (),
+	Get: (self: SpringInternal<State>) -> (),
 } & API<SpringInternal<State>>
 
 export type SpringInternal<State> = {

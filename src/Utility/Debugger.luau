@@ -14,7 +14,7 @@ function Debugger.Warn(id: string, ...: any)
 	local FoundId = Logs[id] or nil :: string?
 
 	if FoundId then
-		warn(`[Robax warning] {string.format(FoundId, ...)}`)
+		warn(`\n[Robax warning] {string.format(FoundId, ...)}\nAt -> [{debug.traceback()}]`)
 	end
 end
 

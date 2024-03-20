@@ -3,6 +3,7 @@ local Utility = script.Parent.Parent.Utility
 local Debugger = require(Utility.Debugger)
 local Keys = require(script.Parent.Parent.Keys)
 local Children = Keys.Children
+local Ref = Keys.Ref
 
 -- // Functions
 --[[
@@ -15,8 +16,16 @@ local function Build(className: string, props: { [any]: any }?): Instance?
 
 	if Success then -- if it's successfully created
 		if props then
+			if props[Ref] then
+				Ref.Apply(Result, nil, props[Ref])
+			end
+
 			for prop, value in props do
 				-- loop over props table if provided, and apply the Children key to the result
+				if prop == "Parent" or prop == Ref then
+					continue -- Skip if it's the parent property
+				end
+
 				Children.Apply(Result, prop, value)
 			end
 

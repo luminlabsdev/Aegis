@@ -4,6 +4,7 @@ local Aegis = require(ReplicatedStorage.Packages.Aegis) :: any
 
 local Build = Aegis.Build
 local State = Aegis.State
+local Spring = Aegis.Spring
 local Keys = Aegis.Keys
 
 local Children = Keys.Children
@@ -14,6 +15,7 @@ local Tags = Keys.Tags
 local Ref = Keys.Ref
 
 local RefTest = State()
+local Opacity = State(0)
 
 local MyPart = Build("Part", {
 	Name = "MyPart",
@@ -24,6 +26,12 @@ local MyPart = Build("Part", {
 	BottomSurface = Enum.SurfaceType.Smooth,
 	TopSurface = Enum.SurfaceType.Smooth,
 	[Ref] = RefTest,
+	Transparency = Spring(Opacity, {
+		Damping = 0.1,
+		Speed = 1,
+		Elasticity = 0.5,
+		Mass = 44,
+	}),
 	[Tags] = { "AegisPart", "BasePart", "TagTested" },
 	[Children] = {
 		Build("Folder", {
@@ -57,4 +65,12 @@ local MyPart = Build("Part", {
 	},
 })
 
-print(RefTest:Get():GetFullName())
+print(RefTest:Get())
+
+task.wait(10)
+
+print("playing spring animation..")
+
+task.wait(1)
+
+Opacity:Set(1)

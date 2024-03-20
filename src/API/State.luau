@@ -35,6 +35,7 @@ function Class.Set(self: InternalTypes.StateInternal, newValue: any): ()
 		return
 	end
 	if self._protectType == true and typeof(OldValue) ~= typeof(newValue) then
+		print(OldValue, newValue)
 		Debugger.Warn("TypeMismatch", typeof(OldValue), typeof(newValue))
 		return
 	end
@@ -51,7 +52,6 @@ function Class.Listen(self: InternalTypes.StateInternal, fn: (oldValue: any, new
 	table.insert(self._listeners, fn) -- Add a listener
 end
 
--- TODO: Complete ._apply function
 function Class._apply(self: InternalTypes.StateInternal, prop: string, instance: Instance)
 	self:Listen(function(_, newValue)
 		(instance :: any)[prop] = newValue

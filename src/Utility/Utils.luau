@@ -2,20 +2,23 @@
 local Debugger = require(script.Parent.Debugger)
 local Keys = script.Parent.Parent.Keys
 local InternalTypes = require(script.Parent.InternalTypes)
+local Is = require(script.Parent.Is)
 
 -- // Variables
 local Utils = {}
 
 -- // Functions
-function Utils.ApplyNormalProperty(instance: Instance, prop: string, value: any): ()
-	-- Check if type matches
-	if typeof((instance :: any)[prop]) ~= typeof(value) then
-		Debugger.Warn("TypeMismatch", typeof((instance :: any)[prop]), typeof(value))
-		return
+function Utils.CheckTypeAndCall(v1: any, v2: any, interaction: () -> ()): ()
+	-- Use `Is.TypeSame(v1, v2)` to check if type matches.
+	-- If it doesn't match, warn it.
+	if Is.TypeSame(v1, v2) == true then
+		interaction() -- Type matches, call the interaction function.
+	else -- type didn't match, warn it out!
+		Debugger.Warn("TypeMismatch", typeof(v1), typeof(v2))
 	end
-
-	(instance :: any)[prop] = value -- And set the value
 end
+
+function Utils.ApplyStringProperty(instance: Instance, prop: string, value: any): () end
 
 function Utils.ApplySpecialKeyProperty(instance: Instance, prop: {}, value: any): ()
 	local Key = Keys[(prop :: any).AegisName] or nil
