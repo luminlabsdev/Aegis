@@ -19,7 +19,7 @@ function Class.Update(self: InternalTypes.SpringInternal<PublicTypes.State>, t: 
 	local u = self._speed -- speed
 	local v = self._velocity -- velocity
 	local c = self._damping -- damping
-	local x = (self._target - self._position) -- position
+	local x = (self._state:Get() :: any - self._position) :: InternalTypes.Animatable -- position
 	local m = self._mass -- mass
 	local k = self._elasticity -- spring constant
 
@@ -61,8 +61,10 @@ function Class.Update(self: InternalTypes.SpringInternal<PublicTypes.State>, t: 
 		
 		We add the displacement to the current position
 	]]
-	self._position = self._position + S
+	self._position = self._position + (if x < 0 then -S else S)
 	instance[prop] = self._position
+
+	print(S, x)
 end
 
 function Class.Get(self: InternalTypes.SpringInternal<PublicTypes.State>)
@@ -71,13 +73,26 @@ end
 
 function Class._apply(self: InternalTypes.SpringInternal<PublicTypes.State>, prop: string, instance: Instance)
 	self._state:Listen(function(_, newValue)
-		print(newValue)
-		self._target = newValue
-	end)
+		print(`Target: {newValue}`)
+		self._state:Get() = newValue
 
-	RunService.Heartbeat:Connect(function(deltaTime)
-		self:Update(deltaTime, instance, prop)
-		print(self._position)
+		local IsGreater: boolean = (self._state:Get() > self._position)
+
+		self._connection = RunService.Heartbeat:Connect(function(deltaTime)
+			self:Update(deltaTime, instance, prop)
+			print(`Position: {self._position}`)
+
+			if self._connection ~= nil then
+				if
+					(IsGreater == true and self._position >= self._state:Get())
+					or (IsGreater == false and self._position <= self._state:Get())
+				then
+					self._connection:Disconnect()
+					self._position = self._state:Get()
+					print("disconnect")
+				end
+			end
+		end)
 	end)
 end
 
@@ -101,9 +116,9 @@ local function Spring(state: PublicTypes.State, springInfo: PublicTypes.SpringIn
 	self._speed = springInfo.Speed or 1
 	self._elasticity = springInfo.Elasticity or 0.5
 	self._mass = springInfo.Mass or 1
-	self._position = 0
-	self._target = 0
+	self._position = state:Get()
 	self._velocity = 0
+	self._connection = nil
 
 	return self
 end

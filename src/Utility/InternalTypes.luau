@@ -1,29 +1,25 @@
--- local PublicTypes = require(script.Parent.PublicTypes)
-
 -- State types
 export type StateClass = {
 	Get: <T>(self: StateInternal) -> T,
 	Set: (self: StateInternal, newValue: any) -> (),
 	Listen: (self: StateInternal, fn: (oldValue: any, newValue: any) -> ()) -> (),
-} & API<StateInternal>
+}
 
 export type StateInternal = {
-	AegisClass: "API",
 	AegisName: "State",
 
 	_state: any,
 	_listeners: { (oldValue: any, newValue: any) -> () },
 	_protectType: boolean,
-} & StateClass
+} & StateClass & API<StateInternal>
 
 -- Spring types
 export type SpringClass<State> = {
 	Update: (self: SpringInternal<State>, t: number, instance: any, prop: string) -> (),
 	Get: (self: SpringInternal<State>) -> (),
-} & API<SpringInternal<State>>
+}
 
 export type SpringInternal<State> = {
-	AegisClass: "API",
 	AegisName: "Spring",
 
 	_state: State,
@@ -31,11 +27,12 @@ export type SpringInternal<State> = {
 	_speed: number,
 	_elasticity: number,
 	_mass: number,
+	_connection: RBXScriptConnection?,
 
 	_position: number,
 	_target: number,
 	_velocity: number,
-} & SpringClass<State>
+} & SpringClass<State> & API<SpringInternal<State>>
 
 -- Extra
 export type Key = {
@@ -49,5 +46,7 @@ export type API<self> = {
 	AegisName: string,
 	_apply: (self: self, prop: string, instance: Instance) -> (),
 }
+
+export type Animatable = number | UDim2 | UDim | Vector3 | Vector2
 
 return "Aegis.Types.Internal"

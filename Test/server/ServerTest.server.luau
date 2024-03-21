@@ -16,12 +16,18 @@ local Ref = Keys.Ref
 
 local RefTest = State()
 local Opacity = State(0)
+local SizeState = State(Vector3.new(4, 4, 4))
 
 local MyPart = Build("Part", {
 	Name = "MyPart",
 	Parent = workspace, -- Aegis will skip over this and parent the instance at the end!
 	Position = Vector3.new(0, 5, 0),
-	Size = Vector3.new(4, 4, 4),
+	Size = Spring(SizeState, {
+		Damping = 0.1,
+		Speed = 1,
+		Elasticity = 0.5,
+		Mass = 44,
+	}),
 	BrickColor = BrickColor.random(),
 	BottomSurface = Enum.SurfaceType.Smooth,
 	TopSurface = Enum.SurfaceType.Smooth,
@@ -74,3 +80,13 @@ print("playing spring animation..")
 task.wait(1)
 
 Opacity:Set(1)
+SizeState:Set(Vector3.new(7, 7, 7))
+
+task.wait(5)
+
+print("playing spring animation again..")
+
+task.wait(1)
+
+Opacity:Set(0)
+SizeState:Set(Vector3.new(4, 4, 4))
