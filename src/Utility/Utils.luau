@@ -18,8 +18,6 @@ function Utils.CheckTypeAndCall(v1: any, v2: any, interaction: () -> ()): ()
 	end
 end
 
-function Utils.ApplyStringProperty(instance: Instance, prop: string, value: any): () end
-
 function Utils.ApplySpecialKeyProperty(instance: Instance, prop: {}, value: any): ()
 	local Key = Keys[(prop :: any).AegisName] or nil
 

@@ -24,7 +24,7 @@ function Calculation.CalculateDisplacement(k: number, x: number, c: number, u: n
 end
 
 function Calculation.ReturnAbsoluteDisplacement(property: number, s: number): number
-	return if property < 0 then -s else s
+	return property <= 0 and -s or s
 end
 
 function Calculation.ReturnComparableValue(value: any): number

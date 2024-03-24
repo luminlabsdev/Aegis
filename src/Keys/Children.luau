@@ -24,7 +24,6 @@ return {
 			local IsAPI = Is.API(value)
 
 			if IsAPI == true then -- Check if the value is an API
-				print(Property, value:Get())
 				-- Call the _apply method of the API class.
 				Utils.CheckTypeAndCall(Property, value:Get(), function()
 					(value :: InternalTypes.API<typeof(value)>):_apply(index, instance)
@@ -38,12 +37,13 @@ return {
 			if (index :: InternalTypes.Key).AegisName == "Children" then
 				if type(value) == "table" then
 					for _, v: Instance in value do
-						print(v)
 						CheckTypeAndParent(v, instance)
 					end
 				elseif typeof(value) == "Instance" then
 					CheckTypeAndParent(value, instance)
 				end
+			else
+				Utils.ApplySpecialKeyProperty(instance, index, value)
 			end
 		end
 	end,

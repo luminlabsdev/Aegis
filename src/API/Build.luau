@@ -16,7 +16,7 @@ local function Build(className: string, props: { [any]: any }?): Instance?
 
 	if Success then -- if it's successfully created
 		if props then
-			if props[Ref] then
+			if props[Ref] ~= nil then
 				Ref.Apply(Result, nil, props[Ref])
 			end
 

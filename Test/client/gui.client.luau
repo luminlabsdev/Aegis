@@ -22,6 +22,7 @@ local Current = true
 Build("ScreenGui", {
 	Name = "UI",
 	IgnoreGuiInset = true,
+	Enabled = false,
 	[Children] = {
 		Build("Frame", {
 			Name = "SpringFrame",

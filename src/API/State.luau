@@ -71,7 +71,7 @@ local function State(initialState: any, protectType: boolean?): PublicTypes.Stat
 	self.AegisClass = "API"
 	self.AegisName = "State"
 
-	self._state = initialState or nil
+	self._state = initialState
 	self._listeners = {}
 	self._protectType = protectType or true
 
