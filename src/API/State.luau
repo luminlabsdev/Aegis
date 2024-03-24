@@ -53,6 +53,8 @@ function Class.Listen(self: InternalTypes.StateInternal, fn: (oldValue: any, new
 end
 
 function Class._apply(self: InternalTypes.StateInternal, prop: string, instance: Instance)
+	(instance :: any)[prop] = self._state
+
 	self:Listen(function(_, newValue)
 		(instance :: any)[prop] = newValue
 	end)

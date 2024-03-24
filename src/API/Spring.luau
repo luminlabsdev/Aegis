@@ -7,6 +7,7 @@ local Utility = script.Parent.Parent.Utility
 -- // Dependencies
 local PublicTypes = require(Utility.PublicTypes)
 local InternalTypes = require(Utility.InternalTypes)
+local Calculation = require(Utility.Calculation)
 local Is = require(Utility.Is)
 local Debugger = require(Utility.Debugger)
 
@@ -17,54 +18,69 @@ local Class = {}
 function Class.Update(self: InternalTypes.SpringInternal<PublicTypes.State>, t: number, instance: any, prop: string)
 	-- Mathematical terms
 	local u = self._speed -- speed
-	local v = self._velocity -- velocity
 	local c = self._damping -- damping
-	local x = (self._state:Get() :: any - self._position) :: InternalTypes.Animatable -- position
+	local x = (self._state:Get() :: any - self._position) -- position
 	local m = self._mass -- mass
 	local k = self._elasticity -- spring constant
 
-	--[[ Acceleration calculation:
-
-		We know,	F = -kx
-		Again,		F = -cv
-
-		If we add the 2,	F = -kx - cv
-						or, F = -(kx + cv)
-						or, ma = -(kx + cv)
-				Therefore,	a = -(kx + cv) / m
-	]]
-	local a = -((k * x) + (c * u)) / m
-
-	--[[ Displacement calculation:
-
-		We know, S = ut + (0.5 * at^2)
-	]]
-	local S = (u * t) + (0.5 * a * (t ^ 2))
-
-	--[[ Velocity calculation
-
-		We know, velocity,	v = u + at
-		where,				u = initial velocity
-							a = acceleration
-							t = time
-
-		Here, u is the previous velocity and deltaTime is the time (seconds)
-	]]
-	self._velocity = v + (a * t)
-
 	--[[ Position calculation:
 
-		We know, distance,	s = ut + (1 / 2) * a * (t^2)
-		where,				u = initial velocity
-							t = time
-							a = acceleration
+		We know, displacement,	s = ut + (1 / 2) * a * (t^2)
+		where,					u = initial velocity
+								t = time
+								a = acceleration
 		
 		We add the displacement to the current position
 	]]
-	self._position = self._position + (if x < 0 then -S else S)
-	instance[prop] = self._position
 
-	print(S, x)
+	local S: any
+	local DataType = typeof(x)
+
+	if DataType == "UDim2" then
+		local S_xScale = Calculation.CalculateDisplacement(k, x.X.Scale, c, u, m, t)
+		local S_xOffset = Calculation.CalculateDisplacement(k, x.X.Offset, c, u, m, t)
+
+		local S_yOffset = Calculation.CalculateDisplacement(k, x.Y.Offset, c, u, m, t)
+		local S_yScale = Calculation.CalculateDisplacement(k, x.Y.Scale, c, u, m, t)
+
+		S = UDim2.new(
+			Calculation.ReturnAbsoluteDisplacement(x.X.Scale, S_xScale),
+			Calculation.ReturnAbsoluteDisplacement(x.X.Offset, S_xOffset),
+			Calculation.ReturnAbsoluteDisplacement(x.Y.Scale, S_yScale),
+			Calculation.ReturnAbsoluteDisplacement(x.Y.Offset, S_yOffset)
+		)
+	elseif DataType == "UDim" then
+		local S_Scale = Calculation.CalculateDisplacement(k, x.Scale, c, u, m, t)
+		local S_Offset = Calculation.CalculateDisplacement(k, x.Offset, c, u, m, t)
+
+		S = UDim.new(
+			Calculation.ReturnAbsoluteDisplacement(x.Scale, S_Scale),
+			Calculation.ReturnAbsoluteDisplacement(x.Offset, S_Offset)
+		)
+	elseif DataType == "Vector3" then
+		local SX = Calculation.CalculateDisplacement(k, x.X, c, u, m, t)
+		local SY = Calculation.CalculateDisplacement(k, x.Y, c, u, m, t)
+		local SZ = Calculation.CalculateDisplacement(k, x.Z, c, u, m, t)
+
+		S = Vector3.new(
+			Calculation.ReturnAbsoluteDisplacement(x.X, SX),
+			Calculation.ReturnAbsoluteDisplacement(x.Y, SY),
+			Calculation.ReturnAbsoluteDisplacement(x.Z, SZ)
+		)
+	elseif DataType == "Vector2" then
+		local SX = Calculation.CalculateDisplacement(k, x.X, c, u, m, t)
+		local SY = Calculation.CalculateDisplacement(k, x.Y, c, u, m, t)
+
+		S = Vector2.new(
+			Calculation.ReturnAbsoluteDisplacement(x.X, SX),
+			Calculation.ReturnAbsoluteDisplacement(x.Y, SY)
+		)
+	elseif DataType == "number" then
+		S = Calculation.ReturnAbsoluteDisplacement(x, Calculation.CalculateDisplacement(k, x, c, u, m, t))
+	end
+
+	self._position = self._position + S
+	instance[prop] = self._position
 end
 
 function Class.Get(self: InternalTypes.SpringInternal<PublicTypes.State>)
@@ -72,27 +88,28 @@ function Class.Get(self: InternalTypes.SpringInternal<PublicTypes.State>)
 end
 
 function Class._apply(self: InternalTypes.SpringInternal<PublicTypes.State>, prop: string, instance: Instance)
-	self._state:Listen(function(_, newValue)
-		print(`Target: {newValue}`)
-		self._state:Get() = newValue
+	(instance :: any)[prop] = self._state:Get()
 
-		local IsGreater: boolean = (self._state:Get() > self._position)
+	self._state:Listen(function()
+		local ComparablePos = Calculation.ReturnComparableValue(self._position)
+		local ComparableTarget = Calculation.ReturnComparableValue(self._state:Get())
+		local IsGreater: boolean = ComparableTarget > ComparablePos
 
-		self._connection = RunService.Heartbeat:Connect(function(deltaTime)
-			self:Update(deltaTime, instance, prop)
-			print(`Position: {self._position}`)
-
-			if self._connection ~= nil then
-				if
-					(IsGreater == true and self._position >= self._state:Get())
-					or (IsGreater == false and self._position <= self._state:Get())
-				then
-					self._connection:Disconnect()
-					self._position = self._state:Get()
-					print("disconnect")
+		self._connection = RunService[(if RunService:IsClient() then "RenderStepped" else "Heartbeat")]:Connect(
+			function(deltaTime)
+				self:Update(deltaTime, instance, prop)
+				if self._connection ~= nil then
+					if
+						(IsGreater and ComparablePos >= ComparableTarget)
+						or (not IsGreater and ComparablePos <= ComparableTarget)
+					then
+						self._connection:Disconnect()
+						self._position = self._state:Get()
+						self:Update(deltaTime, instance, prop)
+					end
 				end
 			end
-		end)
+		)
 	end)
 end
 
@@ -111,13 +128,14 @@ local function Spring(state: PublicTypes.State, springInfo: PublicTypes.SpringIn
 	self.AegisClass = "API"
 	self.AegisName = "Spring"
 
-	self._state = state
+	springInfo = springInfo or {}
+
 	self._damping = springInfo.Damping or 1
 	self._speed = springInfo.Speed or 1
-	self._elasticity = springInfo.Elasticity or 0.5
+	self._elasticity = springInfo.Elasticity or 1
 	self._mass = springInfo.Mass or 1
+	self._state = state
 	self._position = state:Get()
-	self._velocity = 0
 	self._connection = nil
 
 	return self

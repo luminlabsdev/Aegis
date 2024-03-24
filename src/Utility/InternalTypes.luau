@@ -29,9 +29,7 @@ export type SpringInternal<State> = {
 	_mass: number,
 	_connection: RBXScriptConnection?,
 
-	_position: number,
-	_target: number,
-	_velocity: number,
+	_position: Animatable,
 } & SpringClass<State> & API<SpringInternal<State>>
 
 -- Extra

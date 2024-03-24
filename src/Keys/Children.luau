@@ -38,6 +38,7 @@ return {
 			if (index :: InternalTypes.Key).AegisName == "Children" then
 				if type(value) == "table" then
 					for _, v: Instance in value do
+						print(v)
 						CheckTypeAndParent(v, instance)
 					end
 				elseif typeof(value) == "Instance" then

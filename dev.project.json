@@ -1,5 +1,4 @@
 {
-	"emitLegacyScripts": false,
 	"name": "aegis-dev",
 	"tree": {
 		"$className": "DataModel",
