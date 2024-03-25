@@ -5,6 +5,7 @@ export type SpringInfo = {
 	Elasticity: number?,
 	Speed: number?,
 	Mass: number?,
+	State: State,
 }
 
 export type State = typeof(setmetatable({} :: InternalTypes.StateInternal, {} :: { __index: InternalTypes.StateClass }))

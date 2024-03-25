@@ -14,19 +14,30 @@ local Ref = Keys.Ref
 local function Build(className: string, props: { [any]: any }?): Instance?
 	local Success, Result = pcall(Instance.new, className) -- Create the instance wrapped inside pcall
 
-	if Success then -- if it's successfully created
-		if props then
+	if Success == true then -- if it's successfully created
+		if props ~= nil then
+			local RefLoaded = false
 			if props[Ref] ~= nil then
-				Ref.Apply(Result, nil, props[Ref])
+				print(props[Ref]:Get())
+				Children.Apply(Result, nil, props[Ref])
+				RefLoaded = true
+				print(props[Ref]:Get())
+			else
+				RefLoaded = true
 			end
+
+			repeat
+				task.wait()
+			until RefLoaded == true
 
 			for prop, value in props do
 				-- loop over props table if provided, and apply the Children key to the result
-				if prop == "Parent" or prop == Ref then
+				if prop == ("Parent" or Ref) then
+					print(prop)
 					continue -- Skip if it's the parent property
+				else
+					Children.Apply(Result, prop, value)
 				end
-
-				Children.Apply(Result, prop, value)
 			end
 
 			if props.Parent ~= nil then

@@ -116,24 +116,24 @@ end
 	@param springInfo PublicTypes.SpringInfo
 	@return Spring PublicTypes.Spring
 ]]
-local function Spring(state: PublicTypes.State, springInfo: PublicTypes.SpringInfo): PublicTypes.Spring?
-	if not Is.API(state) then
-		Debugger.Error("APIExpected", 1, "State", typeof(state))
+local function Spring(springInfo: PublicTypes.SpringInfo): PublicTypes.Spring?
+	if not Is.API(springInfo.State) then
+		Debugger.Error("APIExpected", 1, "State", typeof(springInfo.State))
 		return nil
 	end
+
+	print(springInfo.State)
 
 	local self = setmetatable({} :: InternalTypes.SpringInternal<PublicTypes.State>, { __index = Class })
 	self.AegisClass = "API"
 	self.AegisName = "Spring"
 
-	springInfo = springInfo or {}
-
 	self._damping = springInfo.Damping or 1
 	self._speed = springInfo.Speed or 1
 	self._elasticity = springInfo.Elasticity or 1
 	self._mass = springInfo.Mass or 1
-	self._state = state
-	self._position = state:Get()
+	self._state = springInfo.State
+	self._position = self._state:Get()
 	self._connection = nil
 
 	return self

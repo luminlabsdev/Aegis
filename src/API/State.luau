@@ -5,6 +5,7 @@ local Utility = script.Parent.Parent.Utility
 local Debugger = require(Utility.Debugger)
 local InternalTypes = require(Utility.InternalTypes)
 local PublicTypes = require(Utility.PublicTypes)
+local Is = require(Utility.Is)
 
 -- // Variables
 local Class = {}
@@ -34,7 +35,7 @@ function Class.Set(self: InternalTypes.StateInternal, newValue: any): ()
 	if self._state == newValue then
 		return
 	end
-	if self._protectType == true and typeof(OldValue) ~= typeof(newValue) then
+	if self._protectType == true and Is.TypeSame(OldValue, newValue) then
 		print(OldValue, newValue)
 		Debugger.Warn("TypeMismatch", typeof(OldValue), typeof(newValue))
 		return
