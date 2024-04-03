@@ -36,7 +36,6 @@ function Class.Set(self: InternalTypes.StateInternal, newValue: any): ()
 		return
 	end
 	if self._protectType == true and Is.TypeSame(OldValue, newValue) then
-		print(OldValue, newValue)
 		Debugger.Warn("TypeMismatch", typeof(OldValue), typeof(newValue))
 		return
 	end

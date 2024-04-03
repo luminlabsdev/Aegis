@@ -1,8 +1,8 @@
 -- // Variables
-local Calculation = {}
+local Animation = {}
 
 -- // Functions
-function Calculation.CalculateDisplacement(k: number, x: number, c: number, u: number, m: number, t: number): number
+function Animation.CalculateDisplacement(k: number, x: number, c: number, u: number, t: number, m: number): number
 	--[[ Acceleration calculation:
 
 		We know,	F = -kx
@@ -23,11 +23,11 @@ function Calculation.CalculateDisplacement(k: number, x: number, c: number, u: n
 	return S
 end
 
-function Calculation.ReturnAbsoluteDisplacement(property: number, s: number): number
+function Animation.ReturnAbsoluteDisplacement(property: number, s: number): number
 	return property <= 0 and -s or s
 end
 
-function Calculation.ReturnComparableValue(value: any): number
+function Animation.ReturnComparableValue(value: any): number
 	local DataType = typeof(value)
 
 	if DataType == "number" then
@@ -43,5 +43,10 @@ function Calculation.ReturnComparableValue(value: any): number
 	end
 end
 
+function Animation.AnimateNumberDisplacement(k: number, x: number, c: number, u: number, t: number, m: number)
+	local displacement = Animation.CalculateDisplacement(k, x, c, u, t, m)
+	return Animation.ReturnAbsoluteDisplacement(x, displacement)
+end
+
 -- // Returning
-return Calculation
+return Animation

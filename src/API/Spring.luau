@@ -7,7 +7,7 @@ local Utility = script.Parent.Parent.Utility
 -- // Dependencies
 local PublicTypes = require(Utility.PublicTypes)
 local InternalTypes = require(Utility.InternalTypes)
-local Calculation = require(Utility.Calculation)
+local Animation = require(Utility.Animation)
 local Is = require(Utility.Is)
 local Debugger = require(Utility.Debugger)
 
@@ -16,13 +16,9 @@ local Epsilon = 0.001
 local Class = {}
 
 -- // Functions
-local function AnimateNumberDisplacement(k: number, x: number, c: number, u: number, m: number, t: number)
-	local displacement = Calculation.CalculateDisplacement(k, x, c, u, m, t)
-	return Calculation.ReturnAbsoluteDisplacement(
-		x,
-		-- math.clamp(displacement, -(x * Epsilon), (x * Epsilon))
-		displacement
-	)
+local function AnimateNumberDisplacement(k: number, x: number, c: number, u: number, t: number, m: number)
+	local displacement = Animation.CalculateDisplacement(k, x, c, u, t, m)
+	return Animation.ReturnAbsoluteDisplacement(x, displacement)
 end
 
 function Class.Update(self: InternalTypes.SpringInternal<PublicTypes.State>, t: number, instance: any, prop: string)
@@ -47,27 +43,27 @@ function Class.Update(self: InternalTypes.SpringInternal<PublicTypes.State>, t: 
 	local DataType = typeof(x)
 
 	if DataType == "number" then
-		S = AnimateNumberDisplacement(k, x, c, u, m, t)
+		S = AnimateNumberDisplacement(k, x, c, u, t, t)
 	elseif DataType == "UDim2" then
 		S = UDim2.new(
-			AnimateNumberDisplacement(k, x.X.Scale, c, u, m, t),
-			AnimateNumberDisplacement(k, x.X.Offset, c, u, m, t),
-			AnimateNumberDisplacement(k, x.Y.Scale, c, u, m, t),
-			AnimateNumberDisplacement(k, x.Y.Offset, c, u, m, t)
+			AnimateNumberDisplacement(k, x.X.Scale, c, u, t, t),
+			AnimateNumberDisplacement(k, x.X.Offset, c, u, t, t),
+			AnimateNumberDisplacement(k, x.Y.Scale, c, u, t, t),
+			AnimateNumberDisplacement(k, x.Y.Offset, c, u, t, t)
 		)
 	elseif DataType == "UDim" then
 		S = UDim.new(
-			AnimateNumberDisplacement(k, x.Scale, c, u, m, t),
-			AnimateNumberDisplacement(k, x.Offset, c, u, m, t)
+			AnimateNumberDisplacement(k, x.Scale, c, u, t, t),
+			AnimateNumberDisplacement(k, x.Offset, c, u, t, t)
 		)
 	elseif DataType == "Vector3" then
 		S = Vector3.new(
-			AnimateNumberDisplacement(k, x.X, c, u, m, t),
-			AnimateNumberDisplacement(k, x.Y, c, u, m, t),
-			AnimateNumberDisplacement(k, x.Z, c, u, m, t)
+			AnimateNumberDisplacement(k, x.X, c, u, t, t),
+			AnimateNumberDisplacement(k, x.Y, c, u, t, t),
+			AnimateNumberDisplacement(k, x.Z, c, u, t, t)
 		)
 	elseif DataType == "Vector2" then
-		S = Vector2.new(AnimateNumberDisplacement(k, x.X, c, u, m, t), AnimateNumberDisplacement(k, x.Y, c, u, m, t))
+		S = Vector2.new(AnimateNumberDisplacement(k, x.X, c, u, t, t), AnimateNumberDisplacement(k, x.Y, c, u, t, t))
 	end
 
 	self._position = self._position :: any + S
@@ -82,14 +78,14 @@ function Class._apply(self: InternalTypes.SpringInternal<PublicTypes.State>, pro
 	(instance :: any)[prop] = self._state:Get()
 
 	self._state:Listen(function()
-		local ComparablePos = Calculation.ReturnComparableValue(self._position)
-		local ComparableTarget = Calculation.ReturnComparableValue(self._state:Get())
+		local ComparablePos = Animation.ReturnComparableValue(self._position)
+		local ComparableTarget = Animation.ReturnComparableValue(self._state:Get())
 		-- local IsGreater: boolean = ComparableTarget > ComparablePos
 
 		self._connection = RunService[(if RunService:IsClient() then "RenderStepped" else "Heartbeat")]:Connect(
 			function(deltaTime)
-				ComparablePos = Calculation.ReturnComparableValue(self._position)
-				ComparableTarget = Calculation.ReturnComparableValue(self._state:Get())
+				ComparablePos = Animation.ReturnComparableValue(self._position)
+				ComparableTarget = Animation.ReturnComparableValue(self._state:Get())
 				self:Update(deltaTime, instance, prop)
 				if type(self._position) == "number" then
 					print(`Target: {ComparableTarget}`)

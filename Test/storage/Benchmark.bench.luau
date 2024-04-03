@@ -5,7 +5,7 @@ This file is for use by Benchmarker (https://boatbomber.itch.io/benchmarker)
 --]]
 
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local Robax = require(ReplicatedStorage.Robax)
+local Aegis = require(ReplicatedStorage.Aegis)
 local Fusion = require(ReplicatedStorage.Fusion)
 
 return {
@@ -14,10 +14,10 @@ return {
 	end,
 
 	Functions = {
-		["Robax.Test"] = function(Profiler)
-			local Build = Robax.Build
-			local State = Robax.State
-			local Keys = Robax.Keys
+		["Aegis.Test"] = function(Profiler)
+			local Build = Aegis.Build
+			local State = Aegis.State
+			local Keys = Aegis.Keys
 
 			local Children = Keys.Children
 			local Events = Keys.Events
@@ -26,14 +26,14 @@ return {
 			local Tags = Keys.Tags
 
 			local MyPart = Build("Part", {
-				Name = "RobaxPart",
-				Parent = workspace, -- Robax will skip over this and parent the instance at the end!
+				Name = "AegisPart",
+				Parent = workspace, -- Aegis will skip over this and parent the instance at the end!
 				Position = Vector3.new(0, 5, 0),
 				Size = Vector3.new(4, 4, 4),
 				BrickColor = BrickColor.Random(),
 				BottomSurface = Enum.SurfaceType.Smooth,
 				TopSurface = Enum.SurfaceType.Smooth,
-				[Tags] = { "RobaxPart", "BasePart", "TagTested" },
+				[Tags] = { "AegisPart", "BasePart", "TagTested" },
 				[Children] = {
 					Build("Folder", {
 						Name = "MyFolder",

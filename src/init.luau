@@ -1,8 +1,18 @@
+-- // Folders
+local API = script.API
+local Keys = script.Keys
+
 -- // Returning
 return {
-	Build = require(script.API.Build),
-	State = require(script.API.State),
-	-- Spring = require(script.API.Spring), [WIP]
+	-- API
+	Build = require(API.Build),
+	State = require(API.State),
+	Spring = require(script.API.Spring),
 
-	Keys = require(script.Keys),
+	-- Keys
+	Children = require(Keys.Children),
+	Events = require(Keys.Events),
+	Changes = require(Keys.Changes),
+	Attributes = require(Keys.Attributes),
+	Tags = require(Keys.Tags),
 }

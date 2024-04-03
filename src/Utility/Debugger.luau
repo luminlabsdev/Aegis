@@ -3,7 +3,7 @@ local Logs = {
 	TypeMismatch = "Expected type (%s); received (%s)",
 	MissingChild = "Could not find (%s) in (%s).",
 	FailedToBuild = "Failed to create instance with class name (%s); Result: %s",
-	APIExpected = "Expected argument#%s to be a API.%s type. Received %s",
+	APIExpected = "Expected Argument#%d to be a API.%s type. Received %s",
 	-- EmptyState = "Cannot create an empty state.",
 	-- FailedToAssignProp = "Failed to assign property (%s)",
 }
@@ -14,7 +14,7 @@ function Debugger.Warn(id: string, ...: any)
 	local FoundId = Logs[id] or nil :: string?
 
 	if FoundId then
-		warn(`\n[Robax warning] {string.format(FoundId, ...)}\nAt -> [{debug.traceback()}]`)
+		warn(`\n[Aegis warning] {string.format(FoundId, ...)}\nAt -> [{debug.traceback()}]`)
 	end
 end
 
@@ -22,7 +22,7 @@ function Debugger.Error(id: string, ...: any)
 	local FoundId = Logs[id] or nil :: string?
 
 	if FoundId then
-		error(`[Robax error] {string.format(FoundId, ...)}`)
+		error(`[Aegis error] {string.format(FoundId, ...)}`)
 	end
 end
 

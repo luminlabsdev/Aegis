@@ -1,2 +1,5 @@
+docs/.vitepress/dist
+docs/.vitepress/cach
+node_modules
 sourcemap.json
-Aegis.rbxm
+wally.lock

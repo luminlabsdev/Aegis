@@ -1,9 +1,9 @@
 -- // Dependencies
 local Utility = script.Parent.Parent.Utility
+local Utils = require(Utility.Utils)
 local Debugger = require(Utility.Debugger)
-local Keys = require(script.Parent.Parent.Keys)
-local Children = Keys.Children
-local Ref = Keys.Ref
+local InternalTypes = require(Utility.InternalTypes)
+local Is = require(Utility.Is)
 
 -- // Functions
 --[[
@@ -11,39 +11,41 @@ local Ref = Keys.Ref
 	@param props The property table of the instance which is to be applied
 	@return Instance
 ]]
-local function Build(className: string, props: { [any]: any }?): Instance?
+local function Build(className: string, propertyFunction: ((instance: Instance) -> { [any]: any }?)?): Instance?
 	local Success, Result = pcall(Instance.new, className) -- Create the instance wrapped inside pcall
 
 	if Success == true then -- if it's successfully created
-		if props ~= nil then
-			local RefLoaded = false
-			if props[Ref] ~= nil then
-				print(props[Ref]:Get())
-				Children.Apply(Result, nil, props[Ref])
-				RefLoaded = true
-				print(props[Ref]:Get())
-			else
-				RefLoaded = true
-			end
+		local PropertyTable = (
+			if type(propertyFunction) == "function" then propertyFunction(Result) else {}
+		) :: { [any]: any }
 
-			repeat
-				task.wait()
-			until RefLoaded == true
-
-			for prop, value in props do
-				-- loop over props table if provided, and apply the Children key to the result
-				if prop == ("Parent" or Ref) then
-					print(prop)
-					continue -- Skip if it's the parent property
+		for property: any, value: any in PropertyTable do
+			if Is.Key(property) == true then
+				(property :: InternalTypes.Key).Apply(Result, property, value)
+			elseif type(property) == "string" then
+				if property == "Parent" then
+					continue
 				else
-					Children.Apply(Result, prop, value)
+					local Property = (Result :: any)[property]
+					local IsAPI = Is.API(value)
+
+					if IsAPI == true then
+						-- Call the _apply method of the API class.
+						Utils.CheckTypeAndCall(Property, value:Get(), function()
+							(value :: InternalTypes.API<typeof(value)>):_apply(property, Result)
+						end)
+					elseif not IsAPI then
+						-- Meaning, the index is a string and the value is the actual property type
+						Utils.CheckTypeAndCall(Property, value, function()
+							(Result :: any)[property] = value
+						end)
+					end
 				end
 			end
+		end
 
-			if props.Parent ~= nil then
-				-- If parent property is given, then set it.
-				Result.Parent = props.Parent
-			end
+		if PropertyTable.Parent ~= nil then
+			Result.Parent = PropertyTable.Parent
 		end
 
 		return Result

@@ -1,7 +1,5 @@
 -- // Dependencies
 local Debugger = require(script.Parent.Debugger)
-local Keys = script.Parent.Parent.Keys
-local InternalTypes = require(script.Parent.InternalTypes)
 local Is = require(script.Parent.Is)
 
 -- // Variables
@@ -18,47 +16,39 @@ function Utils.CheckTypeAndCall(v1: any, v2: any, interaction: () -> ()): ()
 	end
 end
 
-function Utils.ApplySpecialKeyProperty(instance: Instance, prop: {}, value: any): ()
-	local Key = Keys[(prop :: any).AegisName] or nil
+function Utils.ApplyProperties(instance: Instance, props: { [any]: any }): () end
 
-	if Key ~= nil then
-		(require(Key) :: InternalTypes.Key).Apply(instance, prop, value)
-	else
-		Debugger.Warn("MissingChild", `Aegis.Keys.{(prop :: any).AegisName}`, script.Parent.Parent.Keys:GetFullName())
-		return
-	end
-end
+--[[ useless function (was used when in dev)
+	function Utils.GetAndSetAtPath(self: {}, path: string, optionalValue: any?): any
+		-- Split the path by "/" and create a new variable to reference the self._state table
+		local Paths = string.split(path, "/")
+		local Current = (self :: any)._state
 
-function Utils.GetAndSetAtPath(self: {}, path: string, optionalValue: any?): any
-	-- Split the path by "/" and create a new variable to reference the self._state table
-	local Paths = string.split(path, "/")
-	local Current = (self :: any)._state
+		for index, key in Paths do
 
-	for index, key in Paths do
-		--[[
-			If the index is at the last index of the Paths table and optionalValue is provided
-			and after indexing, Current[key] is not nil, set it to the new value.
-		]]
-		if index == #Paths then
-			local Old = Current[key] -- A variable just needed for checking Current[key]
+				-- If the index is at the last index of the Paths table and optionalValue is provided
+				-- and after indexing, Current[key] is not nil, set it to the new value.
+			if index == #Paths then
+				local Old = Current[key] -- A variable just needed for checking Current[key]
 
-			if optionalValue and Old then
-				if (self :: any)._protectType and typeof(Old) ~= typeof(optionalValue) then
-					Debugger.Warn("TypeMismatch", typeof(Old), typeof(optionalValue))
-					continue
-				else
-					Current[key] = optionalValue
+				if optionalValue and Old then
+					if (self :: any)._protectType and typeof(Old) ~= typeof(optionalValue) then
+						Debugger.Warn("TypeMismatch", typeof(Old), typeof(optionalValue))
+						continue
+					else
+						Current[key] = optionalValue
+					end
 				end
+
+				Current = Current[key] -- Optional value wasn't provided, set it regardless
 			end
 
-			Current = Current[key] -- Optional value wasn't provided, set it regardless
+			Current = Current[key] -- If it does not meet the above checks just set it normally.
 		end
 
-		Current = Current[key] -- If it does not meet the above checks just set it normally.
+		return Current
 	end
-
-	return Current
-end
+]]
 
 -- // Returning
 return Utils
