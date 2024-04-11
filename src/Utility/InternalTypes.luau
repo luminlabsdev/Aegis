@@ -15,7 +15,12 @@ export type StateInternal = {
 
 -- Spring types
 export type SpringClass<State> = {
-	Update: (self: SpringInternal<State>, t: number, instance: any, prop: string) -> (),
+	_update: (
+		self: SpringInternal<State>,
+		targetPosition_Packed: { number },
+		positionDataType: string,
+		deltaTime: number
+	) -> (),
 	Get: (self: SpringInternal<State>) -> (),
 }
 
@@ -23,13 +28,15 @@ export type SpringInternal<State> = {
 	AegisName: "Spring",
 
 	_state: State,
-	_damping: number,
+	_stiffness: number,
 	_speed: number,
-	_elasticity: number,
 	_mass: number,
 	_connection: RBXScriptConnection?,
 
-	_position: Animatable,
+	_currentPosition: {
+		Unpacked: Animatable,
+		Packed: { number },
+	},
 } & SpringClass<State> & API<SpringInternal<State>>
 
 -- Extra
@@ -45,6 +52,6 @@ export type API<self> = {
 	_apply: (self: self, prop: string, instance: Instance) -> (),
 }
 
-export type Animatable = number | UDim2 | UDim | Vector3 | Vector2
+export type Animatable = number | UDim2 | UDim | Vector3 | Vector3int16 | Vector2 | Vector2int16
 
 return "Aegis.Types.Internal"
