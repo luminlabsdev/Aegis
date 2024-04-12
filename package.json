@@ -1,35 +1,35 @@
 {
-  "name": "aegis",
-  "version": "0.0.1",
-  "description": "A simple strictly typed UI framework made specifically for Roblox.",
-  "main": "index.js",
-  "directories": {
-    "test": "test"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "docs:dev": "vitepress dev docs",
-    "docs:build": "vitepress build docs",
-    "docs:preview": "vitepress preview docs"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/canary-softworks/Aegis.git"
-  },
-  "keywords": [
-    "canary",
-    "organized",
-    "simple",
-    "ui",
-    "framework"
-  ],
-  "author": "canary-softworks",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/canary-softworks/Aegis/issues"
-  },
-  "homepage": "https://github.com/canary-softworks/Aegis#readme",
-  "devDependencies": {
-    "vitepress": "^1.0.1"
-  }
+	"name": "aegis",
+	"version": "0.0.1",
+	"description": "A simple strictly typed UI framework made specifically for Roblox.",
+	"main": "index.js",
+	"directories": {
+		"test": "test"
+	},
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"docs:dev": "vitepress dev docs",
+		"docs:build": "vitepress build docs",
+		"docs:preview": "vitepress preview docs"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/canary-softworks/Aegis.git"
+	},
+	"keywords": [
+		"lumin",
+		"organized",
+		"simple",
+		"ui",
+		"framework"
+	],
+	"author": "canary-softworks",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/lumin-rbx/Aegis/issues"
+	},
+	"homepage": "https://github.com/lumin-rbx/Aegis#readme",
+	"devDependencies": {
+		"vitepress": "^1.0.1"
+	}
 }

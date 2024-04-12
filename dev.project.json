@@ -4,7 +4,7 @@
 	"tree": {
 		"$className": "DataModel",
 		"ReplicatedStorage": {
-			"$path": "test/shared",
+			"$path": "tests/shared",
 			"Packages": {
 				"$className": "Folder",
 				"Aegis": {
@@ -13,11 +13,11 @@
 			}
 		},
 		"ServerScriptService": {
-			"$path": "test/server"
+			"$path": "tests/server"
 		},
 		"StarterPlayer": {
 			"StarterPlayerScripts": {
-				"$path": "test/client"
+				"$path": "tests/client"
 			}
 		}
 	}

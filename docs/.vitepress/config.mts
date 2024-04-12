@@ -5,7 +5,7 @@ export default defineConfig({
 	head: [['link', { rel: 'icon', href: '/favicon.ico' }]],
 	base: "/Aegis/",
 	title: "Aegis",
-	titleTemplate: "Canary Docs",
+	titleTemplate: "Lumin Docs",
 	description: "A simple strictly typed UI framework made specifically for Roblox.",
 	lastUpdated: true,
 	lang: 'en-us',
@@ -32,7 +32,7 @@ export default defineConfig({
 				{ text: 'MenuItem', link: '/api/menuitem' },
 			],
 			'/guides': [
-				{ text: 'Object Creation', link: '/guides/creation' },
+				{ text: 'Instance building', link: '/guides/build' },
 				{ text: 'Input', link: '/guides/input' },
 				{ text: 'Notices', link: '/guides/notices' },
 				{ text: 'Tooltips', link: '/guides/tooltips' },
@@ -52,11 +52,11 @@ export default defineConfig({
 
 		footer: {
 			message: 'Built with VitePress',
-			copyright: 'Copyright © 2021 - 2024 Canary Softworks'
+			copyright: 'Copyright © 2021 - 2024 Lumin Labs'
 		},
 
 		socialLinks: [
-			{ icon: 'github', link: 'https://github.com/canary-development/UIShelf' },
+			{ icon: 'github', link: 'https://github.com/lumin-rbx/Aegis' },
 			{ icon: 'discord', link: 'https://discord.com/invite/cwwcZtqJAt' },
 		]
 	}
