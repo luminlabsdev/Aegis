@@ -28,7 +28,8 @@ export type SpringInternal<State> = {
 	AegisName: "Spring",
 
 	_state: State,
-	_stiffness: number,
+	_damping: number,
+	_frequency: number,
 	_speed: number,
 	_mass: number,
 	_connection: RBXScriptConnection?,

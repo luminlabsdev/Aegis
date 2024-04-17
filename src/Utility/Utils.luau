@@ -66,37 +66,5 @@ function Utils.UnpackDataType(t: {}, dataType: string): InternalTypes.Animatable
 	end
 end
 
---[[ useless function (was used when in dev)
-	function Utils.GetAndSetAtPath(self: {}, path: string, optionalValue: any?): any
-		-- Split the path by "/" and create a new variable to reference the self._state table
-		local Paths = string.split(path, "/")
-		local Current = (self :: any)._state
-
-		for index, key in Paths do
-
-				-- If the index is at the last index of the Paths table and optionalValue is provided
-				-- and after indexing, Current[key] is not nil, set it to the new value.
-			if index == #Paths then
-				local Old = Current[key] -- A variable just needed for checking Current[key]
-
-				if optionalValue and Old then
-					if (self :: any)._protectType and typeof(Old) ~= typeof(optionalValue) then
-						Debugger.Warn("TypeMismatch", typeof(Old), typeof(optionalValue))
-						continue
-					else
-						Current[key] = optionalValue
-					end
-				end
-
-				Current = Current[key] -- Optional value wasn't provided, set it regardless
-			end
-
-			Current = Current[key] -- If it does not meet the above checks just set it normally.
-		end
-
-		return Current
-	end
-]]
-
 -- // Returning
 return Utils
