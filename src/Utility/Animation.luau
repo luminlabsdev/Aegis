@@ -1,6 +1,10 @@
+-- // Folders
+local Types = script.Parent.Parent.Types
+
 -- // Dependencies
-local InternalTypes = require(script.Parent.InternalTypes)
-local PublicTypes = require(script.Parent.PublicTypes)
+local InternalTypes = require(Types.InternalTypes)
+local PublicTypes = require(Types.PublicTypes)
+local Utils = require(script.Parent.Utils)
 
 -- // Variables
 local Animation = {
@@ -37,11 +41,12 @@ end
 function Animation.IsSpringSettled(
 	self: InternalTypes.SpringInternal<PublicTypes.State>,
 	targetPosition_Packed: { number }
-)
+): boolean
 	local IsSettled = false
 
 	for index, value in self._currentPosition.Packed do
-		if math.abs(value - targetPosition_Packed[index]) > Animation.Epsilon then
+		if math.abs(value - targetPosition_Packed[index]) <= Animation.Epsilon then
+			-- If the difference is less / equal to the epsilon, then settle the spring
 			IsSettled = true
 			break
 		end
@@ -61,6 +66,7 @@ function Animation.NumberSpringStep(spring: PublicTypes.Spring, currentPosition:
 
 	local NewPosition: number, NewVelocity: number
 
+	-- DO NOT CHANGE ANYTHING IN THE CALCULATION
 	if Damping == 1 then -- Critical damping
 		NewPosition = (Velocity * Delta + Offset * (Frequency * Delta + 1)) * Decay + targetPosition
 		NewVelocity = (Velocity - (Offset * Frequency + Velocity) * (Frequency * Delta)) * Decay

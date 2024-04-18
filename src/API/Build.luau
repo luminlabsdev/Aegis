@@ -1,8 +1,11 @@
--- // Dependencies
+-- // Folder
+local Types = script.Parent.Parent.Types
 local Utility = script.Parent.Parent.Utility
-local Utils = require(Utility.Utils)
+
+-- // Dependencies
+local InternalTypes = require(Types.InternalTypes)
 local Debugger = require(Utility.Debugger)
-local InternalTypes = require(Utility.InternalTypes)
+local Utils = require(Utility.Utils)
 local Is = require(Utility.Is)
 
 -- // Functions

@@ -1,5 +1,5 @@
 -- // Dependencies
-local InternalTypes = require(script.Parent.InternalTypes)
+local InternalTypes = require(script.Parent.Parent.Types.InternalTypes)
 
 -- // Variables
 local Is = {}

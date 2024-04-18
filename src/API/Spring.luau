@@ -3,10 +3,11 @@ local RunService = game:GetService("RunService")
 
 -- // Folders
 local Utility = script.Parent.Parent.Utility
+local Types = script.Parent.Parent.Types
 
 -- // Dependencies
-local InternalTypes = require(Utility.InternalTypes)
-local PublicTypes = require(Utility.PublicTypes)
+local InternalTypes = require(Types.InternalTypes)
+local PublicTypes = require(Types.PublicTypes)
 local Animation = require(Utility.Animation)
 local Debugger = require(Utility.Debugger)
 local Utils = require(Utility.Utils)
@@ -42,14 +43,10 @@ function Class._update(
 	deltaTime: number
 )
 	for i = 1, #targetPosition_Packed do
-		self._currentPosition.Packed[i] = Animation.UpdateNumberSpring(
-			self._stiffness,
-			targetPosition_Packed[i],
-			self._currentPosition.Packed[i],
-			self._speed,
-			self._mass,
-			deltaTime
-		)
+		local NewPosition, NewVelocity =
+			Animation.NumberSpringStep(self, self._currentPosition.Packed[i], targetPosition_Packed[i])
+
+		self._currentPosition.Packed[i] = NewPosition
 	end
 
 	self._currentPosition.Unpacked = Utils.UnpackDataType(self._currentPosition.Packed, positionDataType)
