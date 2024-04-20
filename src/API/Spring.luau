@@ -2,35 +2,49 @@
 local RunService = game:GetService("RunService")
 
 -- // Folders
+local Runtime = script.Parent.Parent.Runtime
 local Utility = script.Parent.Parent.Utility
 local Types = script.Parent.Parent.Types
 
 -- // Dependencies
 local InternalTypes = require(Types.InternalTypes)
 local PublicTypes = require(Types.PublicTypes)
+local Scheduler = require(Runtime.Scheduler)
 local Animation = require(Utility.Animation)
 local Debugger = require(Utility.Debugger)
-local Utils = require(Utility.Utils)
+local Storage = require(Runtime.Storage)
 local Is = require(Utility.Is)
 
 -- // Variables
 local Class = {}
 
+local sqrt = math.sqrt
+local exp = math.exp
+local cos = math.cos
+local sin = math.sin
+local pi = math.pi
+
 -- // Functions
 function Class._apply(self: InternalTypes.SpringInternal<PublicTypes.State>, prop: string, instance: Instance)
-	local ConnectionSignal = (RunService:IsClient() and "RenderStepped") or "Heartbeat"
-	local TargetPosition_Packed, PositionDataType;
+	local Mode = RunService:IsClient() and "Client"
+	local DataType_Fn = Storage.AnimatableDataTypes[self._type]
+	local LinearTargetPosition = DataType_Fn.ToLinear(self._state:Get())
+	local Connection;
 	(instance :: any)[prop] = self._state:Get()
 
-	self._state:Listen(function(oldValue, newValue)
-		TargetPosition_Packed, PositionDataType = Utils.PackDataType(self._state:Get())
+	self._state:Listen(function(_, newValue)
+		LinearTargetPosition = DataType_Fn.ToLinear(newValue)
 
-		self._connection = (RunService[ConnectionSignal] :: RBXScriptSignal):Connect(function(deltaTime: number)
-			self:_update(TargetPosition_Packed, PositionDataType, deltaTime);
-			(instance :: any)[prop] = self._currentPosition.Unpacked
+		Connection = Scheduler:Add(Mode, function(delta: number)
+			self:_update(self._currentLinearPosition, self._type, delta);
+			(instance :: any)[prop] = DataType_Fn.FromLinear(self._currentLinearPosition)
 
-			if Animation.IsSpringSettled(self, TargetPosition_Packed) == true and self._connection ~= nil then
-				self._connection:Disconnect()
+			if
+				Animation.IsSpringSettled(self._currentLinearPosition, LinearTargetPosition) == true
+				and Connection ~= nil
+			then
+				Scheduler:Remove(Mode, Connection);
+				(instance :: any)[prop] = self._state:Get()
 			end
 		end)
 	end)
@@ -38,23 +52,59 @@ end
 
 function Class._update(
 	self: InternalTypes.SpringInternal<PublicTypes.State>,
-	targetPosition_Packed: { number },
-	positionDataType: string,
-	deltaTime: number
+	linearTargetPosition: { number },
+	delta: number
 )
-	for i = 1, #targetPosition_Packed do
-		local NewPosition, NewVelocity =
-			Animation.NumberSpringStep(self, self._currentPosition.Packed[i], targetPosition_Packed[i])
+	for i = 1, #linearTargetPosition do
+		-- self._currentLinearPosition[i], self._velocity =
+		-- 	Animation.NumberSpringStep(self, self._currentLinearPosition[i], linearTargetPosition[i], delta)
+		local Damping = self._damping
+		local Frequency = 2 * pi * self._frequency
+		local Velocity = self._velocity
 
-		self._currentPosition.Packed[i] = NewPosition
+		local Offset = self._currentLinearPosition[i] - linearTargetPosition[i]
+		local Decay = exp(-delta * Damping * Frequency)
+
+		-- DO NOT CHANGE ANYTHING IN THE CALCULATION
+		if Damping == 1 then -- Critical damping
+			self._currentLinearPosition[i] = (Velocity * delta + Offset * (Frequency * delta + 1)) * Decay
+				+ linearTargetPosition[i]
+			self._velocity = (Velocity - (Offset * Frequency + Velocity) * (Frequency * delta)) * Decay
+		elseif Damping < 1 then -- Underdamped
+			local Constant = sqrt(1 - Damping * Damping)
+			local Cosin_Angle = cos(delta * Frequency * Constant)
+			local Sine_Angle = sin(delta * Frequency * Constant)
+
+			self._currentLinearPosition[i] = (
+				Offset * Cosin_Angle
+				+ (Velocity + Offset * (Damping * Frequency)) * Sine_Angle / (Frequency * Constant)
+			)
+					* Decay
+				+ linearTargetPosition[i]
+			self._velocity = (
+				Velocity * (Cosin_Angle * Constant) - (Velocity * Damping + Offset * Frequency) * Sine_Angle
+			) * (Decay / Constant)
+		else -- Overdamped
+			local Constant = sqrt(Damping * Damping - 1)
+
+			local Root1 = -Frequency * (Damping - Constant)
+			local Root2 = -Frequency * (Damping + Constant)
+
+			local Coefficient2 = (Velocity - Offset * Root1) / (2 * Frequency * Constant)
+			local Coefficient1 = Offset - Coefficient2
+
+			local Exp1 = Coefficient1 * exp(Root1 * delta)
+			local Exp2 = Coefficient2 * exp(Root2 * delta)
+
+			self._currentLinearPosition[i] = Exp1 + Exp2 + linearTargetPosition[i]
+			self._velocity = Root1 * Exp1 + Root2 * Exp2
+		end
 	end
-
-	self._currentPosition.Unpacked = Utils.UnpackDataType(self._currentPosition.Packed, positionDataType)
 end
 
 function Class.Get(self: InternalTypes.SpringInternal<PublicTypes.State>)
 	-- Return the unpacked format for improved clarity
-	return self._currentPosition.Unpacked
+	return Storage.AnimatableDataTypes[self._type].FromLinear(self._currentLinearPosition)
 end
 
 --[[
@@ -64,7 +114,7 @@ end
 ]]
 local function Spring(springInfo: PublicTypes.SpringInfo): PublicTypes.Spring?
 	if not Is.API(springInfo.State) then
-		Debugger.Error("APIExpected", 1, "State", typeof(springInfo.State))
+		Debugger.Error("APIExpected", "State", typeof(springInfo.State))
 		return nil
 	end
 
@@ -72,15 +122,12 @@ local function Spring(springInfo: PublicTypes.SpringInfo): PublicTypes.Spring?
 	self.AegisClass = "API"
 	self.AegisName = "Spring"
 
-	self._stiffness = springInfo.Stiffness or 1
-	self._speed = springInfo.Speed or 1
-	self._mass = springInfo.Mass or 1
+	self._damping = springInfo.Damping or 1
+	self._frequency = springInfo.Frequency or 3
+	self._velocity = springInfo.Velocity or 0
 	self._state = springInfo.State
-	self._currentPosition = {
-		Unpacked = self._state:Get(),
-		Packed = Utils.PackDataType(self._state:Get()),
-	}
-	self._connection = nil
+	self._type = typeof(springInfo.State:Get())
+	self._currentLinearPosition = {}
 
 	return self
 end

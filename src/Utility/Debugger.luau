@@ -3,7 +3,8 @@ local Logs = {
 	TypeMismatch = "Expected type (%s); received (%s)",
 	MissingChild = "Could not find (%s) in (%s).",
 	FailedToBuild = "Failed to create instance with class name (%s); Result: %s",
-	APIExpected = "Expected Argument#%d to be a API.%s type. Received %s",
+	APIExpected = "Expected to receive an API.%s type. Received %s",
+	NotAnimatable = "DataType '%s' cannot be animated.",
 	-- EmptyState = "Cannot create an empty state.",
 	-- FailedToAssignProp = "Failed to assign property (%s)",
 }

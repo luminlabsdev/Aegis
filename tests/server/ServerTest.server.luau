@@ -7,6 +7,7 @@ local Spring = Aegis.Spring
 local Children = Aegis.Children
 local Events = Aegis.Events
 
+local OpacityState = State(0)
 local CurrentSize = State(4)
 local SizeState = State(Vector3.new(CurrentSize:Get(), CurrentSize:Get(), CurrentSize:Get()))
 
@@ -16,13 +17,16 @@ local Part = Build("Part", function(mypart: Part)
 		Parent = workspace,
 		Anchored = true,
 		Position = Vector3.new(0, 5, 10),
+		Transparency = Spring({
+			State = OpacityState,
+			Damping = 1,
+			Frequency = 0.5,
+		}),
 
 		Size = Spring({
 			State = SizeState,
 			Damping = 1,
-			Speed = 1,
-			Elasticity = 1,
-			Mass = mypart.Mass,
+			Frequency = 0.5,
 		}),
 
 		[Children] = {
@@ -33,7 +37,8 @@ local Part = Build("Part", function(mypart: Part)
 
 					[Events] = {
 						Triggered = function()
-							CurrentSize:Set(7)
+							CurrentSize:Set(math.random(2, 10))
+							-- OpacityState:Set(if mypart.Transparency == 1 then 0 else 1)
 						end,
 					},
 				}

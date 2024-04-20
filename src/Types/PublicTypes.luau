@@ -1,9 +1,9 @@
 local InternalTypes = require(script.Parent.InternalTypes)
 
 export type SpringInfo = {
-	Stiffness: number?,
-	Speed: number?,
-	Mass: number?,
+	Damping: number?,
+	Frequency: number?,
+	Velocity: number?,
 	State: State,
 }
 

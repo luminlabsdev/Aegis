@@ -19,7 +19,7 @@ export type SpringClass<State> = {
 		self: SpringInternal<State>,
 		targetPosition_Packed: { number },
 		positionDataType: string,
-		deltaTime: number
+		delta: number
 	) -> (),
 	Get: (self: SpringInternal<State>) -> (),
 }
@@ -27,17 +27,13 @@ export type SpringClass<State> = {
 export type SpringInternal<State> = {
 	AegisName: "Spring",
 
+	_type: string,
 	_state: State,
 	_damping: number,
+	_velocity: number,
 	_frequency: number,
-	_speed: number,
-	_mass: number,
 	_connection: RBXScriptConnection?,
-
-	_currentPosition: {
-		Unpacked: Animatable,
-		Packed: { number },
-	},
+	_currentLinearPosition: { number },
 } & SpringClass<State> & API<SpringInternal<State>>
 
 -- Extra
