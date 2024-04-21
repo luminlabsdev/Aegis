@@ -10,13 +10,14 @@ local Types = script.Parent.Parent.Types
 local InternalTypes = require(Types.InternalTypes)
 local PublicTypes = require(Types.PublicTypes)
 local Scheduler = require(Runtime.Scheduler)
-local Animation = require(Utility.Animation)
 local Debugger = require(Utility.Debugger)
 local Storage = require(Runtime.Storage)
 local Is = require(Utility.Is)
 
 -- // Variables
 local Class = {}
+
+local Epsilon = 1e-3
 
 local sqrt = math.sqrt
 local exp = math.exp
@@ -25,11 +26,25 @@ local sin = math.sin
 local pi = math.pi
 
 -- // Functions
+local function IsSpringSettled(currentLinearPosition: { number }, linearTargetPosition: { number }): boolean
+	local IsSettled = false
+
+	for index, value in currentLinearPosition do
+		if math.abs(value - linearTargetPosition[index]) <= Epsilon then
+			-- If the difference is less / equal to the epsilon, then settle the spring
+			IsSettled = true
+			break
+		end
+	end
+
+	return IsSettled
+end
+
 function Class._apply(self: InternalTypes.SpringInternal<PublicTypes.State>, prop: string, instance: Instance)
 	local Mode = RunService:IsClient() and "Client" or "Server"
 	local DataType_Fn = Storage.AnimatableDataTypes[self._type]
 	local LinearTargetPosition = DataType_Fn.ToLinear(self._state:Get())
-	local Connection
+	local Connection: ((number) -> ())?
 
 	self._currentLinearPosition = DataType_Fn.ToLinear(self._state:Get());
 	(instance :: any)[prop] = self._state:Get()
@@ -37,18 +52,22 @@ function Class._apply(self: InternalTypes.SpringInternal<PublicTypes.State>, pro
 	self._state:Listen(function(_, newValue)
 		LinearTargetPosition = DataType_Fn.ToLinear(newValue)
 
-		Connection = Scheduler:Add(Mode, function(delta: number)
-			self:_update(LinearTargetPosition, delta);
-			(instance :: any)[prop] = DataType_Fn.FromLinear(self._currentLinearPosition)
+		if Connection ~= nil then
+			return -- The value changed when the spring was playing; don't create another connection.
+		end
 
-			if
-				Animation.IsSpringSettled(self._currentLinearPosition, LinearTargetPosition) == true
-				and Connection ~= nil
-			then
-				Scheduler:Remove(Mode, Connection);
-				(instance :: any)[prop] = self._state:Get()
-			end
-		end)
+		if not Connection then
+			Connection = Scheduler:Add(Mode, function(delta: number)
+				self:_update(LinearTargetPosition, delta);
+				(instance :: any)[prop] = DataType_Fn.FromLinear(self._currentLinearPosition)
+
+				if IsSpringSettled(self._currentLinearPosition, LinearTargetPosition) == true and Connection ~= nil then
+					Scheduler:Remove(Mode, Connection)
+					Connection = nil;
+					(instance :: any)[prop] = self._state:Get()
+				end
+			end)
+		end
 	end)
 end
 
@@ -58,13 +77,6 @@ function Class._update(
 	delta: number
 )
 	for i = 1, #linearTargetPosition do
-		--[[
-			print(`Index: {i}`)
-			print(`Current linear position's {i} index: {self._currentLinearPosition[i]}`)
-			print(`Target linear position's {i} index: {linearTargetPosition[i]}`)
-		]]
-		-- self._currentLinearPosition[i], self._velocity =
-		-- 	Animation.NumberSpringStep(self, self._currentLinearPosition[i], linearTargetPosition[i], delta)
 		local Damping = self._damping
 		local Frequency = 2 * pi * self._frequency
 		local Velocity = self._velocity

@@ -21,15 +21,16 @@ local Part = Build("Part", function(mypart: Part)
 
 		Size = Spring({
 			State = SizeState,
-			Damping = 1,
+			Damping = 0.01,
 			Frequency = 0.5,
 		}),
 
 		[Children] = {
 			Build("ProximityPrompt", function()
 				return {
-					ActionText = "Test",
-					HoldDuration = 1,
+					ActionText = "Play",
+					ObjectText = "Spring",
+					HoldDuration = 0.5,
 
 					[Events] = {
 						Triggered = function()
