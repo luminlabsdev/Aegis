@@ -26,17 +26,19 @@ local pi = math.pi
 
 -- // Functions
 function Class._apply(self: InternalTypes.SpringInternal<PublicTypes.State>, prop: string, instance: Instance)
-	local Mode = RunService:IsClient() and "Client"
+	local Mode = RunService:IsClient() and "Client" or "Server"
 	local DataType_Fn = Storage.AnimatableDataTypes[self._type]
 	local LinearTargetPosition = DataType_Fn.ToLinear(self._state:Get())
-	local Connection;
+	local Connection
+
+	self._currentLinearPosition = DataType_Fn.ToLinear(self._state:Get());
 	(instance :: any)[prop] = self._state:Get()
 
 	self._state:Listen(function(_, newValue)
 		LinearTargetPosition = DataType_Fn.ToLinear(newValue)
 
 		Connection = Scheduler:Add(Mode, function(delta: number)
-			self:_update(self._currentLinearPosition, self._type, delta);
+			self:_update(LinearTargetPosition, delta);
 			(instance :: any)[prop] = DataType_Fn.FromLinear(self._currentLinearPosition)
 
 			if
@@ -56,6 +58,11 @@ function Class._update(
 	delta: number
 )
 	for i = 1, #linearTargetPosition do
+		--[[
+			print(`Index: {i}`)
+			print(`Current linear position's {i} index: {self._currentLinearPosition[i]}`)
+			print(`Target linear position's {i} index: {linearTargetPosition[i]}`)
+		]]
 		-- self._currentLinearPosition[i], self._velocity =
 		-- 	Animation.NumberSpringStep(self, self._currentLinearPosition[i], linearTargetPosition[i], delta)
 		local Damping = self._damping

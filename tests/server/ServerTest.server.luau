@@ -17,11 +17,7 @@ local Part = Build("Part", function(mypart: Part)
 		Parent = workspace,
 		Anchored = true,
 		Position = Vector3.new(0, 5, 10),
-		Transparency = Spring({
-			State = OpacityState,
-			Damping = 1,
-			Frequency = 0.5,
-		}),
+		Transparency = 0,
 
 		Size = Spring({
 			State = SizeState,
