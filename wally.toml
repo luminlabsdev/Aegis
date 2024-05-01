@@ -1,7 +1,17 @@
 [package]
-name = "canary-development/aegis"
+name = "lumin/aegis"
+description = "A simple strictly typed UI framework made specifically for Roblox"
 version = "0.1.0"
+license = "MIT"
 registry = "https://github.com/UpliftGames/wally-index"
 realm = "shared"
 
-exclude = ["*.lock"]
+exclude = ["**"]
+include = [
+	"default.project.json",
+	"src",
+	"src/**",
+	"LICENSE",
+	"wally.toml",
+	"README.md",
+]

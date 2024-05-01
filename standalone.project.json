@@ -1,0 +1,9 @@
+{
+    "name": "standalone-build",
+    "tree": {
+        "$path": "Packages",
+        "Aegis": {
+            "$path": "src"
+        }
+    }
+}
