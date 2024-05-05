@@ -67,7 +67,7 @@ end
 	@param protectType Whether to do type checking when setting value
 	@return State
 ]]
-local function State(initialState: any, protectType: boolean?): PublicTypes.State
+local function state(initialState: any, protectType: boolean?): PublicTypes.State
 	local self = setmetatable({} :: InternalTypes.StateInternal, { __index = Class })
 
 	self.AegisClass = "API"
@@ -81,4 +81,4 @@ local function State(initialState: any, protectType: boolean?): PublicTypes.Stat
 end
 
 -- // Returning
-return State
+return state

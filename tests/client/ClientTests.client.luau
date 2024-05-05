@@ -1,6 +1,6 @@
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local Aegis = require(ReplicatedStorage.Packages.Aegis) :: any
+local Aegis = require(ReplicatedStorage.Packages.Aegis)
 
 local Player = Players.LocalPlayer
 local PlayerGui = Player.PlayerGui
@@ -12,7 +12,7 @@ local Children = Aegis.Children
 local Events = Aegis.Events
 
 local SizeState = State(0.2)
-local ChangeState = State(UDim2.new(SizeState:Get(), SizeState:Get(), SizeState:Get(), SizeState:Get()))
+local ChangeState = State(UDim2.new(SizeState:Get(), 0, SizeState:Get(), 0))
 
 local ScreenGui = Build("ScreenGui", function()
 	return {
@@ -28,8 +28,8 @@ local ScreenGui = Build("ScreenGui", function()
 
 					Size = Spring({
 						State = ChangeState,
-						Damping = 0.01,
-						Frequency = 0.5,
+						Damping = 1.1,
+						Frequency = 0.9,
 					}),
 				}
 			end),
@@ -52,5 +52,5 @@ local ScreenGui = Build("ScreenGui", function()
 end)
 
 SizeState:Listen(function(_, newValue: number)
-	ChangeState:Set(UDim2.new(newValue, newValue, newValue, newValue))
+	ChangeState:Set(UDim2.new(newValue, 0, newValue, 0))
 end)

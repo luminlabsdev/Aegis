@@ -1,6 +1,6 @@
 {
 	"name": "aegis-dev",
-	"servePort": 34872,
+	"port": 34872,
 	"tree": {
 		"$className": "DataModel",
 		"ReplicatedStorage": {

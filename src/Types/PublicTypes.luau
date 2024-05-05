@@ -7,6 +7,14 @@ export type SpringInfo = {
 	State: State,
 }
 
+export type AegisInstance = typeof(setmetatable(
+	{} :: InternalTypes.InstanceInternal,
+	{} :: { __index: InternalTypes.InstanceClass }
+))
+export type Component = typeof(setmetatable(
+	{} :: InternalTypes.ComponentInternal,
+	{} :: { __index: InternalTypes.ComponentClass }
+))
 export type State = typeof(setmetatable({} :: InternalTypes.StateInternal, {} :: { __index: InternalTypes.StateClass }))
 export type Spring = typeof(setmetatable(
 	{} :: InternalTypes.SpringInternal<State>,

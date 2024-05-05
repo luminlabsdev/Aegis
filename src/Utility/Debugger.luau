@@ -5,8 +5,7 @@ local Logs = {
 	FailedToBuild = "Failed to create instance with class name (%s); Result: %s",
 	APIExpected = "Expected to receive an API.%s type. Received %s",
 	NotAnimatable = "DataType '%s' cannot be animated.",
-	-- EmptyState = "Cannot create an empty state.",
-	-- FailedToAssignProp = "Failed to assign property (%s)",
+	MethodAlreadyExists = "Component method (%s) already exists.",
 }
 local Debugger = {}
 

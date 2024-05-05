@@ -5,9 +5,9 @@ local Keys = script.Keys
 -- // Returning
 return {
 	-- API
-	Build = require(API.Build),
-	State = require(API.State),
-	Spring = require(script.API.Spring),
+	new = require(API.new),
+	state = require(API.state),
+	spring = require(API.spring),
 
 	-- Keys
 	Children = require(Keys.Children),

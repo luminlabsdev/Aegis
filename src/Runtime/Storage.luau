@@ -44,16 +44,16 @@ local Storage = {
 			end,
 
 			FromLinear = function(value: { number })
-				return UDim2.new(value[1], value[2], value[3], value[4])
+				return UDim2.new(value[1], math.round(value[2]), value[3], math.round(value[4]))
 			end,
 		},
 		UDim = {
-			ToLinear = function(value: Vector2)
-				return { value.X, value.Y }
+			ToLinear = function(value: UDim)
+				return { value.Scale, value.Offset }
 			end,
 
 			FromLinear = function(value: { number })
-				return UDim.new(value[1], value[2])
+				return UDim.new(value[1], math.round(value[2]))
 			end,
 		},
 	} :: AnimatableDataTypes,

@@ -1,3 +1,32 @@
+-- Instance types
+export type InstanceClass = {
+	ReadComponent: (self: InstanceInternal, component: ComponentInternal) -> InstanceInternal,
+	ApplyProps: (self: InstanceInternal, propertyTable: { [any]: any }) -> InstanceInternal,
+}
+export type InstanceInternal = {
+	AegisName: "Instance",
+
+	Instance: Instance,
+	Component: {},
+} & InstanceClass & API<InstanceInternal>
+
+-- Component types
+export type ComponentClass = {
+	AcceptFunctions: (self: ComponentInternal, functionalTable: { (...any) -> any }) -> ComponentInternal,
+	CreateControls: (self: ComponentInternal, controls: {}) -> ComponentInternal,
+	ApplyProps: (self: ComponentInternal, propertyTable: {}) -> ComponentInternal,
+	AcceptClasses: (self: ComponentInternal, classes: {}) -> ComponentInternal,
+}
+
+export type ComponentInternal = {
+	AegisName: "Component",
+
+	Functions: { (...any) -> any },
+	AcceptedClasses: { string },
+	Properties: { [any]: any },
+	Controls: { [any]: any },
+} & ComponentClass & API<ComponentInternal>
+
 -- State types
 export type StateClass = {
 	Get: <T>(self: StateInternal) -> T,
@@ -22,10 +51,14 @@ export type SpringClass<State> = {
 export type SpringInternal<State> = {
 	AegisName: "Spring",
 
-	_type: string,
+	_type: {
+		ToLinear: (value: Animatable) -> { number },
+		FromLinear: (value: { number }) -> Animatable,
+	},
 	_state: State,
 	_damping: number,
-	_velocity: number,
+	_velocity: { number },
+	_time0: number,
 	_frequency: number,
 	_currentLinearPosition: { number },
 } & SpringClass<State> & API<SpringInternal<State>>
