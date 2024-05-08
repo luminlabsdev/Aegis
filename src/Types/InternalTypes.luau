@@ -2,12 +2,13 @@
 export type InstanceClass = {
 	ReadComponent: (self: InstanceInternal, component: ComponentInternal) -> InstanceInternal,
 	ApplyProps: (self: InstanceInternal, propertyTable: { [any]: any }) -> InstanceInternal,
+	Get: (self: InstanceInternal) -> Instance,
 }
 export type InstanceInternal = {
 	AegisName: "Instance",
 
 	Instance: Instance,
-	Component: {},
+	Component: ComponentInternal,
 } & InstanceClass & API<InstanceInternal>
 
 -- Component types
@@ -29,7 +30,7 @@ export type ComponentInternal = {
 
 -- State types
 export type StateClass = {
-	Get: <T>(self: StateInternal) -> T,
+	Get: (self: StateInternal) -> any,
 	Set: (self: StateInternal, newValue: any) -> (),
 	Listen: (self: StateInternal, fn: (oldValue: any, newValue: any) -> ()) -> (),
 }
@@ -74,6 +75,7 @@ export type API<self> = {
 	AegisClass: "API",
 	AegisName: string,
 	_apply: (self: self, prop: string, instance: Instance) -> (),
+	Get: (self: self) -> any,
 }
 
 export type Animatable = number | UDim2 | UDim | Vector3 | Vector3int16 | Vector2 | Vector2int16

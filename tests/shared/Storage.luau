@@ -1,38 +1,58 @@
+local Aegis = require(script.Parent.Packages.Aegis)
+local state = Aegis.state
+local spring = Aegis.spring
+local component = Aegis.component
+
 return {
 	{
 		Name = "Vector3",
-		CreateSpring = function(Aegis: any, part: Part)
-			local State = Aegis.State(part.Position)
-			Aegis.Spring({ State = State })
+		Component = function(part: Part)
+			local State = state(part.Size)
 
-			return State
-		end,
-		Trigger = function(state: any)
-			state:Set(Vector3.new(state:Get().X, math.random(10), state:Get().Z))
+			return component()
+				:AcceptClasses({ "Part" })
+				:AcceptFunctions({
+					Set = function(newValue: Vector3)
+						State:Set(newValue)
+					end,
+				})
+				:ApplyProps({
+					Size = spring({ State = State }),
+				})
 		end,
 	},
 	{
 		Name = "Vector2",
-		CreateSpring = function(Aegis: any, part: Part)
-			local State = Aegis.State(part.Position)
-			Aegis.Spring({ State = State })
+		Component = function(part: Part)
+			local State = state(part.Position)
 
-			return State
-		end,
-		Trigger = function(state: any)
-			state:Set(Vector2.new(state:Get().X, math.random(10)))
+			return component()
+				:AcceptClasses({ "Part" })
+				:AcceptFunctions({
+					Set = function(newValue: Vector2)
+						State:Set(newValue)
+					end,
+				})
+				:ApplyProps({
+					-- Size = spring({State = State})
+				})
 		end,
 	},
 	{
 		Name = "number",
-		CreateSpring = function(Aegis: any, part: Part)
-			local State = Aegis.State(part.Transparency)
-			Aegis.Spring({ State = State })
+		Component = function(part: Part)
+			local State = state(part.Transparency)
 
-			return State
-		end,
-		Trigger = function(state: any)
-			state:Set(math.random(0, 1))
+			return component()
+				:AcceptClasses({ "Part" })
+				:AcceptFunctions({
+					Set = function(newValue: number)
+						State:Set(newValue)
+					end,
+				})
+				:ApplyProps({
+					Transparency = spring({ State = State }),
+				})
 		end,
 	},
 }

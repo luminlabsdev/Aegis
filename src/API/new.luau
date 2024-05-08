@@ -13,15 +13,45 @@ local Is = require(Utility.Is)
 local Class = {}
 
 -- // Functions
+local function ApplyNormalProperty(instance: Instance, prop: string, value: any)
+	local Property = (instance :: any)[prop]
+	local IsAPI = Is.API(value)
+
+	if IsAPI == true then
+		-- Call the _apply method of the API class.
+		Utils.CheckTypeAndCall(Property, value:Get(), function()
+			(value :: InternalTypes.API<typeof(value)>):_apply(prop, instance)
+		end)
+	elseif IsAPI == false then
+		-- Meaning, the index is a string and the value is the actual property type
+		Utils.CheckTypeAndCall(Property, value, function()
+			(instance :: any)[prop] = value
+		end)
+	end
+end
+
+function Class._apply(self: InternalTypes.InstanceInternal, prop: string, instance: Instance)
+	(instance :: any)[prop] = self.Instance
+end
+
 --[[
 	@param component Read an AegisComponent and attach it to the instance
 	@return AegisInstance
 ]]
 function Class.ReadComponent(self: InternalTypes.InstanceInternal, component: PublicTypes.Component)
 	self.Component = component
-	self:ApplyProps(self.Component)
+
+	if not table.find(component.AcceptedClasses, self.Instance.ClassName) then
+		Debugger.Warn("ClassNotAccepted", self.Instance.ClassName, table.concat(component.AcceptedClasses, ", "))
+	else
+		self:ApplyProps(component.Properties)
+	end
 
 	return self
+end
+
+function Class.Get(self: InternalTypes.InstanceInternal)
+	return self.Instance
 end
 
 --[[
@@ -36,26 +66,13 @@ function Class.ApplyProps(self: InternalTypes.InstanceInternal, propertyTable: {
 			if property == "Parent" then
 				continue
 			else
-				local Property = (self.Instance :: any)[property]
-				local IsAPI = Is.API(value)
-
-				if IsAPI == true then
-					-- Call the _apply method of the API class.
-					Utils.CheckTypeAndCall(Property, value:Get(), function()
-						(value :: InternalTypes.API<typeof(value)>):_apply(property, self.Instance)
-					end)
-				elseif not IsAPI then
-					-- Meaning, the index is a string and the value is the actual property type
-					Utils.CheckTypeAndCall(Property, value, function()
-						(self.Instance :: any)[property] = value
-					end)
-				end
+				ApplyNormalProperty(self.Instance, property, value)
 			end
 		end
 	end
 
 	if propertyTable.Parent then
-		self.Instance.Parent = propertyTable.Parent
+		ApplyNormalProperty(self.Instance, "Parent", propertyTable.Parent)
 	end
 
 	return self
@@ -76,7 +93,7 @@ local function new(className: string): PublicTypes.AegisInstance
 		self.AegisName = "Instance"
 
 		self.Instance = Result
-		self.Component = {}
+		self.Component = {} :: any
 	else
 		-- If it wasn't successful, error it because instance creation has to be complete.
 		Debugger.Error("FailedToBuild", className, Result)

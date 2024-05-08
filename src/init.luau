@@ -3,16 +3,17 @@ local API = script.API
 local Keys = script.Keys
 
 -- // Returning
-return {
+return table.freeze({
 	-- API
-	new = require(API.new),
-	state = require(API.state),
+	component = require(API.component),
 	spring = require(API.spring),
+	state = require(API.state),
+	new = require(API.new),
 
 	-- Keys
-	Children = require(Keys.Children),
+	Tags = require(Keys.Tags),
 	Events = require(Keys.Events),
 	Changes = require(Keys.Changes),
+	Children = require(Keys.Children),
 	Attributes = require(Keys.Attributes),
-	Tags = require(Keys.Tags),
-}
+})

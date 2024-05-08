@@ -11,13 +11,17 @@ local Is = require(Utility.Is)
 local Utils = {}
 
 -- // Functions
-function Utils.CheckTypeAndCall(v1: any, v2: any, interaction: () -> ()): ()
-	-- Use `Is.TypeSame(v1, v2)` to check if type matches.
+function Utils.CheckTypeAndCall(expected: any, received: any, interaction: () -> ()): ()
+	-- Use `Is.TypeSame(expected, received)` to check if type matches.
 	-- If it doesn't match, warn it.
-	if Is.TypeSame(v1, v2) == true then
+	if Is.TypeSame(expected, received) == true then
 		interaction() -- Type matches, call the interaction function.
 	else -- type didn't match, warn it out!
-		Debugger.Warn("TypeMismatch", typeof(v1), typeof(v2))
+		if expected == nil then
+			interaction() -- Let the value `nil` to be set to anything
+		else
+			Debugger.Warn("TypeMismatch", typeof(expected), typeof(received))
+		end
 	end
 end
 

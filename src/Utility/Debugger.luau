@@ -5,7 +5,7 @@ local Logs = {
 	FailedToBuild = "Failed to create instance with class name (%s); Result: %s",
 	APIExpected = "Expected to receive an API.%s type. Received %s",
 	NotAnimatable = "DataType '%s' cannot be animated.",
-	MethodAlreadyExists = "Component method (%s) already exists.",
+	ClassNotAccepted = "Instance class (%s) is not accepted by the component. Accepted classes:\n%s",
 }
 local Debugger = {}
 
@@ -14,7 +14,7 @@ function Debugger.Warn(id: string, ...: any)
 	local FoundId = Logs[id] or nil :: string?
 
 	if FoundId then
-		warn(`\n[Aegis warning] {string.format(FoundId, ...)}\nAt -> [{debug.traceback()}]`)
+		warn(`\n[Aegis warning] {string.format(FoundId, ...)}\nAt -> {debug.traceback()}`)
 	end
 end
 
@@ -22,7 +22,7 @@ function Debugger.Error(id: string, ...: any)
 	local FoundId = Logs[id] or nil :: string?
 
 	if FoundId then
-		error(`[Aegis error] {string.format(FoundId, ...)}`)
+		error(`\n[Aegis error] {string.format(FoundId, ...)}\nAt -> {debug.traceback()}`)
 	end
 end
 

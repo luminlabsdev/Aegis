@@ -6,48 +6,40 @@ local Utility = script.Parent.Parent.Utility
 local InternalTypes = require(Types.InternalTypes)
 local PublicTypes = require(Types.PublicTypes)
 local Debugger = require(Utility.Debugger)
-local Is = require(Utility.Is)
+local Utils = require(Utility.Utils)
 
 -- // Variables
 local Class = {}
 
 -- // Functions
 function Class.CreateControls(self: InternalTypes.ComponentInternal, controls: {})
-	if Is.TypeSame(controls, {}) then
+	Utils.CheckTypeAndCall(controls, {}, function()
 		self.Controls = controls
-	else
-		Debugger.Warn("TypeMismatch", "table", typeof(controls))
-	end
+	end)
 
 	return self
 end
 
 function Class.AcceptClasses(self: InternalTypes.ComponentInternal, classes: {})
-	if Is.TypeSame(classes, {}) then
+	Utils.CheckTypeAndCall(classes, {}, function()
 		self.AcceptedClasses = classes
-	else
-		Debugger.Warn("TypeMismatch", "table", typeof(classes))
-	end
+	end)
 
 	return self
 end
 
 function Class.AcceptFunctions(self: InternalTypes.ComponentInternal, functionalTable: { (...any) -> any })
-	if Is.TypeSame(functionalTable, {}) then
+	Utils.CheckTypeAndCall(functionalTable, {}, function()
 		self.Functions = functionalTable
-	else
-		Debugger.Warn("TypeMismatch", "table", typeof(functionalTable))
-	end
+	end)
 
 	return self
 end
 
 function Class.ApplyProps(self: InternalTypes.ComponentInternal, propertyTable: {})
-	if Is.TypeSame(propertyTable, {}) then
+	Utils.CheckTypeAndCall(propertyTable, {}, function()
 		self.Properties = propertyTable
-	else
-		Debugger.Warn("TypeMismatch", "table", typeof(propertyTable))
-	end
+	end)
 
 	return self
 end
