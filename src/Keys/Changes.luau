@@ -1,11 +1,7 @@
--- // Dependencies
--- local Debugger = require(script.Parent.Parent.Debugger)
-
 -- // Returning
 return {
-	AegisClass = "Key",
-	AegisName = "Changes",
-	Apply = function(instance: Instance, _, value: { [string]: () -> () })
+	KeyName = "Changes",
+	ApplyKey = function(instance: Instance, value: { [string]: () -> () })
 		for propertyName, fn in value do
 			if type(propertyName) == "string" and type(fn) == "function" then
 				-- Check the types and connect

@@ -7,9 +7,8 @@ local Is = require(Utility.Is)
 
 -- // Returning
 return {
-	AegisClass = "Key",
-	AegisName = "Children",
-	Apply = function(instance: Instance, _, value: any)
+	KeyName = "Children",
+	ApplyKey = function(instance: Instance, value: any)
 		local Type = typeof(value)
 
 		if Type == "table" then

@@ -59,7 +59,7 @@ local function IsSpringSettled(
 	return IsSettled
 end
 
-function Class._apply(self: InternalTypes.SpringInternal<PublicTypes.State>, prop: string, instance: Instance)
+function Class._initapi(self: InternalTypes.SpringInternal<PublicTypes.State>, prop: string, instance: Instance)
 	local Mode = RunService:IsClient() and "Client" or "Server"
 	local Connection: ((number) -> ())?
 
@@ -90,7 +90,6 @@ function Class._apply(self: InternalTypes.SpringInternal<PublicTypes.State>, pro
 						== true
 					and Connection ~= nil
 				then
-					print("settled")
 					Scheduler:Remove(Mode, Connection)
 					Connection = nil;
 					(instance :: any)[prop] = self._state:Get()
@@ -150,6 +149,9 @@ function Class._update(
 	end
 end
 
+--[[
+	@return position
+]]
 function Class.Get(self: InternalTypes.SpringInternal<PublicTypes.State>)
 	-- Return the unpacked format for improved clarity
 	return self._type.FromLinear(self._currentLinearPosition)
@@ -167,8 +169,7 @@ local function Spring(springInfo: PublicTypes.SpringInfo): PublicTypes.Spring?
 	end
 
 	local self = setmetatable({} :: InternalTypes.SpringInternal<PublicTypes.State>, { __index = Class })
-	self.AegisClass = "API"
-	self.AegisName = "Spring"
+	self.APIName = "Aegis.spring"
 
 	self._damping = springInfo.Damping or 1
 	self._frequency = springInfo.Frequency or 3

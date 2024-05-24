@@ -1,49 +1,51 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Aegis = require(ReplicatedStorage.Packages.Aegis)
-local Storage = require(ReplicatedStorage.Storage)
+-- local Storage = require(ReplicatedStorage.Storage)
 
 local new = Aegis.new
-local Children = Aegis.Children
-local Events = Aegis.Events
+local Key = Aegis.Key
 
 local StorageTab = {}
 
-local DataTypesFolder = new("Folder"):ApplyProps({ Name = "DataTypes", Parent = workspace })
+if workspace:FindFirstChild("DataTypes") then
+	workspace:FindFirstChild("DataTypes"):Destroy()
+end
 
-local function DataTypeTemplate(index: number, info)
-	local Part = new("Part")
-	local Component = info.Component(Part:Get())
+local DataTypesFolder = new("Folder", { Name = "DataTypes", Parent = workspace })
 
-	Part:ReadComponent(Component)
-	Part:ApplyProps({
-		Name = info.Name,
+local function DataTypeTemplate(index: number)
+	local Part = Aegis.state()
+
+	new("Part", {
+		Name = `Part{index}`,
 		Parent = DataTypesFolder,
 		Anchored = true,
 		Position = Vector3.new(0, 5, ((index - 1) * 5)),
 		BrickColor = BrickColor.random(),
 		Transparency = 0,
 		Size = Vector3.new(4, 4, 4),
+		[Key("Attributes")] = { Trigger = false },
+		[Key("Tags")] = { hi = false },
+		[Key("Ref")] = Part,
 
-		[Children] = {
-			new("ProximityPrompt"):ApplyProps({
+		[Key("Children")] = {
+			new("ProximityPrompt", {
 				ActionText = "Play",
-				ObjectText = info.Name,
+				ObjectText = `Part{index}`,
 				HoldDuration = 0.5,
 
-				[Events] = {
+				[Key("Events")] = {
 					Triggered = function()
-						StorageTab[Part:Get()].Trigger(StorageTab[Part:Get()])
+						StorageTab[Part].Functions.Trigger()
 					end,
 				},
 			}),
 		},
 	})
 
-	StorageTab[Part:Get()] = Component
-
-	return Part
+	return Part:Get()
 end
 
-for index, info in Storage do
-	DataTypeTemplate(index, info :: any)
+for index = 0, 5, 1 do
+	DataTypeTemplate(index)
 end

@@ -7,6 +7,7 @@ local InternalTypes = require(Types.InternalTypes)
 
 -- // Variables
 local Storage = {
+	RegisteredKeys = {},
 	Scheduler = {
 		Server = { Connection = nil, Active = {} },
 		Client = { Connection = nil, Active = {} },

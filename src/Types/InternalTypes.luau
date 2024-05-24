@@ -20,8 +20,6 @@ export type ComponentClass = {
 }
 
 export type ComponentInternal = {
-	AegisName: "Component",
-
 	Functions: { (...any) -> any },
 	AcceptedClasses: { string },
 	Properties: { [any]: any },
@@ -36,8 +34,6 @@ export type StateClass = {
 }
 
 export type StateInternal = {
-	AegisName: "State",
-
 	_state: any,
 	_listeners: { (oldValue: any, newValue: any) -> () },
 	_protectType: boolean,
@@ -50,8 +46,6 @@ export type SpringClass<State> = {
 }
 
 export type SpringInternal<State> = {
-	AegisName: "Spring",
-
 	_type: {
 		ToLinear: (value: Animatable) -> { number },
 		FromLinear: (value: { number }) -> Animatable,
@@ -66,15 +60,13 @@ export type SpringInternal<State> = {
 
 -- Extra
 export type Key = {
-	AegisClass: "Key",
-	AegisName: string,
-	Apply: (instance: Instance, index: any, value: any) -> (),
+	KeyName: string,
+	ApplyKey: (instance: Instance, index: any, value: any) -> (),
 }
 
 export type API<self> = {
-	AegisClass: "API",
-	AegisName: string,
-	_apply: (self: self, prop: string, instance: Instance) -> (),
+	APIName: string,
+	_initapi: (self: self, prop: string, instance: Instance) -> (),
 	Get: (self: self) -> any,
 }
 

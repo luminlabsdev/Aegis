@@ -15,7 +15,7 @@ local Class = {}
 local function TriggerListeners(listeners: { (oldValue: any, newValue: any) -> () }, oldValue: any, value: any): ()
 	-- Loop through the listeners table and call every function each of them have.
 	for _, fn in listeners do
-		fn(oldValue, value)
+		task.spawn(fn, oldValue, value)
 	end
 end
 
@@ -38,8 +38,10 @@ function Class.Set(self: InternalTypes.StateInternal, newValue: any): ()
 	end
 
 	if self._protectType == true and Is.TypeSame(OldValue, newValue) == false then
-		Debugger.Warn("TypeMismatch", typeof(OldValue), typeof(newValue))
-		return
+		if OldValue ~= nil then
+			Debugger.Warn("TypeMismatch", typeof(OldValue), typeof(newValue))
+			return
+		end
 	end
 
 	-- Setting the actual value and triggering the listeners
@@ -54,7 +56,7 @@ function Class.Listen(self: InternalTypes.StateInternal, fn: (oldValue: any, new
 	table.insert(self._listeners, fn) -- Add a listener
 end
 
-function Class._apply(self: InternalTypes.StateInternal, prop: string, instance: Instance)
+function Class._initapi(self: InternalTypes.StateInternal, prop: string, instance: Instance)
 	(instance :: any)[prop] = self._state
 
 	self:Listen(function(_, newValue)
@@ -70,8 +72,7 @@ end
 local function state(initialState: any, protectType: boolean?): PublicTypes.State
 	local self = setmetatable({} :: InternalTypes.StateInternal, { __index = Class })
 
-	self.AegisClass = "API"
-	self.AegisName = "State"
+	self.APIName = "Aegis.state"
 
 	self._state = initialState
 	self._listeners = {}

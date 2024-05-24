@@ -3,9 +3,10 @@ local Logs = {
 	TypeMismatch = "Expected type (%s); received (%s)",
 	MissingChild = "Could not find (%s) in (%s).",
 	FailedToBuild = "Failed to create instance with class name (%s); Result: %s",
-	APIExpected = "Expected to receive an API.%s type. Received %s",
+	APIExpected = "Expected to receive an Aegis.%s type. Received %s",
 	NotAnimatable = "DataType '%s' cannot be animated.",
 	ClassNotAccepted = "Instance class (%s) is not accepted by the component. Accepted classes:\n%s",
+	FailedToRegisterKey = "Failed to register key. Reason: %s",
 }
 local Debugger = {}
 

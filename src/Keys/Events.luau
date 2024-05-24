@@ -3,9 +3,8 @@ local Debugger = require(script.Parent.Parent.Utility.Debugger)
 
 -- // Returning
 return {
-	AegisClass = "Key",
-	AegisName = "Events",
-	Apply = function(instance: Instance, _, value: { [string]: (...any) -> () })
+	KeyName = "Events",
+	ApplyKey = function(instance: Instance, value: { [string]: (...any) -> () })
 		local CurrentType: string -- A variable so that same types do not take extra memory
 
 		for eventName, fn in value do
