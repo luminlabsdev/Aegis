@@ -59,7 +59,7 @@ local function IsSpringSettled(
 	return IsSettled
 end
 
-function Class._initapi(self: InternalTypes.SpringInternal<PublicTypes.State>, prop: string, instance: Instance)
+function Class._initservice(self: InternalTypes.SpringInternal<PublicTypes.State>, prop: string, instance: Instance)
 	local Mode = RunService:IsClient() and "Client" or "Server"
 	local Connection: ((number) -> ())?
 
@@ -163,13 +163,13 @@ end
 	@return Spring PublicTypes.Spring
 ]]
 local function Spring(springInfo: PublicTypes.SpringInfo): PublicTypes.Spring?
-	if not Is.API(springInfo.State) then
-		Debugger.Error("APIExpected", "State", typeof(springInfo.State))
+	if not Is.Service(springInfo.State) then
+		Debugger.Error("ServiceExpected", "State", typeof(springInfo.State))
 		return nil
 	end
 
 	local self = setmetatable({} :: InternalTypes.SpringInternal<PublicTypes.State>, { __index = Class })
-	self.APIName = "Aegis.spring"
+	self.ServiceName = "spring"
 
 	self._damping = springInfo.Damping or 1
 	self._frequency = springInfo.Frequency or 3

@@ -5,8 +5,8 @@ local InternalTypes = require(script.Parent.Parent.Types.InternalTypes)
 local Is = {}
 
 -- // Functions
-function Is.API<T>(t: InternalTypes.API<T>)
-	return if type(t) == "table" and t.APIName and t._initapi then true else false
+function Is.Service<T>(t: InternalTypes.Service<T>)
+	return if type(t) == "table" and t.ServiceName and t._initservice then true else false
 end
 
 function Is.Key(t: InternalTypes.Key)

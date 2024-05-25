@@ -5,7 +5,7 @@ export default defineConfig({
 	head: [['link', { rel: 'icon', href: '/favicon.ico' }]],
 	base: "/Aegis/",
 	title: "Aegis",
-	titleTemplate: "Lumin Docs",
+	titleTemplate: "Lumin",
 	description: "A simple strictly typed UI framework made specifically for Roblox.",
 	lastUpdated: true,
 	lang: 'en-us',
@@ -13,10 +13,10 @@ export default defineConfig({
 		// https://vitepress.dev/reference/default-theme-config
 		nav: [
 			{
-				text: 'Guides',
+				text: 'Articles',
 				items: [
-					{ text: 'Install', link: '/installation' },
-					{ text: 'Usage', link: '/guides/index' },
+					{ text: 'Installation', link: '/guides/installation' },
+					{ text: 'Basics', link: '/guides/creating-instances' },
 				]
 			},
 
@@ -25,18 +25,37 @@ export default defineConfig({
 		],
 
 		sidebar: {
-			'/api': [
-				{ text: 'UIShelf', link: '/api/index' },
-				{ text: 'Icon', link: '/api/icon' },
-				{ text: 'Spacer', link: '/api/spacer' },
-				{ text: 'MenuItem', link: '/api/menuitem' },
-			],
 			'/guides': [
-				{ text: 'Instance building', link: '/guides/build' },
-				{ text: 'Input', link: '/guides/input' },
-				{ text: 'Notices', link: '/guides/notices' },
-				{ text: 'Tooltips', link: '/guides/tooltips' },
-				{ text: 'Menus', link: 'guides/menus' }
+				{
+					base: "/guides",
+					items: [
+						{
+							text: "Introduction",
+							collapsed: false,
+							items: [
+								{ text: "What is Aegis?", link: "/what-is-aegis" },
+								{ text: "Keys and Services", link: "/keys-services" },
+								{ text: "Installation", link: "/installation" },
+							]
+						},
+						{
+							text: "Basic usage",
+							collapsed: false,
+							items: [
+								{ text: "Creating instances", link: "/creating-instances" },
+								{ text: "Using keys", link: "/using-keys" },
+								{ text: "Using services", link: "/using-services" },
+							]
+						},
+						{
+							text: "Intermediate usage",
+							collapsed: true,
+							items: [
+								{ text: "Creating keys", link: "/creating-keys" }
+							]
+						}
+					]
+				}
 			]
 		},
 
@@ -47,12 +66,12 @@ export default defineConfig({
 		},
 
 		editLink: {
-			pattern: 'https://github.com/canary-softworks/UIShelf/edit/main/docs/:path'
+			pattern: 'https://github.com/canary-softworks/UIShelf/edit/main/docs/:path',
 		},
 
 		footer: {
 			message: 'Built with VitePress',
-			copyright: 'Copyright © 2021 - 2024 Lumin Labs'
+			copyright: 'Copyright © 2021 - 2024 Lumin Labs',
 		},
 
 		socialLinks: [

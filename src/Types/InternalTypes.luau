@@ -1,31 +1,3 @@
--- Instance types
-export type InstanceClass = {
-	ReadComponent: (self: InstanceInternal, component: ComponentInternal) -> InstanceInternal,
-	ApplyProps: (self: InstanceInternal, propertyTable: { [any]: any }) -> InstanceInternal,
-	Get: (self: InstanceInternal) -> Instance,
-}
-export type InstanceInternal = {
-	AegisName: "Instance",
-
-	Instance: Instance,
-	Component: ComponentInternal,
-} & InstanceClass & API<InstanceInternal>
-
--- Component types
-export type ComponentClass = {
-	AcceptFunctions: (self: ComponentInternal, functionalTable: { (...any) -> any }) -> ComponentInternal,
-	CreateControls: (self: ComponentInternal, controls: {}) -> ComponentInternal,
-	ApplyProps: (self: ComponentInternal, propertyTable: {}) -> ComponentInternal,
-	AcceptClasses: (self: ComponentInternal, classes: {}) -> ComponentInternal,
-}
-
-export type ComponentInternal = {
-	Functions: { (...any) -> any },
-	AcceptedClasses: { string },
-	Properties: { [any]: any },
-	Controls: { [any]: any },
-} & ComponentClass & API<ComponentInternal>
-
 -- State types
 export type StateClass = {
 	Get: (self: StateInternal) -> any,
@@ -37,7 +9,7 @@ export type StateInternal = {
 	_state: any,
 	_listeners: { (oldValue: any, newValue: any) -> () },
 	_protectType: boolean,
-} & StateClass & API<StateInternal>
+} & StateClass & Service<StateInternal>
 
 -- Spring types
 export type SpringClass<State> = {
@@ -56,7 +28,7 @@ export type SpringInternal<State> = {
 	_time0: number,
 	_frequency: number,
 	_currentLinearPosition: { number },
-} & SpringClass<State> & API<SpringInternal<State>>
+} & SpringClass<State> & Service<SpringInternal<State>>
 
 -- Extra
 export type Key = {
@@ -64,9 +36,9 @@ export type Key = {
 	ApplyKey: (instance: Instance, index: any, value: any) -> (),
 }
 
-export type API<self> = {
-	APIName: string,
-	_initapi: (self: self, prop: string, instance: Instance) -> (),
+export type Service<self> = {
+	ServiceName: string,
+	_initservice: (self: self, prop: string, instance: Instance) -> (),
 	Get: (self: self) -> any,
 }
 

@@ -7,8 +7,8 @@ hero:
   tagline: A simple strictly typed UI framework made specifically for Roblox.
   actions:
     - theme: brand
-      text: Documentation
-      link: /guides/index
+      text: Guide
+      link: /guides/what-is-aegis
     - theme: alt
       text: API Reference
       link: /api/index
@@ -16,12 +16,11 @@ hero:
 features:
   - icon: ⚡
     title: Performant
-    details: Makes slight use of metatables to reduce the impact of the performance 
+    details: Designed to be efficient without extra load on the memory
   - icon: ✔
     title: Strict typing
-    details: Enforces strict typing for robustness and reliability in your code
+    details: Enforces strict typing to enchance reliability and catch errors easily
   - icon: 🛠
     title: Customizable
-    details: Aegis is customizable both externally and internally, so you never have to worry about that!
+    details: Offers customizable options to modify to your likings
 ---
-

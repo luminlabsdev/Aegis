@@ -46,17 +46,17 @@ function Class.Set(self: InternalTypes.StateInternal, newValue: any): ()
 
 	-- Setting the actual value and triggering the listeners
 	self._state = newValue
-	TriggerListeners(self._listeners, OldValue, newValue)
+	TriggerListeners(self._listeners, newValue, OldValue)
 end
 
 --[[
 	@param fn The listener function that the paths will listen to.
 ]]
-function Class.Listen(self: InternalTypes.StateInternal, fn: (oldValue: any, newValue: any) -> ()): ()
+function Class.Listen(self: InternalTypes.StateInternal, fn: (newValue: any, oldValue: any) -> ()): ()
 	table.insert(self._listeners, fn) -- Add a listener
 end
 
-function Class._initapi(self: InternalTypes.StateInternal, prop: string, instance: Instance)
+function Class._initservice(self: InternalTypes.StateInternal, prop: string, instance: Instance)
 	(instance :: any)[prop] = self._state
 
 	self:Listen(function(_, newValue)
@@ -72,7 +72,7 @@ end
 local function state(initialState: any, protectType: boolean?): PublicTypes.State
 	local self = setmetatable({} :: InternalTypes.StateInternal, { __index = Class })
 
-	self.APIName = "Aegis.state"
+	self.ServiceName = "Aegis.state"
 
 	self._state = initialState
 	self._listeners = {}

@@ -13,7 +13,7 @@ return {
 
 		if Type == "table" then
 			for _, descendant in value do
-				if Is.API(descendant) and descendant.AegisName == "Instance" then
+				if Is.Service(descendant) and descendant.AegisName == "Instance" then
 					descendant:Get().Parent = instance
 				else
 					Utils.CheckTypeAndCall(descendant, instance, function()

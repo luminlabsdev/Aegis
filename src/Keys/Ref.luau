@@ -11,10 +11,13 @@ local InternalTypes = require(Types.InternalTypes)
 return {
 	KeyName = "Ref",
 	ApplyKey = function(instance: Instance, value: any)
-		if Is.API(value) == true and (value :: InternalTypes.API<typeof(value)>).APIName == "Aegis.state" then
+		if
+			Is.Service(value) == true
+			and (value :: InternalTypes.Service<typeof(value)>).ServiceName == "Aegis.state"
+		then
 			value:Set(instance)
 		else
-			Debugger.Warn("APIExpected", "state", typeof(value))
+			Debugger.Warn("ServiceExpected", "state", typeof(value))
 		end
 	end,
 }

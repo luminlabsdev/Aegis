@@ -1,9 +1,9 @@
 -- // Folders
 local Constructors = script.Constructors
+local Services = script.Services
 local Runtime = script.Runtime
 local Utility = script.Utility
 local Types = script.Types
-local API = script.API
 
 -- // Dependencies
 local InternalTypes = require(Types.InternalTypes)
@@ -13,9 +13,9 @@ local Is = require(Utility.Is)
 
 -- // Variables
 local Aegis = {
+	spring = require(Services.spring),
+	state = require(Services.state),
 	new = require(Constructors.new),
-	spring = require(API.spring),
-	state = require(API.state),
 }
 
 -- // Functions

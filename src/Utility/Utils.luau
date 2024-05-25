@@ -25,12 +25,12 @@ function Utils.CheckTypeAndCall(expected: any, received: any, interaction: () ->
 	end
 end
 
-function Utils.ApplyAPIProperty(instance: Instance, prop: string, value: any)
+function Utils.ApplyServiceProperty(instance: Instance, prop: string, value: any)
 	local Property = (instance :: any)[prop]
 
-	-- Call the _initapi method of the API class.
+	-- Call the _initservice method of the Service.
 	Utils.CheckTypeAndCall(Property, value:Get(), function()
-		(value :: InternalTypes.API<typeof(value)>):_initapi(prop, instance)
+		(value :: InternalTypes.Service<typeof(value)>):_initservice(prop, instance)
 	end)
 end
 
@@ -49,9 +49,9 @@ function Utils.ApplyProperty(instance: Instance, property: any, value: any)
 		(property :: InternalTypes.Key).ApplyKey(instance, value)
 	elseif type(property) == "string" then
 		-- but if the property is a string then
-		if Is.API(value) == true then
-			-- If the value is an Aegis API then
-			Utils.ApplyAPIProperty(instance, property, value)
+		if Is.Service(value) == true then
+			-- If the value is an Aegis service then
+			Utils.ApplyServiceProperty(instance, property, value)
 		else
 			-- else if the value is a normal data type then
 			Utils.ApplyNormalProperty(instance, property, value)

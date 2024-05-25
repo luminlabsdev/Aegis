@@ -9,5 +9,5 @@
 ### Wally
 
 1. Create a new Git project or open one
-2. Add `lumin-rbx/aegis@^0.0.1` to your `wally.toml` file
+2. Add `lumin/aegis@^0.0.1` to your `wally.toml` file
 3. Run `wally install` and CanaryEngine should be inside of your `/Packages` directory.
