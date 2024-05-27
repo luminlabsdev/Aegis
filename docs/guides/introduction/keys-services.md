@@ -15,8 +15,8 @@ local Key = Aegis.Key
 ```
 
 - To learn how to use keys, visit: [Using keys](/guides/basics/using-keys)
-- To learn how to create your own keys, visit: TODO
-- To learn about the properties of a key, visit: TODO
+- To learn how to create your own keys, visit: [Creating keys](/guides/basics/creating-keys)
+- To learn about the properties of a key, visit: [Key | API](/api/keys/)
 
 ## Services
 
@@ -25,4 +25,3 @@ Aegis services allow developers to have a greater range of support over instance
 Every service has a common function `:Get()`. This **common function** allows developers to get the value of a created service class at the exact runtime!
 
 - To know how to use Aegis services, visit: [Using services](/guides/basics/using-services)
-- To learn about the properties of each Aegis service, visit: TODO

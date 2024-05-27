@@ -74,6 +74,19 @@ export default defineConfig({
 								{ text: "State", link: "/api/state" },
 								{ text: "Spring", link: "/api/spring" },
 							]
+						},
+						{
+							text: "Keys",
+							collapsed: false,
+							items: [
+								{ text: "Key", link: "/api/keys/" },
+								{ text: "Children", link: "/api/keys/children" },
+								{ text: "Ref", link: "/api/keys/ref" },
+								{ text: "Events", link: "/api/keys/events" },
+								{ text: "Changes", link: "/api/keys/changes" },
+								{ text: "Attributes", link: "/api/keys/attributes" },
+								{ text: "Tags", link: "/api/keys/tags" }
+							]
 						}
 					]
 				}

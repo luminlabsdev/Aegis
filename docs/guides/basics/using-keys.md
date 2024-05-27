@@ -2,7 +2,7 @@
 
 Aegis has a special system known as **"keys"**. With keys, you can modify properties, connect events, attach tags and attributes and much more!
 
-- List of default Aegis keys: TODO
+- List of default Aegis keys: [List of keys](/api/keys/#list-of-keys)
 
 ## Using keys
 
