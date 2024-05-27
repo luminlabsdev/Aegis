@@ -29,31 +29,38 @@ end
 --[[
 	@param newValue The value to change to
 ]]
-function Class.Set(self: InternalTypes.StateInternal, newValue: any): ()
+function Class.Set(self: InternalTypes.StateInternal, newValue: any): InternalTypes.StateInternal
 	local OldValue = self._state
 
 	-- Normal checks
 	if self._state == newValue then
-		return
+		return self
 	end
 
 	if self._protectType == true and Is.TypeSame(OldValue, newValue) == false then
 		if OldValue ~= nil then
 			Debugger.Warn("TypeMismatch", typeof(OldValue), typeof(newValue))
-			return
+			return self
 		end
 	end
 
 	-- Setting the actual value and triggering the listeners
 	self._state = newValue
 	TriggerListeners(self._listeners, newValue, OldValue)
+
+	return self
 end
 
 --[[
 	@param fn The listener function that the paths will listen to.
 ]]
-function Class.Listen(self: InternalTypes.StateInternal, fn: (newValue: any, oldValue: any) -> ()): ()
-	table.insert(self._listeners, fn) -- Add a listener
+function Class.Listen(
+	self: InternalTypes.StateInternal,
+	listenerFunction: (newValue: any, oldValue: any) -> ()
+): InternalTypes.StateInternal
+	table.insert(self._listeners, listenerFunction) -- Add a listener
+
+	return self
 end
 
 function Class._initservice(self: InternalTypes.StateInternal, prop: string, instance: Instance)

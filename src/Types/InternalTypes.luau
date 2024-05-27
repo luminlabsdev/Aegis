@@ -1,8 +1,8 @@
 -- State types
 export type StateClass = {
 	Get: (self: StateInternal) -> any,
-	Set: (self: StateInternal, newValue: any) -> (),
-	Listen: (self: StateInternal, fn: (oldValue: any, newValue: any) -> ()) -> (),
+	Set: (self: StateInternal, newValue: any) -> StateInternal,
+	Listen: (self: StateInternal, fn: (oldValue: any, newValue: any) -> ()) -> StateInternal,
 }
 
 export type StateInternal = {
@@ -33,7 +33,7 @@ export type SpringInternal<State> = {
 -- Extra
 export type Key = {
 	KeyName: string,
-	ApplyKey: (instance: Instance, index: any, value: any) -> (),
+	ApplyKey: (instance: Instance, value: any) -> (),
 }
 
 export type Service<self> = {

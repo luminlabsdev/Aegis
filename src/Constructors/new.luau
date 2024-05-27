@@ -15,6 +15,10 @@ local function new(className: string, propertyTable: { [any]: any }): Instance
 
 	if Success == true then
 		for property: any, value: any in propertyTable do
+			if property == "Parent" then
+				continue
+			end
+
 			Utils.ApplyProperty(Result, property, value)
 		end
 

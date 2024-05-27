@@ -8,10 +8,10 @@ hero:
   actions:
     - theme: brand
       text: Guide
-      link: /guides/what-is-aegis
+      link: /guides/introduction/what-is-aegis
     - theme: alt
       text: API Reference
-      link: /api/index
+      link: /api/
 
 features:
   - icon: ⚡
@@ -19,7 +19,7 @@ features:
     details: Designed to be efficient without extra load on the memory
   - icon: ✔
     title: Strict typing
-    details: Enforces strict typing to enchance reliability and catch errors easily
+    details: Enforces strict typing to enhance reliability and catch errors easily
   - icon: 🛠
     title: Customizable
     details: Offers customizable options to modify to your likings

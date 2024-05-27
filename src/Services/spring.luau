@@ -150,7 +150,7 @@ function Class._update(
 end
 
 --[[
-	@return position
+	@return Position
 ]]
 function Class.Get(self: InternalTypes.SpringInternal<PublicTypes.State>)
 	-- Return the unpacked format for improved clarity

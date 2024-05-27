@@ -15,43 +15,64 @@ export default defineConfig({
 			{
 				text: 'Articles',
 				items: [
-					{ text: 'Installation', link: '/guides/installation' },
-					{ text: 'Basics', link: '/guides/creating-instances' },
+					{ text: 'Installation', link: '/guides/introduction/installation' },
+					{ text: 'Basics', link: '/guides/basics/creating-instances' },
+					{ text: 'Intermediate', link: '/guides/intermediate/creating-keys' },
 				]
 			},
 
-			{ text: 'API', link: '/api/index' },
+			{ text: 'API', link: '/api/' },
 			{ text: 'Changelog', link: '/changelog' }
 		],
 
 		sidebar: {
 			'/guides': [
 				{
-					base: "/guides",
 					items: [
 						{
 							text: "Introduction",
+							base: "/guides/introduction/",
 							collapsed: false,
 							items: [
-								{ text: "What is Aegis?", link: "/what-is-aegis" },
-								{ text: "Keys and Services", link: "/keys-services" },
-								{ text: "Installation", link: "/installation" },
+								{ text: "What is Aegis?", link: "what-is-aegis" },
+								{ text: "Keys and Services", link: "keys-services" },
+								{ text: "Installation", link: "installation" },
 							]
 						},
 						{
 							text: "Basic usage",
+							base: "/guides/basics/",
 							collapsed: false,
 							items: [
-								{ text: "Creating instances", link: "/creating-instances" },
-								{ text: "Using keys", link: "/using-keys" },
-								{ text: "Using services", link: "/using-services" },
+								{ text: "Creating instances", link: "creating-instances" },
+								{ text: "Using keys", link: "using-keys" },
+								{ text: "Creating keys", link: "creating-keys" },
+								{ text: "Using services", link: "using-services" },
 							]
 						},
 						{
 							text: "Intermediate usage",
+							base: "/guides/intermediate/",
 							collapsed: true,
 							items: [
-								{ text: "Creating keys", link: "/creating-keys" }
+
+							]
+						}
+					]
+				}
+			],
+
+			'/api': [
+				{
+					text: "API Reference",
+					items: [
+						{ text: "Aegis", link: "/api/" },
+						{
+							text: "Services",
+							collapsed: false,
+							items: [
+								{ text: "State", link: "/api/state" },
+								{ text: "Spring", link: "/api/spring" },
 							]
 						}
 					]
@@ -75,7 +96,7 @@ export default defineConfig({
 		},
 
 		socialLinks: [
-			{ icon: 'github', link: 'https://github.com/lumin-rbx/Aegis' },
+			{ icon: 'github', link: 'https://github.com/lumin-dev/Aegis' },
 			{ icon: 'discord', link: 'https://discord.com/invite/cwwcZtqJAt' },
 		]
 	}

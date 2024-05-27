@@ -7,14 +7,14 @@ Keys and Services are the foundation of Aegis; the pillars upon which Aegis was 
 Keys are special, they are used when giving the instances their respective properties. Here's how you use a key:
 
 ```lua
-local Aegis = require(path.to.Aegis)
+local Key = Aegis.Key
 
 --snip
-	[Aegis.Key("KeyName")] = value
+	[Key("KeyName")] = value
 
 ```
 
-- To learn how to use keys, visit: [Using keys](/guides/using-keys)
+- To learn how to use keys, visit: [Using keys](/guides/basics/using-keys)
 - To learn how to create your own keys, visit: TODO
 - To learn about the properties of a key, visit: TODO
 
@@ -24,5 +24,5 @@ Aegis services allow developers to have a greater range of support over instance
 
 Every service has a common function `:Get()`. This **common function** allows developers to get the value of a created service class at the exact runtime!
 
-- To know how to use Aegis services, visit: TODO
+- To know how to use Aegis services, visit: [Using services](/guides/basics/using-services)
 - To learn about the properties of each Aegis service, visit: TODO

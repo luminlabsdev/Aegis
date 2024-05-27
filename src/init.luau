@@ -19,10 +19,11 @@ local Aegis = {
 }
 
 -- // Functions
-function Aegis.RegisterKey(key: InternalTypes.Key)
+function Aegis.RegisterKey(key: InternalTypes.Key): InternalTypes.Key?
 	if Is.Key(key) == true then
 		if not Storage.RegisteredKeys[key.KeyName] then
 			Storage.RegisteredKeys[key.KeyName] = key
+			return Storage.RegisteredKeys[key.KeyName]
 		else
 			Debugger.Warn("FailedToRegisterKey", `{key.KeyName} already exists.`)
 			return
@@ -33,8 +34,8 @@ function Aegis.RegisterKey(key: InternalTypes.Key)
 	end
 end
 
-function Aegis.Key(name: string)
-	return Storage.RegisteredKeys[name]
+function Aegis.Key(keyName: string): InternalTypes.Key?
+	return Storage.RegisteredKeys[keyName]
 end
 
 -- // Initialize
