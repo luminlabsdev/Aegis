@@ -5,7 +5,7 @@ export default defineConfig({
 	head: [['link', { rel: 'icon', href: '/favicon.ico' }]],
 	base: "/Aegis/",
 	title: "Aegis",
-	titleTemplate: "Lumin",
+	titleTemplate: ":title | Lumin",
 	description: "A simple strictly typed UI framework made specifically for Roblox.",
 	lastUpdated: true,
 	lang: 'en-us',
