@@ -2,6 +2,12 @@
 
 This is a changelog which is changed every update, and we follow semver.
 
+## 0.0.3
+
+### Improvements
+
+- Fix documentation
+
 ## 0.0.2
 
 ### Improvements
