@@ -33,32 +33,15 @@ local sin = math.sin
 local pi = math.pi
 
 -- // Functions
-local function IsSpringSettled(
-	currentLinearPosition: { number },
-	linearTargetPosition: { number },
-	instance: Instance,
-	prop: string,
-	dataTypePosition: PublicTypes.Animatable
-): boolean
-	if (instance :: any)[prop] == dataTypePosition then
-		return true
-	end
-
-	local IsSettled = false
-
+local function IsSpringSettled(currentLinearPosition: { number }, linearTargetPosition: { number }): boolean
 	for index, value in currentLinearPosition do
-		if IsSettled == true then
-			break
-		end
-
-		if math.abs(value - linearTargetPosition[index]) < Epsilon then
-			-- If the difference is less than the epsilon, then settle the spring
-			IsSettled = true
-			break
+		if math.abs(value - linearTargetPosition[index]) > Epsilon then
+			-- If the difference is more than the epsilon, then return false
+			return false
 		end
 	end
 
-	return IsSettled
+	return true
 end
 
 function Class._init(self: PublicTypes.Spring, prop: string, instance: Instance): ()
@@ -69,29 +52,19 @@ function Class._init(self: PublicTypes.Spring, prop: string, instance: Instance)
 	(instance :: any)[prop] = self._state:Get()
 	self._currentLinearPosition = LinearTargetPosition
 
-	self._state:Listen(function(_, newValue)
-		LinearTargetPosition = self._type.ToLinear(newValue)
-
+	self._state:Listen(function(newValue)
 		if Connection ~= nil then
 			return -- The value changed when the spring was playing; don't create another connection.
 		end
+
+		LinearTargetPosition = self._type.ToLinear(newValue)
 
 		if not Connection then
 			Connection = Scheduler:Add(Mode, function(delta: number)
 				self:_update(LinearTargetPosition, delta);
 				(instance :: any)[prop] = self._type.FromLinear(self._currentLinearPosition)
 
-				if
-					IsSpringSettled(
-							self._currentLinearPosition,
-							LinearTargetPosition,
-							instance,
-							prop,
-							self._state:Get() :: PublicTypes.Animatable
-						)
-						== true
-					and Connection ~= nil
-				then
+				if IsSpringSettled(self._currentLinearPosition, LinearTargetPosition) == true and Connection then
 					Scheduler:Remove(Mode, Connection)
 					Connection = nil;
 					(instance :: any)[prop] = self._state:Get()
@@ -163,8 +136,22 @@ end
 local function Spring(springInfo: PublicTypes.SpringInfo): PublicTypes.Spring?
 	-- Checks
 	if not springInfo.State then
-		Debugger.Warn("RestrictedType")
+		Debugger.Warn("MissingConstructor", "State")
+		return nil
 	end
+
+	if not Is.AegisConstructor(springInfo.State :: any) then
+		Debugger.Warn("TypeMismatch", "Aegis.State", typeof(springInfo.State))
+		return nil
+	end
+
+	local Type = typeof(springInfo.State:Get())
+
+	if not Storage.AnimatableDataTypes[Type] then
+		Debugger.Warn("NotAnimatable", Type)
+		return nil
+	end
+
 	local self =
 		setmetatable({} :: InternalTypes.SpringProps, { __index = Class } :: { __index: InternalTypes.SpringFunc })
 
@@ -174,7 +161,7 @@ local function Spring(springInfo: PublicTypes.SpringInfo): PublicTypes.Spring?
 	self._frequency = springInfo.Frequency or 1
 	self._state = springInfo.State
 
-	self._type = Storage.AnimatableDataTypes[typeof(springInfo.State:Get())]
+	self._type = Storage.AnimatableDataTypes[Type]
 	self._currentLinearPosition = self._type.ToLinear(self._state:Get())
 	self._velocity = table.create(#self._currentLinearPosition, (springInfo.Velocity or 20))
 

@@ -5,7 +5,7 @@ local Runtime = script.Runtime
 local Types = script.Types
 
 -- // Dependencies
-local InternalTypes = require(Types.InternalTypes)
+local InternalTypes = require(Types.Internal)
 local Debugger = require(Utility.Debugger)
 local Storage = require(Runtime.Storage)
 local Is = require(Utility.Is)

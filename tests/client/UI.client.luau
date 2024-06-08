@@ -18,6 +18,7 @@ local Spring = Aegis.spring
 
 -- // Created states
 local ButtonState = State(Color3.fromRGB(22, 22, 22))
+local TransparencyState = State(0)
 
 -- // UI
 local ScreenGui = new("ScreenGui", {
@@ -66,10 +67,20 @@ local ScreenGui = new("ScreenGui", {
 				MouseLeave = function()
 					ButtonState:Set(Color3.fromRGB(22, 22, 22))
 				end,
+
+				MouseButton1Click = function()
+					TransparencyState:Set(Random.new():NextNumber(0, 1))
+				end,
 			},
 		}),
 		new("Frame", {
 			AnchorPoint = Vector2.new(0.5, 0.5),
+			BackgroundTransparency = Spring({
+				Damping = 0.35,
+				Frequency = 1.5,
+				Velocity = 25,
+				State = TransparencyState,
+			}),
 			Position = UDim2.fromScale(0.5, 0.5),
 			Size = UDim2.fromScale(0.65, 0.025),
 			BackgroundColor3 = Color3.fromRGB(210, 210, 210),

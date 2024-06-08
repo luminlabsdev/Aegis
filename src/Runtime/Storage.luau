@@ -3,7 +3,7 @@
 local Types = script.Parent.Parent.Types
 
 -- // Dependencies
-local InternalTypes = require(Types.InternalTypes)
+local InternalTypes = require(Types.Internal)
 
 -- // Variables
 local Storage = {
