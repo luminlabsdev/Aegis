@@ -3,7 +3,7 @@ local Utility = script.Parent
 local Types = script.Parent.Parent.Types
 
 -- // Dependencies
-local InternalTypes = require(Types.InternalTypes)
+local InternalTypes = require(Types.Internal)
 local Debugger = require(Utility.Debugger)
 local Is = require(Utility.Is)
 
@@ -25,12 +25,12 @@ function Utils.CheckTypeAndCall(expected: any, received: any, interaction: () ->
 	end
 end
 
-function Utils.ApplyServiceProperty(instance: Instance, prop: string, value: any)
+function Utils.ApplyConstructorProperty(instance: Instance, prop: string, value: any)
 	local Property = (instance :: any)[prop]
 
 	-- Call the _initservice method of the Service.
 	Utils.CheckTypeAndCall(Property, value:Get(), function()
-		(value :: InternalTypes.Service<typeof(value)>):_initservice(prop, instance)
+		(value :: InternalTypes.Constructor):_init(prop, instance)
 	end)
 end
 
@@ -49,9 +49,9 @@ function Utils.ApplyProperty(instance: Instance, property: any, value: any)
 		(property :: InternalTypes.Key).ApplyKey(instance, value)
 	elseif type(property) == "string" then
 		-- but if the property is a string then
-		if Is.Service(value) == true then
+		if Is.AegisConstructor(value) == true then
 			-- If the value is an Aegis service then
-			Utils.ApplyServiceProperty(instance, property, value)
+			Utils.ApplyConstructorProperty(instance, property, value)
 		else
 			-- else if the value is a normal data type then
 			Utils.ApplyNormalProperty(instance, property, value)

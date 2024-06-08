@@ -1,12 +1,12 @@
 -- // Dependencies
-local InternalTypes = require(script.Parent.Parent.Types.InternalTypes)
+local InternalTypes = require(script.Parent.Parent.Types.Internal)
 
 -- // Variables
 local Is = {}
 
 -- // Functions
-function Is.Service<T>(t: InternalTypes.Service<T>)
-	return if type(t) == "table" and t.ServiceName and t._initservice then true else false
+function Is.AegisConstructor<T>(t: InternalTypes.Constructor)
+	return if type(t) == "table" and t.ConstructorClass and t._init and t.Get then true else false
 end
 
 function Is.Key(t: InternalTypes.Key)

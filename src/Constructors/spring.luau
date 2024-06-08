@@ -12,12 +12,14 @@ local Utility = script.Parent.Parent.Utility
 local Types = script.Parent.Parent.Types
 
 -- // Dependencies
-local InternalTypes = require(Types.InternalTypes)
-local PublicTypes = require(Types.PublicTypes)
 local Scheduler = require(Runtime.Scheduler)
-local Debugger = require(Utility.Debugger)
 local Storage = require(Runtime.Storage)
+
+local Debugger = require(Utility.Debugger)
 local Is = require(Utility.Is)
+
+local InternalTypes = require(Types.Internal)
+local PublicTypes = require(Types.Public)
 
 -- // Variables
 local Class = {}
@@ -36,13 +38,13 @@ local function IsSpringSettled(
 	linearTargetPosition: { number },
 	instance: Instance,
 	prop: string,
-	dataTypePosition: InternalTypes.Animatable
+	dataTypePosition: PublicTypes.Animatable
 ): boolean
-	local IsSettled = false
-
 	if (instance :: any)[prop] == dataTypePosition then
-		IsSettled = true
+		return true
 	end
+
+	local IsSettled = false
 
 	for index, value in currentLinearPosition do
 		if IsSettled == true then
@@ -59,7 +61,7 @@ local function IsSpringSettled(
 	return IsSettled
 end
 
-function Class._initservice(self: InternalTypes.SpringInternal<PublicTypes.State>, prop: string, instance: Instance)
+function Class._init(self: PublicTypes.Spring, prop: string, instance: Instance): ()
 	local Mode = RunService:IsClient() and "Client" or "Server"
 	local Connection: ((number) -> ())?
 
@@ -85,7 +87,7 @@ function Class._initservice(self: InternalTypes.SpringInternal<PublicTypes.State
 							LinearTargetPosition,
 							instance,
 							prop,
-							self._state:Get() :: InternalTypes.Animatable
+							self._state:Get() :: PublicTypes.Animatable
 						)
 						== true
 					and Connection ~= nil
@@ -99,11 +101,7 @@ function Class._initservice(self: InternalTypes.SpringInternal<PublicTypes.State
 	end)
 end
 
-function Class._update(
-	self: InternalTypes.SpringInternal<PublicTypes.State>,
-	linearTargetPosition: { number },
-	delta: number
-)
+function Class._update(self: PublicTypes.Spring, linearTargetPosition: { number }, delta: number): ()
 	for i = 1, #linearTargetPosition do
 		-- DO NOT CHANGE ANYTHING IN THE CALCULATION UNLESS YOU KNOW WHAT YOU ARE DOING
 		local Damping = self._damping
@@ -152,7 +150,7 @@ end
 --[[
 	@return Position
 ]]
-function Class.Get(self: InternalTypes.SpringInternal<PublicTypes.State>)
+function Class.Get(self: PublicTypes.Spring): InternalTypes.Animatable
 	-- Return the unpacked format for improved clarity
 	return self._type.FromLinear(self._currentLinearPosition)
 end
@@ -163,17 +161,19 @@ end
 	@return Spring PublicTypes.Spring
 ]]
 local function Spring(springInfo: PublicTypes.SpringInfo): PublicTypes.Spring?
-	if not Is.Service(springInfo.State) then
-		Debugger.Error("ServiceExpected", "State", typeof(springInfo.State))
-		return nil
+	-- Checks
+	if not springInfo.State then
+		Debugger.Warn("RestrictedType")
 	end
+	local self =
+		setmetatable({} :: InternalTypes.SpringProps, { __index = Class } :: { __index: InternalTypes.SpringFunc })
 
-	local self = setmetatable({} :: InternalTypes.SpringInternal<PublicTypes.State>, { __index = Class })
-	self.ServiceName = "spring"
+	self.ConstructorClass = "Spring"
 
 	self._damping = springInfo.Damping or 1
-	self._frequency = springInfo.Frequency or 3
+	self._frequency = springInfo.Frequency or 1
 	self._state = springInfo.State
+
 	self._type = Storage.AnimatableDataTypes[typeof(springInfo.State:Get())]
 	self._currentLinearPosition = self._type.ToLinear(self._state:Get())
 	self._velocity = table.create(#self._currentLinearPosition, (springInfo.Velocity or 20))

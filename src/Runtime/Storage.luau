@@ -57,6 +57,15 @@ local Storage = {
 				return UDim.new(value[1], math.round(value[2]))
 			end,
 		},
+		Color3 = {
+			ToLinear = function(value: Color3)
+				print(value.R, value.G, value.B)
+				return { value.R, value.G, value.B }
+			end,
+			FromLinear = function(value: { number })
+				return Color3.new(value[1], value[2], value[3])
+			end,
+		},
 	} :: AnimatableDataTypes,
 }
 

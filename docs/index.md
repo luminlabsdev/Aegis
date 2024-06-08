@@ -17,9 +17,11 @@ features:
   - icon: ⚡
     title: Performant
     details: Designed to be efficient without extra load on the memory
+
   - icon: ✔
     title: Strict typing
     details: Enforces strict typing to enhance reliability and catch errors easily
+
   - icon: 🛠
     title: Customizable
     details: Offers customizable options to modify to your likings
