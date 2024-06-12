@@ -6,6 +6,7 @@ local Logs = {
 	ServiceExpected = "Expected to receive an Aegis.%s type. Received %s",
 	RestrictedType = "DataType '%s' is not compatible.",
 	FailedToRegisterKey = "Failed to register key. Reason: %s",
+	KeyNotFound = "Key (%s) isn't registered.",
 	MissingConstructor = "Missing a Aegis.%s constructor.",
 	NotAnimatable = "Data type (%s) is not animatable.",
 }

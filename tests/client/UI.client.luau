@@ -21,7 +21,7 @@ local ButtonState = State(Color3.fromRGB(22, 22, 22))
 local TransparencyState = State(0)
 
 -- // UI
-local ScreenGui = new("ScreenGui", {
+local ui = new("ScreenGui", {
 	Name = "Gui",
 	Parent = Player:WaitForChild("PlayerGui"),
 	IgnoreGuiInset = true,
@@ -61,6 +61,7 @@ local ScreenGui = new("ScreenGui", {
 
 			[Key("Events")] = {
 				MouseEnter = function()
+					print("hi guys")
 					ButtonState:Set(Color3.fromRGB(250, 200, 152))
 				end,
 
@@ -97,3 +98,12 @@ local ScreenGui = new("ScreenGui", {
 		}),
 	},
 })
+
+--[[
+	local AdvSpr = require(script.Parent.AdvSpr)
+	local spr = AdvSpr.new(Color3.fromRGB(22, 22, 22))
+
+	game:GetService("RunService").RenderStepped:Connect(function(delta)
+		ui.TextButton.BackgroundColor3 = spr:All(ButtonState:Get(), delta)
+	end)
+]]

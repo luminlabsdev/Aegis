@@ -1,9 +1,6 @@
--- TODO: Use this as a runtime storage manager.
--- // Folders
-local Types = script.Parent.Parent.Types
-
 -- // Dependencies
-local InternalTypes = require(Types.Internal)
+local Types = require(script.Parent.Parent.Types)
+local Utils = require(script.Parent.Parent.Utility.Utils)
 
 -- // Variables
 local Storage = {
@@ -13,57 +10,136 @@ local Storage = {
 		Client = { Connection = nil, Active = {} },
 	} :: Scheduler,
 	AnimatableDataTypes = {
+		boolean = {
+			ToLinear = function(value: boolean): { number }
+				return { value and 1 or 0 }
+			end,
+			FromLinear = function(value: { number }): Types.Animatable
+				return value[1] >= 0.5
+			end,
+		},
 		number = {
-			ToLinear = function(value: number)
+			ToLinear = function(value: number): { number }
 				return { value }
 			end,
-			FromLinear = function(value: { number })
+			FromLinear = function(value: { number }): Types.Animatable
 				return value[1]
 			end,
 		},
+		BrickColor = {
+			ToLinear = function(value: BrickColor): { number }
+				return { value.r, value.g, value.b }
+			end,
+			FromLinear = function(value: { number }): Types.Animatable
+				return BrickColor.new(value[1], value[2], value[3])
+			end,
+		},
+		CFrame = {
+			ToLinear = function(value: CFrame): { number }
+				return { value.Position.X, value.Position.Y, value.Position.Z }
+			end,
+			FromLinear = function(value: { number }): Types.Animatable
+				return CFrame.new(value[1], value[2], value[3])
+			end,
+		},
 		Vector3 = {
-			ToLinear = function(value: Vector3)
+			ToLinear = function(value: Vector3): { number }
 				return { value.X, value.Y, value.Z }
 			end,
 
-			FromLinear = function(value: { number })
+			FromLinear = function(value: { number }): Types.Animatable
 				return Vector3.new(value[1], value[2], value[3])
 			end,
 		},
 		Vector2 = {
-			ToLinear = function(value: Vector2)
+			ToLinear = function(value: Vector2): { number }
 				return { value.X, value.Y }
 			end,
 
-			FromLinear = function(value: { number })
+			FromLinear = function(value: { number }): Types.Animatable
 				return Vector2.new(value[1], value[2])
 			end,
 		},
 		UDim2 = {
-			ToLinear = function(value: UDim2)
+			ToLinear = function(value: UDim2): { number }
 				return { value.X.Scale, value.X.Offset, value.Y.Scale, value.Y.Offset }
 			end,
 
-			FromLinear = function(value: { number })
+			FromLinear = function(value: { number }): Types.Animatable
 				return UDim2.new(value[1], math.round(value[2]), value[3], math.round(value[4]))
 			end,
 		},
 		UDim = {
-			ToLinear = function(value: UDim)
+			ToLinear = function(value: UDim): { number }
 				return { value.Scale, value.Offset }
 			end,
 
-			FromLinear = function(value: { number })
+			FromLinear = function(value: { number }): Types.Animatable
 				return UDim.new(value[1], math.round(value[2]))
 			end,
 		},
 		Color3 = {
-			ToLinear = function(value: Color3)
-				print(value.R, value.G, value.B)
-				return { value.R, value.G, value.B }
+			ToLinear = function(value: Color3): { number }
+				return { value.R * 255, value.G * 255, value.B * 255 }
 			end,
-			FromLinear = function(value: { number })
-				return Color3.new(value[1], value[2], value[3])
+			FromLinear = function(value: { number }): Types.Animatable
+				return Color3.new(value[1] / 255, value[2] / 255, value[3] / 255)
+			end,
+		},
+		Vector3int16 = {
+			ToLinear = function(value: Vector3int16): { number }
+				return { value.X, value.Y, value.Z }
+			end,
+
+			FromLinear = function(value: { number }): Types.Animatable
+				return Vector3int16.new(value[1], value[2], value[3])
+			end,
+		},
+		Vector2int16 = {
+			ToLinear = function(value: Vector2int16): { number }
+				return { value.X, value.Y }
+			end,
+
+			FromLinear = function(value: { number }): Types.Animatable
+				return Vector2int16.new(value[1], value[2])
+			end,
+		},
+		ColorSequence = {
+			ToLinear = function(value: ColorSequence): { number }
+				local c0 = value.Keypoints[1].Value
+				local c1 = value.Keypoints[#value.Keypoints].Value
+
+				return { c0.R, c0.G, c0.B, c1.R, c1.G, c1.B }
+			end,
+			FromLinear = function(value: { number }): Types.Animatable
+				return ColorSequence.new(
+					Color3.new(value[1], value[2], value[3]),
+					Color3.new(value[4], value[5], value[6])
+				)
+			end,
+		},
+		NumberSequence = {
+			ToLinear = function(value: NumberSequence): { number }
+				return { value.Keypoints[1].Value, value.Keypoints[#value.Keypoints].Value }
+			end,
+			FromLinear = function(value: { number }): Types.Animatable
+				return NumberSequence.new(value[1], value[2])
+			end,
+		},
+		NumberRange = {
+			ToLinear = function(value: NumberRange): { number }
+				return { value.Min, value.Max }
+			end,
+			FromLinear = function(value: { number }): Types.Animatable
+				return NumberRange.new(value[1], value[2])
+			end,
+		},
+		Rect = {
+			ToLinear = function(value: Rect): { number }
+				return { value.Min.X, value.Min.Y, value.Max.X, value.Max.Y }
+			end,
+			FromLinear = function(value: { number }): Types.Animatable
+				return Rect.new(value[1], value[2], value[3], value[4])
 			end,
 		},
 	} :: AnimatableDataTypes,
@@ -72,8 +148,8 @@ local Storage = {
 -- // Types
 type AnimatableDataTypes = {
 	[string]: {
-		ToLinear: (value: InternalTypes.Animatable) -> { number },
-		FromLinear: (value: { number }) -> InternalTypes.Animatable,
+		ToLinear: (value: Types.Animatable) -> { number },
+		FromLinear: (value: { number }) -> Types.Animatable,
 	},
 }
 type Scheduler = {

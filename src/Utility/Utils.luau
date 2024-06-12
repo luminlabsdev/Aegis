@@ -1,9 +1,8 @@
 -- // Folders
 local Utility = script.Parent
-local Types = script.Parent.Parent.Types
 
 -- // Dependencies
-local InternalTypes = require(Types.Internal)
+local Types = require(script.Parent.Parent.Types)
 local Debugger = require(Utility.Debugger)
 local Is = require(Utility.Is)
 
@@ -30,7 +29,7 @@ function Utils.ApplyConstructorProperty(instance: Instance, prop: string, value:
 
 	-- Call the _initservice method of the Service.
 	Utils.CheckTypeAndCall(Property, value:Get(), function()
-		(value :: InternalTypes.Constructor):_init(prop, instance)
+		(value :: Types.Constructor):_init(prop, instance)
 	end)
 end
 
@@ -46,7 +45,7 @@ end
 function Utils.ApplyProperty(instance: Instance, property: any, value: any)
 	-- If the property is an Aegis key then
 	if Is.Key(property) == true then
-		(property :: InternalTypes.Key).ApplyKey(instance, value)
+		(property :: Types.Key).ApplyKey(instance, value)
 	elseif type(property) == "string" then
 		-- but if the property is a string then
 		if Is.AegisConstructor(value) == true then
@@ -57,6 +56,14 @@ function Utils.ApplyProperty(instance: Instance, property: any, value: any)
 			Utils.ApplyNormalProperty(instance, property, value)
 		end
 	end
+end
+
+function Utils.InverseGammaCorrectD65(c)
+	return c < 0.0404482362771076 and c / 12.92 or 0.87941546140213 * (c + 0.055) ^ 2.4
+end
+
+function Utils.GammaCorrectD65(c)
+	return c < 3.1306684425e-3 and 12.92 * c or 1.055 * c ^ (1 / 2.4) - 0.055
 end
 
 -- // Returning

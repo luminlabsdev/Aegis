@@ -1,15 +1,13 @@
 -- // Folders
 local Utility = script.Parent.Parent.Utility
-local Types = script.Parent.Parent.Types
 
 -- // Dependencies
-local InternalTypes = require(Types.Internal)
-local PublicTypes = require(Types.Public)
+local Types = require(script.Parent.Parent.Types)
 local Debugger = require(Utility.Debugger)
 local Is = require(Utility.Is)
 
 -- // Variables
-local Class = {} :: InternalTypes.StateFunc
+local Class = {} :: Types.StateFunc
 
 -- // Functions
 
@@ -24,7 +22,7 @@ end
 --[[
 	@return T
 ]]
-function Class.Get(self: PublicTypes.State): any
+function Class.Get(self: Types.State): any
 	return self._state
 end
 
@@ -32,7 +30,7 @@ end
 	@param newValue The value to change to
 	@return State
 ]]
-function Class.Set(self: PublicTypes.State, newValue: any): PublicTypes.State
+function Class.Set(self: Types.State, newValue: any): Types.State
 	local Type = type(newValue)
 
 	if Type == "table" then
@@ -69,16 +67,13 @@ end
 	@param fn The listener function that the paths will listen to.
 	@return State
 ]]
-function Class.Listen(
-	self: PublicTypes.State,
-	listenerFunction: (newValue: any, oldValue: any) -> ()
-): PublicTypes.State
+function Class.Listen(self: Types.State, listenerFunction: (newValue: any, oldValue: any) -> ()): Types.State
 	table.insert(self._listeners, listenerFunction) -- Add a listener
 
 	return self
 end
 
-function Class._init(self: PublicTypes.State, prop: string, instance: Instance)
+function Class._init(self: Types.State, prop: string, instance: Instance)
 	(instance :: any)[prop] = self._state
 
 	self:Listen(function(newValue)
@@ -89,7 +84,7 @@ end
 --[[
 	@return nil
 ]]
-function Class.Destroy(self: PublicTypes.State): nil
+function Class.Destroy(self: Types.State): nil
 	CleanTable(self :: any)
 	return nil
 end
@@ -99,7 +94,7 @@ end
 	@param protectType Whether to do type checking when setting value (default: true)
 	@return State
 ]]
-local function state(initialState: any, protectType: boolean?): PublicTypes.State
+local function state(initialState: any, protectType: boolean?): Types.State
 	local Type = type(initialState)
 
 	if Type == "table" then
@@ -107,8 +102,7 @@ local function state(initialState: any, protectType: boolean?): PublicTypes.Stat
 		initialState = initialState or nil
 	end
 
-	local self =
-		setmetatable({} :: InternalTypes.StateProps, { __index = Class } :: { __index: InternalTypes.StateFunc })
+	local self = setmetatable({} :: Types.StateProps, { __index = Class } :: { __index: Types.StateFunc })
 
 	self.ConstructorClass = "State"
 	self._state = initialState

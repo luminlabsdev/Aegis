@@ -10,7 +10,28 @@ export type Constructor = {
 	ConstructorClass: string,
 }
 
-export type Animatable = number | UDim2 | UDim | Vector3 | Vector3int16 | Vector2 | Vector2int16 | Color3
+export type Animatable =
+	boolean
+	| number
+	| BrickColor
+	| CFrame
+	| Vector3
+	| Vector2
+	| UDim2
+	| UDim
+	| Color3
+	| Vector3int16
+	| Vector2int16
+	| ColorSequence
+	| NumberSequence
+	| NumberRange
+	| Rect
+
+export type SpringInfo = {
+	Damping: number?,
+	Frequency: number?,
+	State: State,
+}
 
 -- State types
 export type StateFunc = {
@@ -53,4 +74,4 @@ export type SpringProps = {
 
 export type Spring = typeof(setmetatable({} :: SpringProps, {} :: { __index: SpringFunc }))
 
-return "Aegis.Types.Internal"
+return {}

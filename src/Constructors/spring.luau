@@ -9,7 +9,6 @@ local RunService = game:GetService("RunService")
 -- // Folders
 local Runtime = script.Parent.Parent.Runtime
 local Utility = script.Parent.Parent.Utility
-local Types = script.Parent.Parent.Types
 
 -- // Dependencies
 local Scheduler = require(Runtime.Scheduler)
@@ -18,11 +17,10 @@ local Storage = require(Runtime.Storage)
 local Debugger = require(Utility.Debugger)
 local Is = require(Utility.Is)
 
-local InternalTypes = require(Types.Internal)
-local PublicTypes = require(Types.Public)
+local Types = require(script.Parent.Parent.Types)
 
 -- // Variables
-local Class = {}
+local Class = {} :: Types.SpringFunc
 
 local Epsilon = 1e-4
 
@@ -33,9 +31,9 @@ local sin = math.sin
 local pi = math.pi
 
 -- // Functions
-local function IsSpringSettled(currentLinearPosition: { number }, linearTargetPosition: { number }): boolean
+local function IsSpringSettled(currentLinearPosition: { number }, targetLinearPosition: { number }): boolean
 	for index, value in currentLinearPosition do
-		if math.abs(value - linearTargetPosition[index]) > Epsilon then
+		if math.abs(value - targetLinearPosition[index]) > Epsilon then
 			-- If the difference is more than the epsilon, then return false
 			return false
 		end
@@ -44,78 +42,88 @@ local function IsSpringSettled(currentLinearPosition: { number }, linearTargetPo
 	return true
 end
 
-function Class._init(self: PublicTypes.Spring, prop: string, instance: Instance): ()
+function Class._init(self: Types.Spring, prop: string, instance: Instance): ()
 	local Mode = RunService:IsClient() and "Client" or "Server"
 	local Connection: ((number) -> ())?
 
-	local LinearTargetPosition = self._type.ToLinear(self._state:Get());
+	local TargetLinearPosition = self._type.ToLinear(self._state:Get());
 	(instance :: any)[prop] = self._state:Get()
-	self._currentLinearPosition = LinearTargetPosition
+	self._currentLinearPosition = TargetLinearPosition
 
-	self._state:Listen(function(newValue)
+	self._state:Listen(function(newValue): ()
+		TargetLinearPosition = self._type.ToLinear(newValue)
+
 		if Connection ~= nil then
-			return -- The value changed when the spring was playing; don't create another connection.
+			return -- The value changed when the spring was playing; don't create another connection, let the new one play
 		end
 
-		LinearTargetPosition = self._type.ToLinear(newValue)
-
 		if not Connection then
-			Connection = Scheduler:Add(Mode, function(delta: number)
-				self:_update(LinearTargetPosition, delta);
+			Connection = Scheduler:Add(Mode, function(delta: number): ()
+				self:_update(TargetLinearPosition, delta);
 				(instance :: any)[prop] = self._type.FromLinear(self._currentLinearPosition)
 
-				if IsSpringSettled(self._currentLinearPosition, LinearTargetPosition) == true and Connection then
+				if IsSpringSettled(self._currentLinearPosition, TargetLinearPosition) == true and Connection then
 					Scheduler:Remove(Mode, Connection)
 					Connection = nil;
 					(instance :: any)[prop] = self._state:Get()
+
+					for index = 1, #self._velocity do
+						self._velocity[index] = 0
+					end
 				end
 			end)
 		end
 	end)
 end
 
-function Class._update(self: PublicTypes.Spring, linearTargetPosition: { number }, delta: number): ()
-	for i = 1, #linearTargetPosition do
+function Class._update(self: Types.Spring, targetLinearPosition: { number }, delta: number): ()
+	for index = 1, #targetLinearPosition do
 		-- DO NOT CHANGE ANYTHING IN THE CALCULATION UNLESS YOU KNOW WHAT YOU ARE DOING
-		local Damping = self._damping
-		local Frequency = 2 * pi * self._frequency
-		local Velocity = self._velocity
+		--[[
+			d = damping
+			f = frequency
+			v = velocity
+			c = constant
+			i = cosine_angle
+			j = sine_angle
+			r1 = root1
+			r2 = root2
+			c2 = coefficient2
+			c1 = coefficient1
+			e1 = exp1
+			e2 = exp2
+		]]
 
-		local Decay = exp(-delta * Damping * Frequency)
-		local Offset = self._currentLinearPosition[i] - linearTargetPosition[i]
+		local d = self._damping
+		local f = self._frequency * pi * 2
+		local g = targetLinearPosition[index]
+		local p = self._currentLinearPosition[index]
+		local v = self._velocity[index]
 
-		if Damping == 1 then -- Critical damping
-			self._currentLinearPosition[i] = (Velocity[i] * delta + Offset * (Frequency * delta + 1)) * Decay
-				+ linearTargetPosition[i]
-			self._velocity[i] = (Velocity[i] - (Offset * Frequency + Velocity[i]) * (Frequency * delta)) * Decay
-		elseif Damping < 1 then -- Underdamped
-			local Constant = sqrt(1 - Damping * Damping)
-			local Cosin_Angle = cos(delta * Frequency * Constant)
-			local Sine_Angle = sin(delta * Frequency * Constant)
+		local offset = p - g
+		local decay = exp(-delta * d * f)
 
-			self._currentLinearPosition[i] = (
-				Offset * Cosin_Angle
-				+ (Velocity[i] + Offset * (Damping * Frequency)) * Sine_Angle / (Frequency * Constant)
-			)
-					* Decay
-				+ linearTargetPosition[i]
-			self._velocity[i] = (
-				Velocity[i] * (Cosin_Angle * Constant) - (Velocity[i] * Damping + Offset * Frequency) * Sine_Angle
-			) * (Decay / Constant)
-		else -- Overdamped
-			local Constant = sqrt(Damping * Damping - 1)
+		if d == 1 then
+			self._currentLinearPosition[index] = (v * delta + offset * (f * delta + 1)) * decay + g
+			self._velocity[index] = (v - (offset * f + v) * (f * delta)) * decay
+		elseif d < 1 then
+			local c = sqrt(1 - d * d)
+			local i = cos(delta * f * c)
+			local j = sin(delta * f * c)
 
-			local Root1 = -Frequency * (Damping - Constant)
-			local Root2 = -Frequency * (Damping + Constant)
+			self._currentLinearPosition[index] = (offset * i + (v + offset * (d * f)) * j / (f * c)) * decay + g
+			self._velocity[index] = (v * (i * c) - (v * d + offset * f) * j) * (decay / c)
+		else
+			local c = sqrt(d * d - 1)
+			local r1 = -f * (d - c)
+			local r2 = -f * (d + c)
+			local co2 = (v - offset * r1) / (2 * f * c)
+			local co1 = offset - co2
+			local e1 = co1 * exp(r1 * delta)
+			local e2 = co2 * exp(r2 * delta)
 
-			local Coefficient2 = (Velocity[i] - Offset * Root1) / (2 * Frequency * Constant)
-			local Coefficient1 = Offset - Coefficient2
-
-			local Exp1 = Coefficient1 * exp(Root1 * delta)
-			local Exp2 = Coefficient2 * exp(Root2 * delta)
-
-			self._currentLinearPosition[i] = Exp1 + Exp2 + linearTargetPosition[i]
-			self._velocity[i] = Root1 * Exp1 + Root2 * Exp2
+			self._currentLinearPosition[index] = e1 + e2 + g
+			self._velocity[index] = r1 * e1 + r2 * e2
 		end
 	end
 end
@@ -123,17 +131,17 @@ end
 --[[
 	@return Position
 ]]
-function Class.Get(self: PublicTypes.Spring): InternalTypes.Animatable
+function Class.Get(self: Types.Spring): Types.Animatable
 	-- Return the unpacked format for improved clarity
 	return self._type.FromLinear(self._currentLinearPosition)
 end
 
 --[[
-	@param target PublicTypes.State
-	@param springInfo PublicTypes.SpringInfo
-	@return Spring PublicTypes.Spring
+	@param target Types.State
+	@param springInfo Types.SpringInfo
+	@return Spring Types.Spring
 ]]
-local function Spring(springInfo: PublicTypes.SpringInfo): PublicTypes.Spring?
+local function Spring(springInfo: Types.SpringInfo): Types.Spring?
 	-- Checks
 	if not springInfo.State then
 		Debugger.Warn("MissingConstructor", "State")
@@ -152,8 +160,7 @@ local function Spring(springInfo: PublicTypes.SpringInfo): PublicTypes.Spring?
 		return nil
 	end
 
-	local self =
-		setmetatable({} :: InternalTypes.SpringProps, { __index = Class } :: { __index: InternalTypes.SpringFunc })
+	local self = setmetatable({} :: Types.SpringProps, { __index = Class } :: { __index: Types.SpringFunc })
 
 	self.ConstructorClass = "Spring"
 
@@ -163,7 +170,8 @@ local function Spring(springInfo: PublicTypes.SpringInfo): PublicTypes.Spring?
 
 	self._type = Storage.AnimatableDataTypes[Type]
 	self._currentLinearPosition = self._type.ToLinear(self._state:Get())
-	self._velocity = table.create(#self._currentLinearPosition, (springInfo.Velocity or 20))
+
+	self._velocity = table.create(#self._currentLinearPosition, 0)
 
 	return self
 end
