@@ -17,7 +17,8 @@ local State = Aegis.state
 local Spring = Aegis.spring
 
 -- // Created states
-local ButtonState = State(Color3.fromRGB(22, 22, 22))
+local BackgroundState = State(Color3.fromRGB(22, 22, 22))
+local TextState = State(Color3.fromRGB(250, 200, 152))
 local TransparencyState = State(0)
 
 -- // UI
@@ -40,9 +41,14 @@ local ui = new("ScreenGui", {
 				Damping = 0.5,
 				Velocity = 20,
 				Frequency = 1,
-				State = ButtonState,
+				State = BackgroundState,
 			}),
-			TextColor3 = Color3.fromRGB(210, 210, 210),
+			TextColor3 = Spring({
+				Damping = 0.5,
+				Velocity = 20,
+				Frequency = 1,
+				State = TextState,
+			}),
 			Position = UDim2.fromScale(0.5, 0.85),
 			Size = UDim2.fromScale(0.175, 0.075),
 			Text = "Trigger",
@@ -61,12 +67,13 @@ local ui = new("ScreenGui", {
 
 			[Key("Events")] = {
 				MouseEnter = function()
-					print("hi guys")
-					ButtonState:Set(Color3.fromRGB(250, 200, 152))
+					BackgroundState:Set(Color3.fromRGB(250, 200, 152))
+					TextState:Set(Color3.fromRGB(22, 22, 22))
 				end,
 
 				MouseLeave = function()
-					ButtonState:Set(Color3.fromRGB(22, 22, 22))
+					BackgroundState:Set(Color3.fromRGB(22, 22, 22))
+					TextState:Set(Color3.fromRGB(250, 200, 152))
 				end,
 
 				MouseButton1Click = function()

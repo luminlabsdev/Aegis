@@ -58,13 +58,5 @@ function Utils.ApplyProperty(instance: Instance, property: any, value: any)
 	end
 end
 
-function Utils.InverseGammaCorrectD65(c)
-	return c < 0.0404482362771076 and c / 12.92 or 0.87941546140213 * (c + 0.055) ^ 2.4
-end
-
-function Utils.GammaCorrectD65(c)
-	return c < 3.1306684425e-3 and 12.92 * c or 1.055 * c ^ (1 / 2.4) - 0.055
-end
-
 -- // Returning
 return Utils

@@ -7,10 +7,12 @@ local Types = require(script.Types)
 
 -- // Variables
 local Aegis = {
+	-- Constructors
 	new = require(Constructors.new),
 	state = require(Constructors.state),
 	spring = require(Constructors.spring),
 
+	-- Functions
 	Update = require(Functions.Update),
 	Key = require(Functions.Key),
 	RegisterKey = require(Functions.RegisterKey),

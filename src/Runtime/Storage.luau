@@ -1,6 +1,9 @@
 -- // Dependencies
 local Types = require(script.Parent.Parent.Types)
-local Utils = require(script.Parent.Parent.Utility.Utils)
+
+-- // Variables
+local round = math.round
+local abs = math.abs
 
 -- // Variables
 local Storage = {
@@ -66,7 +69,7 @@ local Storage = {
 			end,
 
 			FromLinear = function(value: { number }): Types.Animatable
-				return UDim2.new(value[1], math.round(value[2]), value[3], math.round(value[4]))
+				return UDim2.new(value[1], round(value[2]), value[3], round(value[4]))
 			end,
 		},
 		UDim = {
@@ -75,15 +78,15 @@ local Storage = {
 			end,
 
 			FromLinear = function(value: { number }): Types.Animatable
-				return UDim.new(value[1], math.round(value[2]))
+				return UDim.new(value[1], round(value[2]))
 			end,
 		},
 		Color3 = {
 			ToLinear = function(value: Color3): { number }
-				return { value.R * 255, value.G * 255, value.B * 255 }
+				return { value.R, value.G, value.B }
 			end,
 			FromLinear = function(value: { number }): Types.Animatable
-				return Color3.new(value[1] / 255, value[2] / 255, value[3] / 255)
+				return Color3.new(abs(value[1]), abs(value[2]), abs(value[3]))
 			end,
 		},
 		Vector3int16 = {

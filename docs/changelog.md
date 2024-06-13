@@ -9,11 +9,20 @@ This is a changelog which is changed every update, and we follow semver.
 - Added `Aegis.Update` function.
 - Added `Aegis.UnregisterKey` function.
 - Improved `Aegis.Key` function.
+- Added `Cleanup` key.
 - Added restriction for `table` types for states.
 - Reduced spring memory usage
 - Added more animatable types: `boolean`, `BrickColor`, `CFrame`, `Vector3int16`, `Vector2int16`, `NumberSequence`, `NumberRange` and `Rect`.
 - Types are now properly exported.
-- Made documentation a lot better with in-depth explanation, FAQ, comparisons and tutorials.
+- Made documentation a lot better with in-depth explanation, FAQ, comparisons and tutorials. [TODO]
+
+### Fixes
+
+- Fixed `Color3` spring animation.
+
+### Removed
+
+- `SpringInfo.Velocity`
 
 ## 0.0.3
 

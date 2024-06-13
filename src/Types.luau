@@ -7,6 +7,7 @@ export type Key = {
 export type Constructor = {
 	_init: (self: any, prop: string, instance: Instance) -> (),
 	Get: (self: any) -> any,
+	Destroy: (self: any) -> (),
 	ConstructorClass: string,
 }
 
