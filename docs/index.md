@@ -2,13 +2,21 @@
 # https://vitepress.dev/reference/default-theme-home-page
 layout: home
 
+title: Aegis
+
 hero:
-  text: "Aegis"
+  name: Aegis
   tagline: A simple strictly typed UI framework made specifically for Roblox.
+  image:
+    src: /logo.png
+    alt: Logo
   actions:
     - theme: brand
-      text: Guide
-      link: /guides/introduction/what-is-aegis
+      text: What is Aegis?
+      link: /guide/what-is-aegis
+    - theme: alt
+      text: Quickstart
+      link: /guide/getting-started
     - theme: alt
       text: API Reference
       link: /api/

@@ -6,23 +6,25 @@ local Utils = require(script.Parent.Parent.Utility.Utils)
 	@param instance The instance to update the properties of
 	@return Instance
 ]]
-local function update(instance: Instance, propertyTable: { [any]: any }?): Instance
+local function Update(instance: Instance | { Instance }, propertyTable: { [any]: any }?): Instance | { Instance }
 	propertyTable = propertyTable or {}
 
-	for property: any, value: any in propertyTable :: {} do
-		if property == "Parent" then
-			continue
+	Utils.LoopAndInteract(typeof(instance), instance, function()
+		for property: any, value: any in propertyTable :: {} do
+			if property == "Parent" then
+				continue
+			end
+
+			Utils.ApplyProperty(instance :: Instance, property, value)
 		end
 
-		Utils.ApplyProperty(instance, property, value)
-	end
-
-	if (propertyTable :: any).Parent then
-		Utils.ApplyProperty(instance, "Parent", (propertyTable :: any).Parent)
-	end
+		if (propertyTable :: any).Parent then
+			Utils.ApplyProperty(instance :: Instance, "Parent", (propertyTable :: any).Parent)
+		end
+	end)
 
 	return instance
 end
 
 -- // Returning
-return update
+return Update

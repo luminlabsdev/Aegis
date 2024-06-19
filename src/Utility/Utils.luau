@@ -20,6 +20,7 @@ function Utils.CheckTypeAndCall(expected: any, received: any, interaction: () ->
 			interaction() -- Let the value `nil` to be set to anything
 		else
 			Debugger.Warn("TypeMismatch", typeof(expected), typeof(received))
+			return
 		end
 	end
 end
@@ -54,6 +55,22 @@ function Utils.ApplyProperty(instance: Instance, property: any, value: any)
 		else
 			-- else if the value is a normal data type then
 			Utils.ApplyNormalProperty(instance, property, value)
+		end
+	end
+end
+
+function Utils.LoopAndInteract(type: string, value: any, interaction: () -> (), checkType: boolean?, value2: any?)
+	checkType = checkType or true
+
+	if type == "table" then
+		for _, descendant in value do
+			Utils.LoopAndInteract(type, descendant, interaction, checkType)
+		end
+	elseif type == "Instance" then
+		if checkType == true then
+			Utils.CheckTypeAndCall(value, value2, interaction)
+		else
+			interaction()
 		end
 	end
 end
