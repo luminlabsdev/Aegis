@@ -2,7 +2,7 @@
 
 This is a changelog which is changed every update, and we follow semver.
 
-## [Unreleased - 0.1.0](https://github.com/lumin-dev/Aegis/releases/tag/v0.1.0)
+## [0.1.0](https://github.com/lumin-dev/Aegis/releases/tag/v0.1.0)
 
 ### Improvements
 
