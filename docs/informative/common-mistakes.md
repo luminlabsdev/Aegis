@@ -30,4 +30,4 @@ print(NumVal.Value) -- 1
 
 ---
 
-If you want us to add more common mistakes here in this section, reply at our [DevForum post](https://devforum.roblox.com/t/2985522/1) or at our [Overall discussion on GitHub](about/blank)
+If you want us to add more common mistakes here in this section, reply at our [DevForum post](https://devforum.roblox.com/t/2985522/1)
