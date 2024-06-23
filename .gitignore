@@ -3,3 +3,4 @@ docs/.vitepress/cache
 node_modules
 sourcemap.json
 wally.lock
+Playground.rbxl

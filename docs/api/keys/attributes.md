@@ -6,7 +6,7 @@ Creates attributes of the instance.
 
 The `Attributes` key accepts a dictionary where the index is the name of the attribute and the value will be the value of the attribute.
 
-```lua{4}
+```lua
 local Attributes = Aegis.Key("Attributes")
 
 -- // snip

@@ -8,16 +8,17 @@ The state class of Aegis.
 
 Returns the current value of the state.
 
-**Parameters**
+#### Parameters
 
-- **void**
+- `nil`
 
-**Returns**
+#### Returns
 
-- **any**\
+- `any`\
   The value of the state.
 
-**Example usage:**
+#### Usage:
+
 ::: code-group
 
 ```lua{2} [Test.luau]
@@ -35,17 +36,17 @@ Hello Aegis
 
 Sets a new value of the state.
 
-**Parameters**
+#### Parameters
 
 - **newValue:** `any`\
   The new value to set for the state.
 
-**Returns**
+#### Returns
 
-- **State**\
+- **[State](/api/state)**\
   Returns the state itself.
 
-**Example usage:**
+#### Usage:
 
 ```lua{2}
 local MyState = Aegis.state("Hello Aegis")
@@ -56,17 +57,18 @@ MyState:Set("Hello World") -- new value
 
 Listens to the value change.
 
-**Parameters**
+#### Parameters
 
 - **listenerFunction**: `(newValue: any, oldValue: any) -> ()`\
   The first parameter of the function will be the new value and the second parameter will be the old value.
 
-**Returns**
+#### Returns
 
-- **State**\
+- **[State](/api/state)**\
   Returns the state itself.
 
-**Example usage:**
+#### Usage:
+
 ::: code-group
 
 ```lua{3} [Test.luau]

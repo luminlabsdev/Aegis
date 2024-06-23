@@ -79,6 +79,8 @@ MyState:Set(420.69) -- Warning!
 Expected type (string); received (number)
 ```
 
+:::
+
 If you don't want to protect the type, you have to put `false` in the 2nd parameter when you are creating the state.
 
 ```lua
@@ -116,10 +118,10 @@ After: how are you guys
 ```
 
 :::
-::: info
-The 1st parameter of the attached listener function is the new value
-The 2nd parameter of the attached listener function is the old value
-:::
+
+> [!NOTE] PARAMETERS
+> The 1st parameter of the attached listener function is the new value\
+> The 2nd parameter of the attached listener function is the old value
 
 ## Cleaning up states
 
@@ -129,6 +131,5 @@ Cleaning up/destroying states is pretty easy. Similar to how you destroy instanc
 MyState:Destroy()
 ```
 
-::: info
-When you do this, all the values, indexes and elements inside the state (table) will be cleared and the state's metatable will be removed.
-:::
+> [!NOTE] INFO
+> When you do this, all the values, indexes and elements inside the state (table) will be cleared and the state's metatable will be removed.

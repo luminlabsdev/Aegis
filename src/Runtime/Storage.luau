@@ -12,6 +12,7 @@ local Storage = {
 		Server = { Connection = nil, Active = {} },
 		Client = { Connection = nil, Active = {} },
 	} :: Scheduler,
+	FreeThreads = {} :: { thread },
 	AnimatableDataTypes = {
 		boolean = {
 			ToLinear = function(value: boolean): { number }

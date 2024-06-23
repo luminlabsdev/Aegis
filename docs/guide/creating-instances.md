@@ -15,6 +15,7 @@ local Aegis = require(path.to.Aegis)
 local MenuUI = Aegis.new("ScreenGui", {
 	Name = "MenuGUI",
 	IgnoreGuiInset = true,
+	Parent = Player:WaitForChild("PlayerGui"),
 	...
 })
 ```
@@ -36,10 +37,11 @@ Aegis.new("ScreenGui",
 	{
 		Name = "MenuGUI",
 		IgnoreGuiInset = true,
+		Parent = Player:WaitForChild("PlayerGui"),
 	} -- property table
 )
 ```
 
-#### [INPUT PICTURE OF APPLIED PROPS HERE]
+<img src="../images/instance-props.png" width="60%"/>
 
 And that is really how you create instances using Aegis!

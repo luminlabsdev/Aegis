@@ -2,6 +2,7 @@
 local Utility = script.Parent
 
 -- // Dependencies
+local Storage = require(script.Parent.Parent.Runtime.Storage)
 local Types = require(script.Parent.Parent.Types)
 local Debugger = require(Utility.Debugger)
 local Is = require(Utility.Is)
@@ -9,7 +10,19 @@ local Is = require(Utility.Is)
 -- // Variables
 local Utils = {}
 
--- // Functions
+-- // Private Functions
+local function RunCallback(callback, thread, ...)
+	callback(...)
+	table.insert(Storage.FreeThreads, thread)
+end
+
+local function Yielder()
+	while true do
+		RunCallback(coroutine.yield())
+	end
+end
+
+-- // Public Functions
 function Utils.CheckTypeAndCall(expected: any, received: any, interaction: () -> ()): ()
 	-- Use `Is.TypeSame(expected, received)` to check if type matches.
 	-- If it doesn't match, warn it.
@@ -59,20 +72,19 @@ function Utils.ApplyProperty(instance: Instance, property: any, value: any)
 	end
 end
 
-function Utils.LoopAndInteract(type: string, value: any, interaction: () -> (), checkType: boolean?, value2: any?)
-	checkType = checkType or true
+--[[ Forked from red-blox's bin library ]]
+function Utils.Spawn(callback: () -> (), ...)
+	local Thread
 
-	if type == "table" then
-		for _, descendant in value do
-			Utils.LoopAndInteract(type, descendant, interaction, checkType)
-		end
-	elseif type == "Instance" then
-		if checkType == true then
-			Utils.CheckTypeAndCall(value, value2, interaction)
-		else
-			interaction()
-		end
+	if #Storage.FreeThreads > 0 then
+		Thread = Storage.FreeThreads[#Storage.FreeThreads]
+		Storage.FreeThreads[#Storage.FreeThreads] = nil
+	else
+		Thread = coroutine.create(Yielder)
+		coroutine.resume(Thread)
 	end
+
+	task.spawn(Thread, callback, Thread, ...)
 end
 
 -- // Returning

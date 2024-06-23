@@ -1,5 +1,5 @@
 {
-	"name": "aegis-dev",
+	"name": "aegis-dev-0.1.0",
 	"tree": {
 		"$className": "DataModel",
 		"ReplicatedStorage": {
@@ -9,6 +9,9 @@
 				"Aegis": {
 					"$path": "src"
 				}
+			},
+			"DevPackages": {
+				"$path": "DevPackages"
 			}
 		},
 		"ServerScriptService": {

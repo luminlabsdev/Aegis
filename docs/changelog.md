@@ -2,7 +2,7 @@
 
 This is a changelog which is changed every update, and we follow semver.
 
-## Unreleased - 0.1.0
+## [Unreleased - 0.1.0](https://github.com/lumin-dev/Aegis/releases/tag/v0.1.0)
 
 ### Improvements
 
@@ -26,18 +26,18 @@ This is a changelog which is changed every update, and we follow semver.
 
 - `SpringInfo.Velocity`
 
-## 0.0.3
+## [0.0.3](https://github.com/lumin-dev/Aegis/releases/tag/v0.0.3)
 
 ### Improvements
 
 - Fix documentation
 
-## 0.0.2
+## [0.0.2](https://github.com/lumin-dev/Aegis/releases/tag/v0.0.2)
 
 ### Improvements
 
 - Fixed documentation page and wally package
 
-## 0.0.1
+## [0.0.1](https://github.com/lumin-dev/Aegis/releases/tag/v0.0.1)
 
 - Released [Aegis](/)!

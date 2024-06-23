@@ -2,7 +2,7 @@
 
 Aegis has some pre-made tables to be used as indexes of tables when creating/updating properties of instances. These are known as **keys**. With keys, you're able to modify properties or more specifically, do anything you want!
 
-- List of keys provided by Aegis: [List of keys](/api/keys/#list-of-keys)
+- More: [List of default keys](/api/keys/#list-of-default-keys)
 
 ## Using keys
 

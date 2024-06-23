@@ -1,10 +1,10 @@
 [package]
 name = "lumin/aegis"
 description = "A simple strictly typed UI framework made specifically for Roblox"
-version = "0.0.3"
+version = "0.1.0"
 license = "MIT"
-registry = "https://github.com/UpliftGames/wally-index"
 realm = "shared"
+registry = "https://github.com/UpliftGames/wally-index"
 
 exclude = ["**"]
 include = [

@@ -6,7 +6,7 @@ Tracks changes of a property change of the instance.
 
 The `Changes` key accepts a dictionary where the index is the name of the property and the value will be a function that will be fired when the property is changed.
 
-```lua{4}
+```lua
 local Changes = Aegis.Key("Changes")
 
 -- // snip

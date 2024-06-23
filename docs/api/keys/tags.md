@@ -6,7 +6,7 @@ Specifies tags to the instance.
 
 The `Tags` key accepts a table where the value will be the tag attached to the instance.
 
-```lua{4}
+```lua
 local Tags = Aegis.Key("Tags")
 
 -- // snip

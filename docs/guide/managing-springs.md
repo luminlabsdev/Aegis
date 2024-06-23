@@ -23,9 +23,12 @@ Besides the state, there are some other values you can set. Check the [SpringInf
 
 To attach your created spring to an instance, you have to set it via the `new` constructor / `Update` function. Example usage:
 
-```lua
+```lua{5}
 local AegisPart = Aegis.new("Part", {
-	Position = MySpring,
+	Size = Vector3.new(4, 4, 4),
+	Anchored = true,
+	Parent = workspace,
+	Position = CustomSpring,
 })
 ```
 
@@ -59,5 +62,16 @@ local CustomSpring = Aegis.spring({
 
 ## Getting the value of the spring
 
-Similar to "states", you use the `Get` method to get the current state of the spring.
+Similar to [states](/api/state), you use the `Get` method to get the current state of the spring.
 Example usage isn't provided since the value of spring always keeps on changing.
+
+## Cleaning up springs
+
+Similar to [states](/api/state), you use the `Destroy` method to clean up the spring.
+
+```lua
+CustomSpring:Destroy()
+```
+
+> [!NOTE] INFO
+> When you do this, all the values, indexes and elements inside the state (table) will be cleared, connections will be disconnected and the spring's metatable will be removed.

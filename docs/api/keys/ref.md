@@ -6,7 +6,7 @@ Sets the instance to the reference state.
 
 The `Ref` key accepts a [`State`](/api/state) class.
 
-```lua{5}
+```lua
 local Ref = Aegis.Key("Ref")
 local RefState = Aegis.state() -- Leaving the initial value nil
 

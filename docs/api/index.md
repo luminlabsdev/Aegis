@@ -2,88 +2,27 @@
 
 The top-level of Aegis table.
 
-## Functions
-
-### `Key`
-
-Indexes a registered key.
-
-**Parameters**
-
-- **keyName:** `string`\
-  The name of the key you want to index.
-
-**Returns**
-
-- **Key?**\
-  The key object associated with the given key name. If the key does not exist, it returns `nil`.
-
-**Example usage:**
-
-```lua{1,4}
-local Key = Aegis.Key
-
-Aegis.new("Frame", {
-	[Key("Children")] = { Instance }, -- indexing the `Children` key
-})
-```
-
-### `RegisterKey`
-
-Registers a new key.
-
-**Parameters**
-
-- **key:** `Key`\
-  An Aegis key object to be registered.
-
-**Returns**
-
-- **Key?**\
-  It registers the key and the returns the registered key. Else, it logs a warning if the key is invalid or already exists.
-
-**Example usage:**
-
-::: code-group
-
-```lua{1,9} [Test.luau]
-local Indexer = Aegis.RegisterKey({
-	KeyName = "Indexer",
-	ApplyKey = function(instance: Instance, value: any)
-		print("This key was indexed!")
-	end,
-}) -- Registering a new key
-
-Aegis.new("Frame", {
-	[Indexer] = { Instance },
-})
-```
-
-```txt [Output]
-This key was indexed!
-```
-
-:::
+## Constructors
 
 ### `new`
 
 Creates a new instance with the specified `ClassName` and property table.
 
-**Parameters**
+#### Parameters
 
 - **className:** `string`\
   Class name of the instance to be created.
 - **propertyTable:** `{ [any]: any }?`\
   Table of properties to be applied to the instance. **(Optional)**
 
-**Returns**
+#### Returns
 
-- Instance?\
+- **[Instance](https://create.roblox.com/docs/reference/engine/classes/Instance)?**\
   The instance that was created. If it failed, it will give a warning.
 
-**Example usage:**
+#### Usage:
 
-```lua{1}
+```lua
 local LoadingBar = Aegis.new("Frame", {
 	Name = "LoadingBar",
 	AnchorPoint = Vector2.new(0.5, 0.5),
@@ -92,11 +31,13 @@ local LoadingBar = Aegis.new("Frame", {
 }) -- Creates a frame and returns it
 ```
 
+---
+
 ### `state`
 
 Creates a new state class.
 
-**Parameters**
+#### Parameters
 
 - **initialState:** `any`\
   The initial value to pass to the state.
@@ -104,52 +45,161 @@ Creates a new state class.
 - **protectType:** `boolean?`\
   Whether to protect the type of the state when changing values.
 
-**Returns**
+#### Returns
 
-- **State**\
+- **[State](/api/state)**\
   The state class that was created.
 
-**Example usage:**
-::: code-group
-
-```lua [Test.luau]
-local MyState = Aegis.state(1)
-print(MyState:Get())
-MyState:Set(2)
-print(MyState:Get())
-```
-
-```txt [Output]
-1
-2
-```
-
-:::
+---
 
 ### `spring`
 
 Creates a new spring class.
-**Parameters**
 
-- **springInfo:** `SpringInfo`\
+#### Parameters
+
+- **springInfo:** **[SpringInfo](/api/#springinfo)**\
   The information required to create the spring.
 
-**Returns**
+#### Returns
 
-- **Spring?**\
+- **[Spring](/api/spring)?**\
   The spring class that was created.
 
-**Example usage:**
+## Functions
 
-```lua{3,10}
-local MyState = Aegis.state(UDim2.new(0, 100, 0, 100))
+### `Update`
 
-local MySpring = Aegis.spring({
-	Damping = 1,
-	Frequency = 3,
-	Velocity = 20,
-	State = MyState,
-})
+Update instance's properties.
 
-MyState:Set(UDim2.new(0, 200, 0, 200)) -- The spring updates!
+#### Parameters
+
+- **instance:** `Instance | { Instance }`\
+  A singular instance or a table of instances
+- **propertyTable:** `{ [any]: any }?`
+  Table of properties to be applied to the specified instance(s).
+
+#### Returns
+
+- **[Instance](https://create.roblox.com/docs/reference/engine/classes/Instance)**\
+  The specified instance(s).
+
+---
+
+### `Key`
+
+Indexes a registered key.
+
+#### Parameters
+
+- **keyName:** `string`\
+  The name of the key you want to index.
+
+#### Returns
+
+- **[Key](/api/keys/)?**\
+  The key object associated with the given key name. If the key does not exist, it returns `nil`.
+
+---
+
+### `RegisterKey`
+
+Registers a new key.
+
+#### Parameters
+
+- **key:** [Key](/api/keys/)\
+  An Aegis key object to be registered.
+
+#### Returns
+
+- **[Key](/api/keys/)?**\
+  It registers the key and the returns the registered key. Else, it logs a warning if the key is invalid or already exists.
+
+---
+
+### `UnregisterKey`
+
+Removes a registered key.
+
+#### Parameters
+
+- **key:** `string |` [Key](/api/keys/)\
+  The name of the key or the key itself to be removed.
+
+#### Returns
+
+- **nil**\
+  Returns nil as the key is removed.
+
+## Types
+
+### `SpringInfo`
+
+```lua
+export type SpringInfo = {
+	Damping: number?,
+	Frequency: number?,
+	State: State,
+}
+```
+
+---
+
+### `Key`
+
+```lua
+export type Key = {
+	KeyName: string,
+	ApplyKey: (instance: Instance, value: any) -> (),
+}
+```
+
+---
+
+### `State`
+
+```lua
+export type State = {
+	ConstructorClass: "State",
+	Get: (self: State) -> any,
+	Set: (self: State, newValue: any) -> State,
+	Listen: (self: State, fn: (oldValue: any, newValue: any) -> ()) -> State,
+	Destroy: (self: State) -> (),
+}
+```
+
+---
+
+### `Spring`
+
+```lua
+export type Spring = {
+	ConstructorClass: "Spring",
+	Get: (self: Spring) -> any,
+	Destroy: (self: Spring) -> (),
+}
+```
+
+---
+
+### `Animatable`
+
+```lua
+export type Animatable =
+	boolean
+	| number
+	| BrickColor
+	| CFrame
+	| Vector3
+	| Vector2
+	| UDim2
+	| UDim
+	| Color3
+	| Vector3int16
+	| Vector2int16
+	| ColorSequence
+	| NumberSequence
+	| NumberRange
+	| Rect
 ```

@@ -8,24 +8,17 @@ local Packages = ReplicatedStorage.Packages
 local Aegis = require(Packages.Aegis)
 
 -- // Variables
-local SprTest = Aegis.state(Color3.fromRGB(255, 0, 0))
+local MyState = Aegis.state(Vector3.new(0, 5, 0))
+local CustomSpring = Aegis.spring({ State = MyState })
 
 -- // Main
-Aegis.new("Part", {
-	Parent = workspace,
-	Position = Vector3.new(0, 5, 0),
+local AegisPart = Aegis.new("Part", {
 	Size = Vector3.new(4, 4, 4),
 	Anchored = true,
-	CanCollide = true,
-	Color = Aegis.spring({ State = SprTest, Damping = 0.3, Frequency = 1.3 }),
-
-	[Aegis.Key("Children")] = {
-		Aegis.new("ProximityPrompt", {
-			[Aegis.Key("Events")] = {
-				Triggered = function(player: Player)
-					SprTest:Set(BrickColor.random().Color)
-				end,
-			},
-		}),
-	},
+	Parent = workspace,
+	Position = CustomSpring,
 })
+
+while task.wait(0.5) do
+	MyState:Set(Vector3.new(0, math.random(5, 10), 0))
+end

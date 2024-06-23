@@ -6,9 +6,8 @@ Keys are customizable. As Aegis provides you with the ability to modify keys how
 
 Now that you're familiar with how keys work, you might think of how you can create your own keys. No matter, because Aegis has a `RegisterKey` function which allows you to create your own keys!
 
-::: warning
-You cannot have multiple keys with the same name.
-:::
+> [!WARNING]
+> You cannot have multiple keys with the same name.
 
 Let's create a key which will print out the instance's name.
 

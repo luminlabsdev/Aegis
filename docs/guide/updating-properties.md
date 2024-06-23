@@ -10,19 +10,19 @@ Order of parameters in `Update` function:
 Example usage:
 
 ```lua{5-8}
-local ExistingInstance = PlayerGui:WaitForChild("LoadingGui")
+local ExistingInstance = PlayerGui:WaitForChild("LoadingGUI")
 
 -- code
 
 Aegis.Update(ExistingInstance, {
-	Name = "MenuGui",
+	Name = "MenuGUI",
 	IgnoreGuiInset = true,
 })
 ```
 
 Here, the first parameter of the `Update` function is the instance whose properties you want to update.
 
-#### [INPUT PICTURE OF BEFORE AND AFTER UPDATE HERE]
+<img src="../images/update-props.png" width="120%"/>
 
 Now, what if you want to update the same properties for some instances? Well, no worries! You can even use the 1st parameter of the `Update` function as a table of instances!
 
@@ -38,6 +38,5 @@ Aegis.Update(
 )
 ```
 
-::: warning
-The formatting shown above in the code is bad practice. It was only done to separate the line being explained from the other lines.
-:::
+> [!WARNING]
+> The formatting shown above in the code is bad practice. It was only done to separate the line being explained from the other lines.

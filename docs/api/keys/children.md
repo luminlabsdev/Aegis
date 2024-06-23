@@ -6,7 +6,7 @@ Adds descendant instances to parent instance.
 
 The `Children` key can be defined as a table of instances as the following:
 
-```lua{4}
+```lua
 local Children = Aegis.Key("Children")
 
 -- // snip

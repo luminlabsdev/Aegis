@@ -10,6 +10,6 @@ Aegis is a lightweight and strictly typed UI framework specifically designed for
 
 ## Key Features
 
-- **Services**: Aegis offers a set of services that provides extensive controls over instances.
+- **Constructors**: Aegis offers a set of constructors that provides users extensive controls over instances.
 - **Special keys**: Special keys offer the ability to manage instances while inside the scope.
 - **Custom keys**: Aegis provides developers the ability to create their own special keys with their creative ideas.
