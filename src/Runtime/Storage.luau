@@ -40,10 +40,23 @@ local Storage = {
 		},
 		CFrame = {
 			ToLinear = function(value: CFrame): { number }
-				return { value.Position.X, value.Position.Y, value.Position.Z }
+				return table.pack(value:GetComponents())
 			end,
 			FromLinear = function(value: { number }): Types.Animatable
-				return CFrame.new(value[1], value[2], value[3])
+				return CFrame.new(
+					value[1],
+					value[2],
+					value[3],
+					value[4],
+					value[5],
+					value[6],
+					value[7],
+					value[8],
+					value[9],
+					value[10],
+					value[11],
+					value[12]
+				)
 			end,
 		},
 		Vector3 = {

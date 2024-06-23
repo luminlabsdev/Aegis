@@ -8,11 +8,22 @@
 :root {
   --vp-font-family-base: Poppins;
   --vp-font-family-mono: "JetBrains Mono";
+
   --vp-c-bg: #e6e6e6;
   --vp-c-bg-alt: #d2d2d2;
   --vp-c-brand-1: #e69a67;
   --vp-c-brand-2: #e69525;
   --vp-c-brand-3: #ff8547;
+
+  --vp-home-hero-image-filter: blur(44px);
+  --vp-border-width: 5px;
+  --vp-border-radius: 15px;
+
+  --vp-custom-block-warning-border: var(--vp-c-yellow-soft);
+  --vp-custom-block-warning-bg: var(--vp-c-warning-soft);
+
+  --vp-custom-block-info-border: var(--vp-c-default-soft);
+  --vp-custom-block-info-bg: var(--vp-c-default-soft);
 
   --vp-home-hero-name-color: transparent;
   --vp-home-hero-name-background: -webkit-linear-gradient(
@@ -25,15 +36,6 @@
     #e69a67 30%,
     #ff8547
   );
-  --vp-home-hero-image-filter: blur(44px);
-  --vp-border-width: 5px;
-  --vp-border-radius: 15px;
-
-  --vp-custom-block-warning-border: var(--vp-c-yellow-soft);
-  --vp-custom-block-warning-bg: var(--vp-c-warning-soft);
-
-  --vp-custom-block-info-border: var(--vp-c-default-soft);
-  --vp-custom-block-info-bg: var(--vp-c-default-soft);
 }
 
 /* Applying separate properties for dark theme */
@@ -44,8 +46,6 @@
   --vp-c-brand-2: #ffb347;
   --vp-c-brand-3: #ff8547;
 
-  --vp-home-hero-name-color: transparent;
-  --vp-home-hero-image-filter: blur(44px);
   --vp-home-hero-name-background: -webkit-linear-gradient(
     180deg,
     #fac898,
@@ -53,7 +53,7 @@
   );
   --vp-home-hero-image-background-image: -webkit-linear-gradient(
     120deg,
-    #e69a67,
+    #fac898,
     #ff8547
   );
 }

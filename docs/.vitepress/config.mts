@@ -10,10 +10,6 @@ export default defineConfig({
 	lastUpdated: true,
 	lang: 'en-us',
 
-	markdown: {
-		math: true,
-	},
-
 	themeConfig: {
 		nav: nav(),
 		sidebar: {
@@ -24,7 +20,7 @@ export default defineConfig({
 
 		outline: [2, 3],
 		search: { provider: 'local' },
-		logo: { src: '/images/logo.png', width: 24, height: 24 },
+		logo: { src: '/images/logo.png', width: 20, height: 33.8 },
 		editLink: { pattern: 'https://github.com/lumin-dev/Aegis/edit/main/docs/:path' },
 
 		footer: {
