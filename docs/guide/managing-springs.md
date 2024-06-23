@@ -17,7 +17,7 @@ local MyState = Aegis.state(Vector3.new(0, 5, 0))
 local CustomSpring = Aegis.spring({ State = MyState })
 ```
 
-Besides the state, there are some other values you can set. Check the [SpringInfo](/api/springinfo) for more info.
+Besides the state, there are some other values you can set. Check the [SpringInfo](/api/#springinfo) for more info.
 
 ## Setting spring to instance
 
