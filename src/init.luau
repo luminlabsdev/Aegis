@@ -11,6 +11,7 @@ local Aegis = {
 	new = require(Constructors.new),
 	state = require(Constructors.state),
 	spring = require(Constructors.spring),
+	compute = require(Constructors.compute),
 
 	-- Functions
 	Update = require(Functions.Update),
@@ -28,7 +29,9 @@ end
 export type Key = Types.Key
 export type State = Types.State
 export type Spring = Types.Spring
+export type Compute = Types.Compute
 export type SpringInfo = Types.SpringInfo
 export type Animatable = Types.Animatable
+export type DefaultKeys = Types.DefaultKeys
 
 return table.freeze(Aegis)

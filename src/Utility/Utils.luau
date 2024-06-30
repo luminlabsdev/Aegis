@@ -87,5 +87,10 @@ function Utils.Spawn(callback: () -> (), ...)
 	task.spawn(Thread, callback, Thread, ...)
 end
 
+function Utils.CleanMetatable(t)
+	table.clear(t) -- Clears out the table contents
+	setmetatable(t, nil) -- Removes the attached metatable
+end
+
 -- // Returning
 return Utils

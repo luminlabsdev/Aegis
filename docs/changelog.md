@@ -2,6 +2,23 @@
 
 This is a changelog which is changed every update, and we follow semver.
 
+## [Unreleased - 0.2.0](https://github.com/lumin-dev/Aegis/releases/tag/v0.2.0)
+
+### Improvements
+
+- Added a 3rd parameter `childrenTable` for `new` constructor
+- Added `Spring:Destroy()` method.
+- `State:Listen(...)` now returns a function to disconnect the listener.
+- Types of default keys are added to `Key` function.
+
+### Removed
+
+- `Children` key.
+
+### Fixes
+
+- Fixed `State` object's listener function's value order being typed wrong.
+
 ## [0.1.0](https://github.com/lumin-dev/Aegis/releases/tag/v0.1.0)
 
 ### Improvements
@@ -15,7 +32,7 @@ This is a changelog which is changed every update, and we follow semver.
 - Improved `Aegis.Key` function.
 - Reduced spring memory usage
 - Types are now properly exported.
-- Made documentation a lot better with in-depth explanation, FAQ, comparisons and tutorials. [TODO]
+- Made documentation a lot better with in-depth explanation, FAQ, comparisons and tutorials.
 
 ### Fixes
 

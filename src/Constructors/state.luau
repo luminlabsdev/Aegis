@@ -5,20 +5,12 @@ local Utility = script.Parent.Parent.Utility
 local Types = require(script.Parent.Parent.Types)
 local Debugger = require(Utility.Debugger)
 local Is = require(Utility.Is)
+local Utils = require(Utility.Utils)
 
 -- // Variables
 local Class = {} :: Types.StateFunc
 
 -- // Functions
-
---[[
-	Created this function to avoid typechecking errors
-]]
-local function CleanTable(t)
-	table.clear(t) -- Clears out the table contents
-	setmetatable(t, nil) -- Removes the attached metatable
-end
-
 --[[
 	@return T
 ]]
@@ -64,13 +56,23 @@ function Class.Set(self: Types.State, newValue: any): Types.State
 end
 
 --[[
-	@param fn The listener function that the paths will listen to.
-	@return State
+	@param listenerFunction The listener function that the paths will listen to.
+	@return function A function that will disconnect the provided listener function.
 ]]
-function Class.Listen(self: Types.State, listenerFunction: (newValue: any, oldValue: any) -> ()): Types.State
+function Class.Listen(self: Types.State, listenerFunction: (newValue: any, oldValue: any) -> ()): () -> ()
 	table.insert(self._listeners, listenerFunction) -- Add a listener
 
-	return self
+	-- Disconnecting function
+	return function()
+		local FoundListener = table.find(self._listeners, listenerFunction)
+
+		if FoundListener then
+			table.remove(self._listeners, FoundListener)
+		else
+			Debugger.Warn("CannotFindIndex", "State:Listen(...)")
+			return
+		end
+	end
 end
 
 function Class._init(self: Types.State, prop: string, instance: Instance)
@@ -85,7 +87,7 @@ end
 	@return nil
 ]]
 function Class.Destroy(self: Types.State): nil
-	CleanTable(self :: any)
+	Utils.CleanMetatable(self :: any)
 	return nil
 end
 
@@ -104,7 +106,7 @@ local function state(initialState: any, protectType: boolean?): Types.State
 
 	local self = setmetatable({} :: Types.StateProps, { __index = Class } :: { __index: Types.StateFunc })
 
-	self.ConstructorClass = "State"
+	self.ConstructorClass = "state"
 	self._state = initialState
 	self._listeners = {}
 	self._protectType = protectType or true

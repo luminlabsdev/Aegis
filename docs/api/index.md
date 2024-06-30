@@ -161,7 +161,7 @@ export type Key = {
 
 ```lua
 export type State = {
-	ConstructorClass: "State",
+	ConstructorClass: "state",
 	Get: (self: State) -> any,
 	Set: (self: State, newValue: any) -> State,
 	Listen: (self: State, fn: (oldValue: any, newValue: any) -> ()) -> State,
@@ -175,7 +175,7 @@ export type State = {
 
 ```lua
 export type Spring = {
-	ConstructorClass: "Spring",
+	ConstructorClass: "spring",
 	Get: (self: Spring) -> any,
 	Destroy: (self: Spring) -> (),
 }

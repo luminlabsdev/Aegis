@@ -5,7 +5,7 @@ local Types = require(script.Parent.Parent.Types)
 local Is = {}
 
 -- // Functions
-function Is.AegisConstructor<T>(t: Types.Constructor)
+function Is.AegisConstructor(t: Types.Constructor)
 	return if type(t) == "table" and t.ConstructorClass and t._init and t.Get then true else false
 end
 

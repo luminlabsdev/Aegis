@@ -7,17 +7,19 @@
 local RunService = game:GetService("RunService")
 
 -- // Folders
-local Runtime = script.Parent.Parent.Runtime
-local Utility = script.Parent.Parent.Utility
+local Aegis = script.Parent.Parent
+local Runtime = Aegis.Runtime
+local Utility = Aegis.Utility
 
 -- // Dependencies
 local Scheduler = require(Runtime.Scheduler)
 local Storage = require(Runtime.Storage)
 
 local Debugger = require(Utility.Debugger)
+local Utils = require(Utility.Utils)
 local Is = require(Utility.Is)
 
-local Types = require(script.Parent.Parent.Types)
+local Types = require(Aegis.Types)
 
 -- // Variables
 local Class = {} :: Types.SpringFunc
@@ -42,15 +44,19 @@ local function IsSpringSettled(currentLinearPosition: { number }, targetLinearPo
 	return true
 end
 
-function Class._init(self: Types.Spring, prop: string, instance: Instance): ()
+function Class._init(self: Types.Spring, prop: string, instance: Instance)
 	local Mode = RunService:IsClient() and "Client" or "Server"
 	local Connection: ((number) -> ())?
 
-	local TargetLinearPosition = self._type.ToLinear(self._state:Get());
-	(instance :: any)[prop] = self._state:Get()
+	local TargetLinearPosition = self._type.ToLinear(self._state:Get())
+	local CurrentValue = self._state:Get()
+
+	if CurrentValue ~= nil then
+		(instance :: any)[prop] = CurrentValue
+	end
 	self._currentLinearPosition = TargetLinearPosition
 
-	self._state:Listen(function(newValue): ()
+	self._state:Listen(function(newValue)
 		TargetLinearPosition = self._type.ToLinear(newValue)
 
 		if Connection ~= nil then
@@ -58,7 +64,7 @@ function Class._init(self: Types.Spring, prop: string, instance: Instance): ()
 		end
 
 		if not Connection then
-			Connection = Scheduler:Add(Mode, function(delta: number): ()
+			Connection = Scheduler:Add(Mode, function(delta: number)
 				self:_update(TargetLinearPosition, delta);
 				(instance :: any)[prop] = self._type.FromLinear(self._currentLinearPosition)
 
@@ -76,7 +82,7 @@ function Class._init(self: Types.Spring, prop: string, instance: Instance): ()
 	end)
 end
 
-function Class._update(self: Types.Spring, targetLinearPosition: { number }, delta: number): ()
+function Class._update(self: Types.Spring, targetLinearPosition: { number }, delta: number)
 	for index = 1, #targetLinearPosition do
 		-- DO NOT CHANGE ANYTHING IN THE CALCULATION UNLESS YOU KNOW WHAT YOU ARE DOING
 		--[[
@@ -137,39 +143,41 @@ function Class.Get(self: Types.Spring): Types.Animatable
 end
 
 --[[
+	@return nil
+]]
+function Class.Destroy(self: Types.Spring): nil
+	self._state:Destroy()
+	Utils.CleanMetatable(self :: any)
+	return nil
+end
+
+--[[
 	@param target Types.State
 	@param springInfo Types.SpringInfo
-	@return Spring Types.Spring
+	@return spring Types.Spring
 ]]
-local function Spring(springInfo: Types.SpringInfo): Types.Spring?
+local function spring(springInfo: Types.SpringInfo): Types.Spring
 	-- Checks
-	if not springInfo.State then
-		Debugger.Warn("MissingConstructor", "State")
-		return nil
+	if Is.AegisConstructor(springInfo.State :: any) == false then
+		Debugger.Error("TypeMismatch", "Aegis.State", typeof(springInfo.State))
 	end
 
-	if not Is.AegisConstructor(springInfo.State :: any) then
-		Debugger.Warn("TypeMismatch", "Aegis.State", typeof(springInfo.State))
-		return nil
-	end
+	local Type = Storage.AnimatableDataTypes[typeof(springInfo.State:Get())]
 
-	local Type = typeof(springInfo.State:Get())
-
-	if not Storage.AnimatableDataTypes[Type] then
-		Debugger.Warn("NotAnimatable", Type)
-		return nil
+	if not Type then
+		Debugger.Error("NotAnimatable", typeof(springInfo.State:Get()))
 	end
 
 	local self = setmetatable({} :: Types.SpringProps, { __index = Class } :: { __index: Types.SpringFunc })
 
-	self.ConstructorClass = "Spring"
+	self.ConstructorClass = "spring"
 
 	self._damping = springInfo.Damping or 1
 	self._frequency = springInfo.Frequency or 1
 	self._state = springInfo.State
 
-	self._type = Storage.AnimatableDataTypes[Type]
-	self._currentLinearPosition = self._type.ToLinear(self._state:Get())
+	self._type = Type
+	self._currentLinearPosition = self._type.ToLinear(springInfo.State:Get())
 
 	self._velocity = table.create(#self._currentLinearPosition, 0)
 
@@ -177,4 +185,4 @@ local function Spring(springInfo: Types.SpringInfo): Types.Spring?
 end
 
 -- // Returning
-return Spring
+return spring

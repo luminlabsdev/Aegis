@@ -1,4 +1,5 @@
 -- // Variables
+local Debugger = {}
 local Logs = {
 	TypeMismatch = "Expected type (%s); received (%s)",
 	MissingChild = "Could not find (%s) in (%s).",
@@ -8,9 +9,9 @@ local Logs = {
 	FailedToRegisterKey = "Failed to register key. Reason: %s",
 	KeyNotFound = "Key (%s) isn't registered.",
 	MissingConstructor = "Missing a Aegis.%s constructor.",
-	NotAnimatable = "Data type (%s) is not animatable.",
+	NotAnimatable = "Data type (%s) is not animatable. Change to an animatable data type.",
+	CannotFindIndex = "Cannot find index (%s)",
 }
-local Debugger = {}
 
 -- // Functions
 function Debugger.Warn(id: string, ...: any)

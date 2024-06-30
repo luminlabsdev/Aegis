@@ -1,32 +1,25 @@
 -- // Services
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local Players = game:GetService("Players")
-
--- // Folders
-local Packages = ReplicatedStorage.Packages
 
 -- // Dependencies
-local Aegis = require(Packages.Aegis)
+local Theme = require(ReplicatedStorage.Theme)
+local Aegis = require(ReplicatedStorage.Packages.Aegis)
 
 -- // Variables
-local Player = Players.LocalPlayer
-
 local new = Aegis.new
-local Key = Aegis.Key
-local State = Aegis.state
-local Spring = Aegis.spring
+local Children = Aegis.Key("Children")
 
 -- // UI
-local LoadingGUI = Aegis.new("ScreenGui", {
-	Name = "LoadingGUI",
-	IgnoreGuiInset = false,
-	Parent = Player:WaitForChild("PlayerGui"),
-})
-
-task.wait(10)
-print("changing")
-
-Aegis.Update(LoadingGUI, {
-	Name = "MenuGUI",
+new("ScreenGui", {
+	Name = "Menu",
 	IgnoreGuiInset = true,
+	Parent = game:GetService("StarterGui"),
+	[Children] = {
+		new("TextButton", {
+			AnchorPoint = Vector2.new(0.5, 0.5),
+			Position = UDim2.fromScale(0.5, 0.65),
+			Size = UDim2.fromScale(0.25, 0.1),
+			BackgroundColor3 = Theme.Dark.BackgroundMain,
+		}),
+	},
 })

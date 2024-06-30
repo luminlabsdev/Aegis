@@ -1,7 +1,27 @@
 {
-	"name": "aegis-dev-0.1.0",
+	"name": "aegis-test-0.2.0",
 	"tree": {
 		"$className": "DataModel",
+		"Lighting": {
+			"$path": "tests/lighting",
+			"$properties": {
+				"Technology": "Future",
+				"Ambient": {
+					"Color3": [
+						0.470588,
+						0.470588,
+						0.470588
+					]
+				},
+				"OutdoorAmbient": {
+					"Color3": [
+						0.470588,
+						0.470588,
+						0.470588
+					]
+				}
+			}
+		},
 		"ReplicatedStorage": {
 			"$path": "tests/shared",
 			"Packages": {
@@ -9,9 +29,6 @@
 				"Aegis": {
 					"$path": "src"
 				}
-			},
-			"DevPackages": {
-				"$path": "DevPackages"
 			}
 		},
 		"ServerScriptService": {

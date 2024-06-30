@@ -10,7 +10,7 @@ local Types = require(script.Parent.Parent.Types)
 return {
 	KeyName = "Ref",
 	ApplyKey = function(instance: Instance, value: any)
-		if Is.AegisConstructor(value) == true and (value :: Types.Constructor).ConstructorClass == "State" then
+		if Is.AegisConstructor(value) == true and (value :: Types.Constructor).ConstructorClass == "state" then
 			value:Set(instance)
 		else
 			Debugger.Warn("ServiceExpected", "state", typeof(value))
