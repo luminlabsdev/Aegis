@@ -46,7 +46,7 @@ Now that you have set the part's position to follow the spring's value, every ti
 MyState:Set(Vector3.new(0, math.random(5, 10), 0))
 ```
 
-#### [INPUT VIDEO OF THE SPRING HERE]
+<video src="../media/spr-preview.mp4" controls/>
 
 ## Customizing the spring
 

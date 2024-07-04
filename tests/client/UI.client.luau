@@ -16,7 +16,7 @@ local new = Aegis.new
 new("ScreenGui", {
 	Name = "MenuUI",
 	IgnoreGuiInset = true,
-	Parent = Player:WaitForChild("PlayerGui"),
+	-- Parent = Player:WaitForChild("PlayerGui"),
 }, {
 	Background = new("Frame", {
 		AnchorPoint = Vector2.new(0.5, 0.5),

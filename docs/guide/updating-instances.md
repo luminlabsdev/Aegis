@@ -43,7 +43,7 @@ Update(UI,
 
 - [Similar to `new` constructor](/guide/new-instances#explanation)
 
-<img src="../images/update-props.png" width="120%"/>
+<img src="../media/update-props.png" width="120%"/>
 
 ::: info
 The only difference of the `Update` function from the `new` constructor is the 1st parameter where in `new`, the first parameter is the class name and in `Update`, the first parameter is an Instance.

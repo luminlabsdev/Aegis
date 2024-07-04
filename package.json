@@ -1,6 +1,6 @@
 {
 	"name": "aegis",
-	"version": "0.1.0",
+	"version": "0.2.0",
 	"description": "A simple strictly typed UI framework made specifically for Roblox.",
 	"main": "index.js",
 	"directories": {
@@ -31,6 +31,6 @@
 	"homepage": "https://lumin-dev.github.io/Aegis/",
 	"devDependencies": {
 		"markdown-it-mathjax3": "^4.3.2",
-		"vitepress": "^1.1.3"
+		"vitepress": "^1.2.3"
 	}
 }

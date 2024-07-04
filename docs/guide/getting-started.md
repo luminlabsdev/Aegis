@@ -2,11 +2,8 @@
 
 ## Requirements
 
-- Familiar with the **lua/luau** scripting language.
-- Good understanding over the basics of Roblox features.
-
-[More about luau](https://luau-lang.org/)\
-[More about Roblox API](https://create.roblox.com/docs/tutorials)
+- Familiar with the [luau scripting language](https://luau-lang.org/).
+- Good understanding over the basics of [Roblox features](https://create.roblox.com/docs/tutorials).
 
 ## Installation
 

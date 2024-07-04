@@ -82,15 +82,17 @@ Update instance's properties.
 
 #### Parameters
 
-- **instance:** `Instance | { Instance }`\
+- **instance:** `Instance`\
   A singular instance or a table of instances
 - **propertyTable:** `{ [any]: any }?`
   Table of properties to be applied to the specified instance(s).
+- **propertyTable:** `{ [any]: Instance }?`
+  Table of instances to be parented to the parent instance.
 
 #### Returns
 
 - **[Instance](https://create.roblox.com/docs/reference/engine/classes/Instance)**\
-  The specified instance(s).
+  The parent instance
 
 ---
 
@@ -132,7 +134,7 @@ Removes a registered key.
 
 #### Parameters
 
-- **key:** `string |` [Key](/api/keys/)\
+- **key:** `string`\
   The name of the key or the key itself to be removed.
 
 #### Returns
@@ -191,6 +193,16 @@ export type Spring = {
 
 ---
 
+### `Compute`
+
+```lua
+export type Compute = {
+	ConstructorClass: "compute",
+	Get: (self: Compute) -> any,
+	Destroy: (self: Compute) -> (),
+}
+```
+
 ### `Animatable`
 
 ```lua
@@ -210,4 +222,10 @@ export type Animatable =
 	| NumberSequence
 	| NumberRange
 	| Rect
+```
+
+### `DefaultKeys`
+
+```lua
+export type DefaultKeys = "Ref" | "Events" | "Changes" | "Cleanup" | "Attributes" | "Tags"
 ```

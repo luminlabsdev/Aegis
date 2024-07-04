@@ -2,10 +2,13 @@
 	"name": "aegis-test-0.2.0",
 	"tree": {
 		"$className": "DataModel",
+		"Workspace": {
+			"$path": "tests/workspace"
+		},
 		"Lighting": {
 			"$path": "tests/lighting",
 			"$properties": {
-				"Technology": "Future",
+				"Technology": "Voxel",
 				"Ambient": {
 					"Color3": [
 						0.470588,

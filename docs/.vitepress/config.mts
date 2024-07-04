@@ -10,7 +10,6 @@ export default defineConfig({
 	lastUpdated: true,
 	lang: 'en-us',
 
-	markdown: { image: { lazyLoading: true } },
 	themeConfig: {
 		nav: nav(),
 		sidebar: {
@@ -30,7 +29,7 @@ export default defineConfig({
 		},
 		socialLinks: [
 			{ icon: 'github', link: 'https://github.com/lumin-dev/Aegis' },
-			{ icon: 'discord', link: 'https://discord.com/invite/cwwcZtqJAt' },
+			{ icon: 'discord', link: 'https://discord.gg/UDMphPwX2C' },
 		]
 	}
 })

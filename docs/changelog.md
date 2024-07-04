@@ -11,6 +11,7 @@ This is a changelog which is changed every update, and we follow semver.
 - Added `Spring:Destroy()` method.
 - `State:Listen(...)` now returns a function to disconnect the listener.
 - Exported more types.
+- Improved documentation
 
 ### Fixes
 

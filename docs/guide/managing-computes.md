@@ -10,7 +10,7 @@ To create a compute object, you have to call the `compute` constructor.
 
 ### Parameter order
 
-1. The main function which will be run everytime the value changes | `(value: Types.Constructor | any) -> ()`
+1. The processor function which will be run everytime the value changes | `(value: Types.Constructor | any) -> ()`
 2. A table of dependencies whose values will be listened to | `{ Types.State | Types.Spring | Types.Constructor }?`
 
 ### Example usage
@@ -61,7 +61,7 @@ print(CalculateCoins:Get()) -- 150 // [!code ++]
 
 1. In this code, we create [2 state objects](/api/state); Coins and Price.
 2. Next, we add a dependency state to our `CalculateCoins` compute object, which must be a table.
-3. The first parameter, the `processor` function provides a function `get` as a parameter inside of it which you can use to get the value of the state. In our code, we call the `get` function on the 2 state objects we created to get its value.
+3. The first parameter, the processor function provides a function `get` as a parameter inside of it which you can use to get the value of the state. In our code, we call the `get` function on the 2 state objects we created to get its value.
 4. Our initial compute calculation was `get(Coins) - get(Price)` which is equivalent to `100 - 50 = 50`. Since we have the `Coins` state as a dependency in our compute object, when we set a new value for `Coins`, the compute re-runs!
 5. We change the value of the state to 200 and the value re-runs and the new result of the compute object is `200 - 50 = 150`!
 
