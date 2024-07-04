@@ -8,8 +8,12 @@ local Storage = require(Aegis.Runtime.Storage)
 local Debugger = require(Aegis.Utility.Debugger)
 
 -- // Functions
+--[[
+	@param key The key to be registered.
+	@return Key?
+]]
 function RegisterKey(key: Types.Key): Types.Key?
-	if Is.Key(key) == true then
+	if Is.Key(key) then
 		if not Storage.RegisteredKeys[key.KeyName] then
 			Storage.RegisteredKeys[key.KeyName] = key
 			return Storage.RegisteredKeys[key.KeyName]

@@ -154,7 +154,7 @@ end
 --[[
 	@param target Types.State
 	@param springInfo Types.SpringInfo
-	@return spring Types.Spring
+	@return Spring
 ]]
 local function spring(springInfo: Types.SpringInfo): Types.Spring
 	-- Checks

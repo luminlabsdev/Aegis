@@ -1,89 +1,61 @@
 # Managing states
 
-According to the Wikipedia, [_"A system is described as **stateful** if it is designed to remember preceding events or user interactions;[1] the remembered information is called the **state of the system**."_](<https://en.wikipedia.org/wiki/State_(computer_science)>)
+States are objects by which you can detect changes of values attached to them. You might find states not being worth it, but the more you get into intermediate programming, you will realize their significance.
 
----
-
-Simply said, states are objects by which you can detect changes of values attached to them. You might find states not being worth it, but the more you get into intermediate programming, you will realize their significance.
+- [State - Wikipedia](<https://en.wikipedia.org/wiki/State_(computer_science)>)
 
 ## Creating states
 
-Creating states using Aegis is easy. You have to call the `state` constructor. Example usage:
+To create a state object, you have to call the `state` constructor.
+
+### Parameter order
+
+1. Value of the state **(optional)** | `any`
+2. Should the type be protected **(optional)** | `boolean?`
+
+### Example usage
 
 ```lua
-local MyState = Aegis.state()
+local MyState = Aegis.state("Hello Aegis")
 ```
 
-This is a blank state. Order of parameters:
+### Explanation
 
-- **1st parameter**: Value of the state
-- **2nd parameter**: Whether the type of the state will be protected while changing the value.
+Here, the value of the state `MyState` is `"Hello Aegis"`. If you set the 2nd parameter to `false`, it will ignore the type of the state's value and set the new value.
 
-Example usage:
+## Getting the state's value
+
+To get the state's current value, the `Get` method should be used.
 
 ```lua
-local MyState = Aegis.state("Hello Aegis", true)
+print(MyState:Get()) -- Hello Aegis
 ```
-
-Here, the value of the state `MyState` is `"Hello Aegis"`. In the code, it doesn't matter if you set the 2nd parameter to `true` because it defaults to `true` either ways.
-
-## Getting the current value
-
-To get the current value of the state, the `Get` method should be used.
-::: code-group
-
-```lua [Test.luau]
-print(MyState:Get())
-```
-
-```txt [Output]
-Hello Aegis
-```
-
-:::
 
 ## Setting a new value
 
-To set a new value for the state, the `Set` method should be used.
+To set a new value for the state, the `Set` method should be used and the new value should be passed as the 1st parameter.
 
-::: code-group
-
-```lua [Test.luau]
-print(`Before: {MyState:Get()}`)
+```lua
+print(`Before: {MyState:Get()}`) -- Hello Aegis
 MyState:Set("Hello world!")
-print(`After: {MyState:Get()}`)
+print(`After: {MyState:Get()}`) -- Hello world!
 ```
-
-```txt [Output]
-Before: Hello Aegis
-After: Hello world!
-```
-
-:::
 
 ## Protecting type of state
 
-As our above shown examples, the value of the state `MyState` is a `string`. When creating the state, you'll be given the option to protect the type of the state when changing the value or not.
+As our above shown examples, the value of the state `MyState` is a `string`. When creating the state, you'll be given the option to protect the type of the state when changing the value.
 
-**_By default, it is set to `true`_**
-
-::: code-group
+**_(By default, it is set to `true`)_**
 
 ```lua [Test.luau]
 local MyState = Aegis.state("Hello Aegis")
 MyState:Set("Hello world") -- No problem
-MyState:Set(420.69) -- Warning!
+MyState:Set(420.69) -- Expected type (string); received (number) // [!code warning]
 ```
 
-```txt [Output]
-Expected type (string); received (number)
-```
+If you don't want to protect the type, you can put `false` in the 2nd parameter when you are creating the state.
 
-:::
-
-If you don't want to protect the type, you have to put `false` in the 2nd parameter when you are creating the state.
-
-```lua
+```lua{1}
 local MyState = Aegis.state("Hello Aegis", false) -- Putting `false` so that the type isn't protected when changing the value.
 MyState:Set("Hello world") -- No problem
 MyState:Set(420.69) -- All good!
@@ -91,9 +63,12 @@ MyState:Set(420.69) -- All good!
 
 ## Listening to state changes
 
-Setting a new value of the state and getting is all good, but there are times you need to know **when** the value changes.
+If you want to know **when** the value of the state changes, you'd need to use the `Listen` method. The only parameter the listener function accepts is function which will run when the value of the state changes.
 
-For this, you'd use the `Listen` method. Example usage:
+### Parameter order of listener function
+
+1. The new value of the state | `any`
+2. The old value of the state | `any`
 
 ::: code-group
 
@@ -119,17 +94,10 @@ After: how are you guys
 
 :::
 
-> [!NOTE] PARAMETERS
-> The 1st parameter of the attached listener function is the new value\
-> The 2nd parameter of the attached listener function is the old value
-
 ## Cleaning up states
 
-Cleaning up/destroying states is pretty easy. Similar to how you destroy instances using the `Destroy` method, you use the `Destroy` method on the state as well.
+Similar to how you destroy instances using the `Destroy` method, you use the `Destroy` method on the state as well.
 
 ```lua
 MyState:Destroy()
 ```
-
-> [!NOTE] INFO
-> When you do this, all the values, indexes and elements inside the state (table) will be cleared and the state's metatable will be removed.

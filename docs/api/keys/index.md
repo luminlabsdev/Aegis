@@ -16,7 +16,6 @@ Modify instances' properties to a great extent.
 
 |                Key                 | Description                                          |
 | :--------------------------------: | :--------------------------------------------------- |
-|   [Children](/api/keys/children)   | Adds descendant instances to parent instance.        |
 |        [Ref](/api/keys/ref)        | Sets the instance to the reference state.            |
 |     [Events](/api/keys/events)     | Connects the specified events to the instance.       |
 |    [Changes](/api/keys/changes)    | Tracks changes of a property change of the instance. |

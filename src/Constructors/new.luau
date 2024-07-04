@@ -10,7 +10,7 @@ local Utils = require(Utility.Utils)
 	@param className The class name of the instance to create
 	@return Instance
 ]]
-local function new(className: string, propertyTable: { [any]: any }?, childrenTable: { [any]: Instance }): Instance
+local function new(className: string, propertyTable: { [any]: any }?, childrenTable: { [any]: Instance }?): Instance
 	local Success, Result = pcall(Instance.new, className) -- Create the instance wrapped inside pcall
 
 	if Success == true then
@@ -22,6 +22,7 @@ local function new(className: string, propertyTable: { [any]: any }?, childrenTa
 
 				Utils.ApplyProperty(Result, property, value)
 			end
+
 			if (propertyTable :: any).Parent then
 				Utils.ApplyProperty(Result, "Parent", (propertyTable :: any).Parent)
 			end

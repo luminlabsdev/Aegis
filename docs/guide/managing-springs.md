@@ -1,19 +1,25 @@
 # Managing springs
 
-Using springs, you can make an animated effect of any element; name it position, number, vector, boolean etc.
+Using springs, you can make an animated effect of any element; name it UDim2, number, CFrame, boolean etc.
 
 ## Creating springs
 
-To create a spring, you use the `spring` constructor. Example usage:
+To create a spring, you use the `spring` constructor.
+
+### Parameter order
+
+1. Table containing values of spring | [`SpringInfo`](/api/#springinfo)
+
+### Example usage
 
 ```lua
-local MySpring = Aegis.spring()
+local MySpring = Aegis.spring() -- error! // [!code error]
 ```
 
-The above code won't work as the spring requires a [state](/api/state) to work. To define a state, you define the `State` of the `SpringInfo` and set it to an existing state.
+The above code won't work as the spring requires a [state](/api/state) to work. To define a state, you define the `State` index of the `SpringInfo` and set it to an existing state.
 
 ```lua
-local MyState = Aegis.state(Vector3.new(0, 5, 0))
+local MyState = Aegis.state(Vector3.new(0, 5, 0)) -- new state! // [!code ++]
 local CustomSpring = Aegis.spring({ State = MyState })
 ```
 
@@ -21,7 +27,9 @@ Besides the state, there are some other values you can set. Check the [SpringInf
 
 ## Setting spring to instance
 
-To attach your created spring to an instance, you have to set it via the `new` constructor / `Update` function. Example usage:
+To attach your created spring to an instance, you have to set it via the `new` constructor / `Update` function.
+
+### Example usage
 
 ```lua{5}
 local AegisPart = Aegis.new("Part", {
@@ -72,6 +80,3 @@ Similar to [states](/api/state), you use the `Destroy` method to clean up the sp
 ```lua
 CustomSpring:Destroy()
 ```
-
-> [!NOTE] INFO
-> When you do this, all the values, indexes and elements inside the state (table) will be cleared, connections will be disconnected and the spring's metatable will be removed.

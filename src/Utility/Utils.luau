@@ -23,14 +23,13 @@ local function Yielder()
 end
 
 -- // Public Functions
-function Utils.CheckTypeAndCall(expected: any, received: any, interaction: () -> ()): ()
-	-- Use `Is.TypeSame(expected, received)` to check if type matches.
-	-- If it doesn't match, warn it.
-	if Is.TypeSame(expected, received) == true then
-		interaction() -- Type matches, call the interaction function.
-	else -- type didn't match, warn it out!
-		if expected == nil then
-			interaction() -- Let the value `nil` to be set to anything
+function Utils.CheckTypeAndCall(expected: any, received: any, interaction: () -> (), ...: any): ()
+	if Is.TypeSame(expected, received) then
+		interaction(...) -- Type matches, call the interaction function.
+	else -- type didn't match
+		-- Check either of the types is nil. If they are, let the interaction get through.
+		if expected == nil or received == nil then
+			interaction(...) -- Let the value `nil` to be set to anything
 		else
 			Debugger.Warn("TypeMismatch", typeof(expected), typeof(received))
 			return
@@ -38,7 +37,7 @@ function Utils.CheckTypeAndCall(expected: any, received: any, interaction: () ->
 	end
 end
 
-function Utils.ApplyConstructorProperty(instance: Instance, prop: string, value: any)
+function Utils.ApplyConstructorProperty(instance: Instance, prop: string, value: Types.Constructor)
 	local Property = (instance :: any)[prop]
 
 	-- Call the _initservice method of the Service.
@@ -58,11 +57,11 @@ end
 
 function Utils.ApplyProperty(instance: Instance, property: any, value: any)
 	-- If the property is an Aegis key then
-	if Is.Key(property) == true then
+	if Is.Key(property) then
 		(property :: Types.Key).ApplyKey(instance, value)
 	elseif type(property) == "string" then
 		-- but if the property is a string then
-		if Is.AegisConstructor(value) == true then
+		if Is.AegisConstructor(value) then
 			-- If the value is an Aegis service then
 			Utils.ApplyConstructorProperty(instance, property, value)
 		else

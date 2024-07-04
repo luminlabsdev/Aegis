@@ -11,6 +11,7 @@ local Logs = {
 	MissingConstructor = "Missing a Aegis.%s constructor.",
 	NotAnimatable = "Data type (%s) is not animatable. Change to an animatable data type.",
 	CannotFindIndex = "Cannot find index (%s)",
+	ConstructorNotSupported = "`%s` constructor is not supported.",
 }
 
 -- // Functions
@@ -18,7 +19,7 @@ function Debugger.Warn(id: string, ...: any)
 	local FoundId = Logs[id] or nil :: string?
 
 	if FoundId then
-		warn(`\n[Aegis warning] {string.format(FoundId, ...)}\nAt -> {debug.traceback()}`)
+		warn(`\n[AEGIS] {string.format(FoundId, ...)}\nAt -> {debug.traceback()}`)
 	end
 end
 
@@ -26,7 +27,7 @@ function Debugger.Error(id: string, ...: any)
 	local FoundId = Logs[id] or nil :: string?
 
 	if FoundId then
-		error(`\n[Aegis error] {string.format(FoundId, ...)}\nAt -> {debug.traceback()}`)
+		error(`\n[AEGIS] {string.format(FoundId, ...)}\nAt -> {debug.traceback()}`)
 	end
 end
 

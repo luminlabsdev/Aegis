@@ -8,7 +8,7 @@ hero:
   name: Aegis
   tagline: A simple strictly typed UI framework made specifically for Roblox.
   image:
-    src: /images/logo.png
+    src: /logo.png
     alt: Logo
   actions:
     - theme: brand

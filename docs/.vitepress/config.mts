@@ -10,6 +10,7 @@ export default defineConfig({
 	lastUpdated: true,
 	lang: 'en-us',
 
+	markdown: { image: { lazyLoading: true } },
 	themeConfig: {
 		nav: nav(),
 		sidebar: {
@@ -20,7 +21,7 @@ export default defineConfig({
 
 		outline: [2, 3],
 		search: { provider: 'local' },
-		logo: { src: '/images/logo.png', width: 20, height: 33.8 },
+		logo: { src: '/logo.png', width: 20, height: 33.8 },
 		editLink: { pattern: 'https://github.com/lumin-dev/Aegis/edit/main/docs/:path' },
 
 		footer: {
@@ -57,12 +58,13 @@ function sidebarGuide(): DefaultTheme.SidebarItem[] {
 			text: 'Tutorials',
 			collapsed: false,
 			items: [
-				{ text: 'Creating instances', link: 'creating-instances' },
-				{ text: 'Updating properties', link: 'updating-properties' },
+				{ text: 'New instances', link: 'new-instances' },
+				{ text: 'Updating instances', link: 'updating-instances' },
 				{ text: 'Using keys', link: 'using-keys' },
-				{ text: 'Customizing keys', link: 'customizing-keys' },
+				{ text: 'Managing keys', link: 'managing-keys' },
 				{ text: 'Managing states', link: 'managing-states' },
-				{ text: 'Managing springs', link: 'managing-springs' }
+				{ text: 'Managing springs', link: 'managing-springs' },
+				{ text: 'Managing computes', link: 'managing-computes' }
 			]
 		},
 	]
@@ -80,6 +82,7 @@ function sidebarReference(): DefaultTheme.SidebarItem[] {
 					items: [
 						{ text: 'State', link: 'state' },
 						{ text: 'Spring', link: 'spring' },
+						{ text: 'Compute', link: 'compute' },
 					]
 				},
 				{
@@ -88,7 +91,6 @@ function sidebarReference(): DefaultTheme.SidebarItem[] {
 					base: '/api/keys',
 					link: '/',
 					items: [
-						{ text: 'Children', link: '/children' },
 						{ text: 'Ref', link: '/ref' },
 						{ text: 'Events', link: '/events' },
 						{ text: 'Changes', link: '/changes' },

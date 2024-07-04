@@ -1,68 +1,55 @@
 # Introduction to keys
 
-Aegis has some pre-made tables to be used as indexes of tables when creating/updating properties of instances. These are known as **keys**. With keys, you're able to modify properties or more specifically, do anything you want!
+Aegis provides some predefined tables that serve as keys for indexing and modifying properties of instances. These are known as keys. By using keys, you can effectively customize properties or perform various operations on your instances.
 
-- More: [List of default keys](/api/keys/#list-of-default-keys)
+- [List of default keys](/api/keys/#list-of-default-keys)
 
-## Using keys
+## Parameter order
 
-Aegis has a function to get a key; the `Key` function. A common key that you'll probably be using most of the time is the `Children` key. This key helps to define instances that will be under the main instance.
+1. Name of the key | `string`
 
-Let's learn by using the `Children` key.
+## Example usage
 
-```lua{5}
-local Children = Aegis.Key("Children")
+By using the `Key` function, you can grab the key. Let's learn by using the [`Events`](/api/keys/events) key.
 
-Aegis.new("ScreenGui", {
+```lua{2,13-17}
+local new = Aegis.new
+local Events = Aegis.Key("Events")
+
+new("ScreenGui", {
 	Name = "MenuUI",
-	[Children] = Aegis.new("Frame", {
-		Name = "LoadingBar",
-		Size = UDim2.new(0.75, 0, 0.05, 0),
-		Parent = script.Parent,
-	}),
-)
+	Parent = Player:WaitForChild("PlayerGui"),
+}, {
+	InteractButton = new("TextButton", {
+		Size = UDim2.new(0.1, 0, 0.075, 0),
+		Text = "Interact",
+		TextScaled = true,
+
+		[Events] = {
+			MouseButton1Click = function()
+				print("Clicked!")
+			end,
+		}
+	})
+})
 ```
 
-That's cool and all, but you might ask,
+## Explanation
 
-**Q:** "Do I need to define the key each time I want to add a child instance?"
+The `Events` key is used to bind an event to the instance being specified the key. Since the `InteractButton` is a `TextButton`, it has a `MouseButton1Click` event that can be connected using the key.
 
----
-
-**A:** The answer is no! The `Children` key accepts both a singular instance and a table of instances so you could just do
+1. We define the `Events` key as an index in the table.
 
 ```lua
-	[Children] = {
-		Aegis.new("Frame", {
-			Name = "LoadingBar",
-			Size = UDim2.new(0.75, 0, 0.05, 0),
-			Parent = script.Parent,
-		}),
-		Aegis.new("Frame", {
-			Name = "LoadingBar",
-			Size = UDim2.new(0.75, 0, 0.05, 0),
-			Parent = script.Parent,
-		}),
-	}
+		[Events] = {}
 ```
 
-Other than this, you're also able to use nested tables for instances. This means, you'll be able to do this:
+2. The `Events` key accepts a table of events where the index is the name of the event and the value of the index is a function to be connected to the event. In this case, the event name is `MouseButton1Click` and the function defined to it is the function that will be connected to the event.
 
-```lua{6-10}
-	-- code
-	[Children] = {
-		{
-			{
-				{
-					Aegis.new("Frame", {
-						Name = "LoadingBar",
-						Size = UDim2.new(0.75, 0, 0.05, 0),
-						Parent = script.Parent,
-					}),
-				}
-			}
-		}
-	}
+```lua
+		{ MouseButton1Click = function() end }
 ```
+
+---
 
 That is mostly how you use keys! Obviously each key works in each way, but the `Children` key is the best way to familiarize yourself with keys!

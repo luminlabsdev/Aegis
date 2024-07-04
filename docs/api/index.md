@@ -20,17 +20,6 @@ Creates a new instance with the specified `ClassName` and property table.
 - **[Instance](https://create.roblox.com/docs/reference/engine/classes/Instance)?**\
   The instance that was created. If it failed, it will give a warning.
 
-#### Usage:
-
-```lua
-local LoadingBar = Aegis.new("Frame", {
-	Name = "LoadingBar",
-	AnchorPoint = Vector2.new(0.5, 0.5),
-	Size = UDim2.fromOffset(150, 150),
-	Position = UDim2.fromScale(0.5, 0.5),
-}) -- Creates a frame and returns it
-```
-
 ---
 
 ### `state`
@@ -65,6 +54,25 @@ Creates a new spring class.
 
 - **[Spring](/api/spring)?**\
   The spring class that was created.
+
+### `compute`
+
+Creates a new compute object.
+
+#### Parameters
+
+- **processor:** `(get: (Constructor | any) -> ()) -> ()`\
+  The main function which will be run everytime the value changes
+
+- **dependencies:** `{ State | Spring | Constructor }?`\
+  A table of dependencies whose values will be listened to
+
+#### Returns
+
+- **[Compute](/api/compute)**\
+  The compute object that was created.
+
+---
 
 ## Functions
 

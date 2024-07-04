@@ -2,6 +2,8 @@
 
 The state class of Aegis.
 
+- Visit the tutorial [here](/guide/managing-states)
+
 ## Methods
 
 ### `Get`
@@ -17,21 +19,6 @@ Returns the current value of the state.
 - `any`\
   The value of the state.
 
-#### Usage:
-
-::: code-group
-
-```lua{2} [Test.luau]
-local MyState = Aegis.state("Hello Aegis")
-print(MyState:Get())
-```
-
-```txt [Output]
-Hello Aegis
-```
-
-:::
-
 ### `Set`
 
 Sets a new value of the state.
@@ -46,13 +33,6 @@ Sets a new value of the state.
 - **[State](/api/state)**\
   Returns the state itself.
 
-#### Usage:
-
-```lua{2}
-local MyState = Aegis.state("Hello Aegis")
-MyState:Set("Hello World") -- new value
-```
-
 ### `Listen`
 
 Listens to the value change.
@@ -66,21 +46,3 @@ Listens to the value change.
 
 - **[State](/api/state)**\
   Returns the state itself.
-
-#### Usage:
-
-::: code-group
-
-```lua{3} [Test.luau]
-local MyState = Aegis.state("Hello Aegis")
-
-MyState:Listen(function(newValue, oldValue)
-	print(newValue, oldValue)
-end)
-
-MyState:Set("Hello World")
-```
-
-```txt [Output]
-Hello World Hello Aegis
-```

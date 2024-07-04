@@ -1,16 +1,28 @@
 -- // Folders
-local Utility = script.Parent.Parent.Utility
+local Aegis = script.Parent.Parent
+local Utility = Aegis.Utility
 
 -- // Dependencies
-local Types = require(script.Parent.Parent.Types)
-local Debugger = require(Utility.Debugger)
+local Types = require(Aegis.Types)
+
 local Is = require(Utility.Is)
 local Utils = require(Utility.Utils)
+local Debugger = require(Utility.Debugger)
 
 -- // Variables
 local Class = {} :: Types.StateFunc
 
 -- // Functions
+local function SetNewValue(self: Types.State, oldValue: any, newValue: any)
+	-- Setting the actual value and triggering the listeners
+	self._state = newValue
+
+	-- Loop through the listeners table and call every function each of them have.
+	for _, fn in self._listeners do
+		task.spawn(fn, newValue, oldValue)
+	end
+end
+
 --[[
 	@return T
 ]]
@@ -37,19 +49,10 @@ function Class.Set(self: Types.State, newValue: any): Types.State
 		return self
 	end
 
-	if self._protectType == true and Is.TypeSame(OldValue, newValue) == false then
-		if OldValue ~= nil then
-			Debugger.Warn("TypeMismatch", typeof(OldValue), typeof(newValue))
-			return self
-		end
-	end
-
-	-- Setting the actual value and triggering the listeners
-	self._state = newValue
-
-	-- Loop through the listeners table and call every function each of them have.
-	for _, fn in self._listeners do
-		task.spawn(fn, newValue, OldValue)
+	if self._protectType == true then
+		Utils.CheckTypeAndCall(OldValue, newValue, SetNewValue :: any, self, OldValue, newValue)
+	else
+		SetNewValue(self, OldValue, newValue)
 	end
 
 	return self
@@ -57,7 +60,7 @@ end
 
 --[[
 	@param listenerFunction The listener function that the paths will listen to.
-	@return function A function that will disconnect the provided listener function.
+	@return function
 ]]
 function Class.Listen(self: Types.State, listenerFunction: (newValue: any, oldValue: any) -> ()): () -> ()
 	table.insert(self._listeners, listenerFunction) -- Add a listener

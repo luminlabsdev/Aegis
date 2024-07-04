@@ -6,7 +6,6 @@ Aegis is a lightweight and strictly typed UI framework specifically designed for
 
 - **Performant**: Aegis is optimized for performance, ensuring that everything runs without any lag.
 - **Strict Typing**: Since Aegis is strictly typed, the code becomes more reliable and maintainable.
-- **Customizable**: Aegis is customizable according to developer's needs.
 
 ## Key Features
 

@@ -25,8 +25,20 @@ local function get(value: Types.Constructor | any)
 	end
 end
 
+local function ListenerFunction(self: Types.Compute)
+	return function()
+		self._result = self._processor(get)
+
+		if self._instances ~= nil then
+			for prop, instance in self._instances do
+				(instance :: any)[prop] = self._result
+			end
+		end
+	end
+end
+
 --[[
-	@return any The final result of the computing function
+	@return any
 ]]
 function Class.Get(self: Types.Compute): any
 	return self._result
@@ -37,7 +49,8 @@ function Class._init(self: Types.Compute, prop: string, instance: Instance)
 		self._instances = {}
 	end
 
-	(self._instances :: {})[prop] = self._result
+	(self._instances :: {})[prop] = instance;
+	(instance :: any)[prop] = self._result
 end
 
 --[[
@@ -68,13 +81,14 @@ local function compute(
 	local Dependencies = nil :: { [Types.State | Types.Spring | Types.Constructor]: () -> () }?
 	local self = setmetatable({} :: Types.ComputeProps, { __index = Class } :: { __index: Types.ComputeFunc })
 
+	self.ConstructorClass = "compute"
 	self._processor = processor
 	self._dependencies = Dependencies
-	self._result = processor(get)
+	self._result = self._processor(get)
 	self._instances = {}
 
 	if dependencies then
-		local TypeOfDependencies = typeof(dependencies)
+		local TypeOfDependencies = type(dependencies)
 
 		if TypeOfDependencies == "table" then
 			Dependencies = {
@@ -84,25 +98,11 @@ local function compute(
 			for _, v in dependencies do
 				if Is.AegisConstructor(v :: any) then
 					if (v :: Types.Constructor).ConstructorClass == "state" then
-						(Dependencies :: {})[v] = (v :: Types.State):Listen(function()
-							self._result = self._processor(get)
-
-							if self._instances ~= nil then
-								for prop, instance in self._instances do
-									(instance :: any)[prop] = self._result
-								end
-							end
-						end)
+						(Dependencies :: {})[v] = (v :: Types.State):Listen(ListenerFunction(self))
 					elseif (v :: Types.Constructor).ConstructorClass == "spring" then
-						(Dependencies :: {})[v] = (v :: Types.Spring)._state:Listen(function()
-							self._result = self._processor(get)
-
-							if self._instances ~= nil then
-								for prop, instance in self._instances do
-									(instance :: any)[prop] = self._result
-								end
-							end
-						end)
+						(Dependencies :: {})[v] = (v :: Types.Spring)._state:Listen(ListenerFunction(self))
+					else
+						Debugger.Warn("ConstructorNotSupported", v.ConstructorClass)
 					end
 				end
 			end

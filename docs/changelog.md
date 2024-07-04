@@ -6,18 +6,21 @@ This is a changelog which is changed every update, and we follow semver.
 
 ### Improvements
 
-- Added a 3rd parameter `childrenTable` for `new` constructor
+- Added `compute` constructor.
+- Added `childrenTable` parameter for `new` constructor
 - Added `Spring:Destroy()` method.
 - `State:Listen(...)` now returns a function to disconnect the listener.
-- Types of default keys are added to `Key` function.
-
-### Removed
-
-- `Children` key.
+- Exported more types.
 
 ### Fixes
 
 - Fixed `State` object's listener function's value order being typed wrong.
+
+### Removed
+
+- `Children` key.
+- Removed the ability to pass key tables in the `UnregisterKey` function.
+- Removed support for nested tables.
 
 ## [0.1.0](https://github.com/lumin-dev/Aegis/releases/tag/v0.1.0)
 
