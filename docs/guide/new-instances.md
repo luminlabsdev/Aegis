@@ -1,4 +1,4 @@
-# New instances
+# New Instances
 
 Aegis provides the `new` constructor to create new instances which includes the ability to apply properties and add children.
 

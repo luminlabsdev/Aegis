@@ -1,4 +1,4 @@
-# Introduction to keys
+# Introduction to Keys
 
 Aegis provides some predefined tables that serve as keys for indexing and modifying properties of instances. These are known as keys. By using keys, you can effectively customize properties or perform various operations on your instances.
 

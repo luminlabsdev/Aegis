@@ -1,4 +1,4 @@
-# Managing states
+# Managing States
 
 States are objects by which you can detect changes of values attached to them. You might find states not being worth it, but the more you get into intermediate programming, you will realize their significance.
 

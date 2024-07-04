@@ -1,4 +1,4 @@
-# Updating properties
+# Updating Properties
 
 If you want to update an existing instance, then the `Update` function is here to help!
 

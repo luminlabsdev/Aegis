@@ -1,4 +1,4 @@
-# Getting started
+# Getting Started
 
 ## Requirements
 
@@ -15,5 +15,5 @@
 
 ### Wally
 
-1. Add `lumin/aegis@^0.1.0` to your `wally.toml` file.
+1. Add `lumin/aegis@^0.2.1` to your `wally.toml` file.
 2. Run `wally install` and Aegis should be inside of your `/Packages` directory.

@@ -1,18 +1,17 @@
--- // Folders
+-- Folders
 local Aegis = script.Parent.Parent
 local Utility = Aegis.Utility
 
--- // Dependencies
+-- Dependencies
 local Types = require(Aegis.Types)
 
-local Is = require(Utility.Is)
 local Utils = require(Utility.Utils)
 local Debugger = require(Utility.Debugger)
 
--- // Variables
+-- Variables
 local Class = {} :: Types.StateFunc
 
--- // Functions
+-- Functions
 local function SetNewValue(self: Types.State, oldValue: any, newValue: any)
 	-- Setting the actual value and triggering the listeners
 	self._state = newValue
@@ -117,5 +116,5 @@ local function state(initialState: any, protectType: boolean?): Types.State
 	return self
 end
 
--- // Returning
+-- Returning
 return state

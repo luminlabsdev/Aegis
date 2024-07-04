@@ -1,12 +1,12 @@
--- // Folders
+-- Folders
 local Utility = script.Parent.Parent.Utility
 
--- // Dependencies
+-- Dependencies
 local Is = require(Utility.Is)
 local Debugger = require(Utility.Debugger)
 local Types = require(script.Parent.Parent.Types)
 
--- // Returning
+-- Returning
 return {
 	KeyName = "Ref",
 	ApplyKey = function(instance: Instance, value: any)

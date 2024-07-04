@@ -1,11 +1,11 @@
--- // Dependencies
+-- Dependencies
 local Types = require(script.Parent.Parent.Types)
 
--- // Variables
+-- Variables
 local round = math.round
 local abs = math.abs
 
--- // Variables
+-- Variables
 local Storage = {
 	RegisteredKeys = {},
 	Scheduler = {
@@ -162,7 +162,7 @@ local Storage = {
 	} :: AnimatableDataTypes,
 }
 
--- // Types
+-- Types
 type AnimatableDataTypes = {
 	[string]: {
 		ToLinear: (value: Types.Animatable) -> { number },
@@ -172,5 +172,5 @@ type AnimatableDataTypes = {
 type Scheduler = {
 	[string]: { Connection: RBXScriptConnection?, Active: { [number]: (deltaTime: number) -> () } },
 }
--- // Returning
+-- Returning
 return Storage

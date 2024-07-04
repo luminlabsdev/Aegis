@@ -17,6 +17,30 @@ export type Animatable =
 	| Rect
 
 export type DefaultKeys = "Ref" | "Events" | "Changes" | "Cleanup" | "Attributes" | "Tags"
+export type ClassName =
+	"CanvasGroup"
+	| "Frame"
+	| "TextButton"
+	| "TextLabel"
+	| "ScrollingFrame"
+	| "TextBox"
+	| "VideoFrame"
+	| "ViewportFrame"
+	| "ImageButton"
+	| "ImageLabel"
+	| "BillboardGui"
+	| "ScreenGui"
+	| "SurfaceGui"
+	| "UICorner"
+	| "UIGradient"
+	| "UIPadding"
+	| "UIScale"
+	| "UIStroke"
+	| "UIGridLayout"
+	| "UIListLayout"
+	| "UIPageLayout"
+	| "UITableLayout"
+	| string
 
 export type Key = {
 	KeyName: DefaultKeys | string,

@@ -1,5 +1,4 @@
--- // Variables
-local Debugger = {}
+-- Variables
 local Logs = {
 	TypeMismatch = "Expected type (%s); received (%s)",
 	MissingChild = "Could not find (%s) in (%s).",
@@ -14,8 +13,8 @@ local Logs = {
 	ConstructorNotSupported = "`%s` constructor is not supported.",
 }
 
--- // Functions
-function Debugger.Warn(id: string, ...: any)
+-- Functions
+local function Warn(id: string, ...: any)
 	local FoundId = Logs[id] or nil :: string?
 
 	if FoundId then
@@ -23,7 +22,7 @@ function Debugger.Warn(id: string, ...: any)
 	end
 end
 
-function Debugger.Error(id: string, ...: any)
+local function Error(id: string, ...: any)
 	local FoundId = Logs[id] or nil :: string?
 
 	if FoundId then
@@ -31,5 +30,8 @@ function Debugger.Error(id: string, ...: any)
 	end
 end
 
--- // Returning
-return Debugger
+-- Returning
+return table.freeze({
+	Warn = Warn,
+	Error = Error,
+})

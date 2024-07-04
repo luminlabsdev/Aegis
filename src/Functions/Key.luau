@@ -1,14 +1,14 @@
--- // Folders
+-- Folders
 local Aegis = script.Parent.Parent
 
--- // Dependencies
+-- Dependencies
 local Types = require(Aegis.Types)
 local Storage = require(Aegis.Runtime.Storage)
 local Debugger = require(Aegis.Utility.Debugger)
 
--- // Functions
+-- Functions
 --[[
-	@param keyName: `string` The key to access 
+	@param keyName: `string` The key to access
 	@return Key?
 ]]
 function Key(keyName: Types.DefaultKeys | string): Types.Key?
@@ -22,5 +22,5 @@ function Key(keyName: Types.DefaultKeys | string): Types.Key?
 	return FoundKey
 end
 
--- // Returning
+-- Returning
 return Key

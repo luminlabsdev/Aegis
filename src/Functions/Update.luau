@@ -1,7 +1,7 @@
--- // Dependencies
+-- Dependencies
 local Utils = require(script.Parent.Parent.Utility.Utils)
 
--- // Functions
+-- Functions
 --[[
 	@param instance The instance to update the properties of.
 	@param propertyTable Table of properties to be applied to the instance.
@@ -32,5 +32,5 @@ local function Update(instance: Instance, propertyTable: { [any]: any }?, childr
 	return instance
 end
 
--- // Returning
+-- Returning
 return Update

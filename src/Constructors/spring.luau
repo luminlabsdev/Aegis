@@ -3,15 +3,15 @@
 	Thank you @DervexDev!
 ]]
 
--- // Services
+-- Services
 local RunService = game:GetService("RunService")
 
--- // Folders
+-- Folders
 local Aegis = script.Parent.Parent
 local Runtime = Aegis.Runtime
 local Utility = Aegis.Utility
 
--- // Dependencies
+-- Dependencies
 local Scheduler = require(Runtime.Scheduler)
 local Storage = require(Runtime.Storage)
 
@@ -21,7 +21,7 @@ local Is = require(Utility.Is)
 
 local Types = require(Aegis.Types)
 
--- // Variables
+-- Variables
 local Class = {} :: Types.SpringFunc
 
 local Epsilon = 1e-4
@@ -32,7 +32,7 @@ local cos = math.cos
 local sin = math.sin
 local pi = math.pi
 
--- // Functions
+-- Functions
 local function IsSpringSettled(currentLinearPosition: { number }, targetLinearPosition: { number }): boolean
 	for index, value in currentLinearPosition do
 		if math.abs(value - targetLinearPosition[index]) > Epsilon then
@@ -184,5 +184,5 @@ local function spring(springInfo: Types.SpringInfo): Types.Spring
 	return self
 end
 
--- // Returning
+-- Returning
 return spring

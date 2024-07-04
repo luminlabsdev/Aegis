@@ -5,7 +5,7 @@ export default defineConfig({
 	head: [['link', { rel: 'icon', href: '/favicon.ico' }]],
 	base: '/Aegis/',
 	title: 'Aegis',
-	titleTemplate: ':title | Lumin',
+	titleTemplate: ':title - Lumin',
 	description: 'A simple strictly typed UI framework made specifically for Roblox.',
 	lastUpdated: true,
 	lang: 'en-us',
@@ -23,10 +23,6 @@ export default defineConfig({
 		logo: { src: '/logo.png', width: 20, height: 33.8 },
 		editLink: { pattern: 'https://github.com/lumin-dev/Aegis/edit/main/docs/:path' },
 
-		footer: {
-			message: 'Built with VitePress',
-			copyright: 'Copyright © 2021 - 2024 Lumin Labs',
-		},
 		socialLinks: [
 			{ icon: 'github', link: 'https://github.com/lumin-dev/Aegis' },
 			{ icon: 'discord', link: 'https://discord.gg/UDMphPwX2C' },
@@ -50,20 +46,21 @@ function sidebarGuide(): DefaultTheme.SidebarItem[] {
 			collapsed: false,
 			items: [
 				{ text: 'What is Aegis?', link: 'what-is-aegis' },
-				{ text: 'Getting started', link: 'getting-started' },
+				{ text: 'Getting Started', link: 'getting-started' },
 			]
 		},
 		{
 			text: 'Tutorials',
 			collapsed: false,
 			items: [
-				{ text: 'New instances', link: 'new-instances' },
-				{ text: 'Updating instances', link: 'updating-instances' },
-				{ text: 'Using keys', link: 'using-keys' },
-				{ text: 'Managing keys', link: 'managing-keys' },
-				{ text: 'Managing states', link: 'managing-states' },
-				{ text: 'Managing springs', link: 'managing-springs' },
-				{ text: 'Managing computes', link: 'managing-computes' }
+				{ text: 'New Instances', link: 'new-instances' },
+				{ text: 'Updating Instances', link: 'updating-instances' },
+				{ text: 'New Components', link: 'new-components' },
+				{ text: 'Using Keys', link: 'using-keys' },
+				{ text: 'Managing Keys', link: 'managing-keys' },
+				{ text: 'Managing States', link: 'managing-states' },
+				{ text: 'Managing Springs', link: 'managing-springs' },
+				{ text: 'Managing Computes', link: 'managing-computes' }
 			]
 		},
 	]
@@ -109,7 +106,7 @@ function sidebarInformative(): DefaultTheme.SidebarItem[] {
 			text: 'Informative',
 			collapsed: false,
 			items: [
-				{ text: 'Common mistakes', link: 'common-mistakes' },
+				{ text: 'Common Mistakes', link: 'common-mistakes' },
 				{ text: 'Performance', link: 'performance' },
 				{ text: 'vs Fusion', link: 'vs-fusion' },
 				{ text: 'vs React/Roact', link: 'vs-react-roact' },

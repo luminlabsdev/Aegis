@@ -1,4 +1,4 @@
--- // Returning
+-- Returning
 return {
 	KeyName = "Changes",
 	ApplyKey = function(instance: Instance, value: { [string]: () -> () })

@@ -1,13 +1,13 @@
--- // Folders
+-- Folders
 local Aegis = script.Parent.Parent
 
--- // Dependencies
+-- Dependencies
 local Types = require(Aegis.Types)
 local Is = require(Aegis.Utility.Is)
 local Storage = require(Aegis.Runtime.Storage)
 local Debugger = require(Aegis.Utility.Debugger)
 
--- // Functions
+-- Functions
 --[[
 	@param key The key to be registered.
 	@return Key?
@@ -27,5 +27,5 @@ function RegisterKey(key: Types.Key): Types.Key?
 	end
 end
 
--- // Returning
+-- Returning
 return RegisterKey

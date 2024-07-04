@@ -1,45 +1,70 @@
--- // Folder
+-- Folder
 local Utility = script.Parent.Parent.Utility
+local Init = script.Parent.Parent
 
--- // Dependencies
+-- Dependencies
 local Debugger = require(Utility.Debugger)
 local Utils = require(Utility.Utils)
+local Types = require(Init.Types)
 
--- // Functions
+-- Functions
 --[[
-	@param className The class name of the instance to create
+	@param objectOrClass The class name of the instance to create
+	@param propertyTable Properties to be passed to the `objectOrClass` created
+	@param childrenTable A table of children to be parented to `objectOrClass`
 	@return Instance
 ]]
-local function new(className: string, propertyTable: { [any]: any }?, childrenTable: { [any]: Instance }?): Instance
-	local Success, Result = pcall(Instance.new, className) -- Create the instance wrapped inside pcall
+local function new(
+	objectOrClass: Types.ClassName | (props: { [string | Types.Key]: any }?) -> Instance,
+	propertyTable: { [any]: any }?,
+	childrenTable: { [any]: Instance }?
+): Instance
+	local Object
 
-	if Success == true then
-		if propertyTable then
-			for property, value in propertyTable do
-				if property == "Parent" then
-					continue
+	if type(objectOrClass) == "string" then
+		local Success, Result = pcall(Instance.new, objectOrClass) -- Create the instance wrapped inside pcall
+
+		if Success == true then
+			if propertyTable then
+				for property, value in propertyTable do
+					if property == "Parent" then
+						continue
+					end
+
+					Utils.ApplyProperty(Result, property, value)
 				end
 
-				Utils.ApplyProperty(Result, property, value)
+				if (propertyTable :: any).Parent then
+					Utils.ApplyProperty(Result, "Parent", (propertyTable :: any).Parent)
+				end
 			end
 
-			if (propertyTable :: any).Parent then
-				Utils.ApplyProperty(Result, "Parent", (propertyTable :: any).Parent)
+			if childrenTable then
+				for name, value in childrenTable do
+					value.Parent = Result
+					value.Name = if type(name) == "string" then name else value.Name
+				end
 			end
-		end
 
-		if childrenTable then
-			for name, value in childrenTable do
-				value.Parent = Result
-				value.Name = type(name) == "string" and name or value.Name
-			end
+			Object = Result
+		else -- If it wasn't successful, error it because instance creation has to be complete.
+			Debugger.Error("FailedToCreate", objectOrClass, Result)
 		end
-	else -- If it wasn't successful, error it because instance creation has to be complete.
-		Debugger.Error("FailedToCreate", className, Result)
+	else
+		if childrenTable then -- Append Children to property table for React-like behavior
+			local NewPropertyTable = {}
+			if propertyTable then
+				for key, value in propertyTable do
+					NewPropertyTable[key] = value
+				end
+			end
+			NewPropertyTable["Children"] = childrenTable
+		end
+		Object = objectOrClass(propertyTable)
 	end
 
-	return Result
+	return Object
 end
 
--- // Returning
+-- Returning
 return new

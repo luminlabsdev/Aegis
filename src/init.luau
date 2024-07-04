@@ -1,12 +1,28 @@
--- // Folders
+-- Folders
 local Constructors = script.Constructors
 local Functions = script.Functions
 
--- // Dependencies
+-- Dependencies
 local Types = require(script.Types)
 
--- // Variables
-local Aegis = {
+-- Variables
+local RegisterKey = require(Functions.RegisterKey)
+
+-- Initialize
+for _, key in script.Keys:GetChildren() do
+	RegisterKey(require(key) :: Types.Key)
+end
+
+-- Exporting
+export type Key = Types.Key
+export type State = Types.State
+export type Spring = Types.Spring
+export type Compute = Types.Compute
+export type SpringInfo = Types.SpringInfo
+export type Animatable = Types.Animatable
+export type DefaultKeys = Types.DefaultKeys
+
+return table.freeze({
 	-- Constructors
 	new = require(Constructors.new),
 	state = require(Constructors.state),
@@ -16,22 +32,6 @@ local Aegis = {
 	-- Functions
 	Update = require(Functions.Update),
 	Key = require(Functions.Key),
-	RegisterKey = require(Functions.RegisterKey),
 	UnregisterKey = require(Functions.UnregisterKey),
-}
-
--- // Initialize
-for _, key in script.Keys:GetChildren() do
-	Aegis.RegisterKey(require(key) :: Types.Key)
-end
-
--- // Exporting
-export type Key = Types.Key
-export type State = Types.State
-export type Spring = Types.Spring
-export type Compute = Types.Compute
-export type SpringInfo = Types.SpringInfo
-export type Animatable = Types.Animatable
-export type DefaultKeys = Types.DefaultKeys
-
-return table.freeze(Aegis)
+	RegisterKey = RegisterKey,
+})

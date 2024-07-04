@@ -1,4 +1,4 @@
-# Managing keys
+# Managing Keys
 
 Aegis provides you with the ability to manage keys by adding or removing keys.
 

@@ -1,18 +1,18 @@
--- // Folders
+-- Folders
 local Aegis = script.Parent.Parent
 local Utility = Aegis.Utility
 
--- // Dependencies
+-- Dependencies
 local Debugger = require(Utility.Debugger)
 local Utils = require(Utility.Utils)
 local Is = require(Utility.Is)
 
 local Types = require(Aegis.Types)
 
--- // Variables
+-- Variables
 local Class = {}
 
--- // Functions
+-- Functions
 --[[
 	@param value Either a constructor or any data type
 	@return any
@@ -114,5 +114,5 @@ local function compute(
 	return self
 end
 
--- // Returning
+-- Returning
 return compute

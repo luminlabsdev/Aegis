@@ -1,11 +1,11 @@
--- // Folders
+-- Folders
 local Aegis = script.Parent.Parent
 
--- // Dependencies
+-- Dependencies
 local Storage = require(Aegis.Runtime.Storage)
 local Debugger = require(Aegis.Utility.Debugger)
 
--- // Functions
+-- Functions
 --[[
 	@param key Either the name of the key or the key itself.
 	@return nil
@@ -20,5 +20,5 @@ function UnregisterKey(key: string): ()
 	Storage.RegisteredKeys[key] = nil
 end
 
--- // Returning
+-- Returning
 return UnregisterKey

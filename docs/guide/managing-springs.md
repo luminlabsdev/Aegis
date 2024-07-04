@@ -1,4 +1,4 @@
-# Managing springs
+# Managing Springs
 
 Using springs, you can make an animated effect of any element; name it UDim2, number, CFrame, boolean etc.
 

@@ -10,10 +10,12 @@ Creates a new instance with the specified `ClassName` and property table.
 
 #### Parameters
 
-- **className:** `string`\
+- **className:** **[ClassName](/api/#classname) | `(props: {[string]: any}?) -> (Instance)`**\
   Class name of the instance to be created.
 - **propertyTable:** `{ [any]: any }?`\
   Table of properties to be applied to the instance. **(Optional)**
+- **childrenTable:** `{ [string]: any }?`\
+  Table of children to be parented to the instance. **(Optional)**
 
 #### Returns
 
@@ -228,4 +230,33 @@ export type Animatable =
 
 ```lua
 export type DefaultKeys = "Ref" | "Events" | "Changes" | "Cleanup" | "Attributes" | "Tags"
+```
+
+### `ClassName`
+
+```lua
+export type ClassName =
+	"CanvasGroup"
+	| "Frame"
+	| "TextButton"
+	| "TextLabel"
+	| "ScrollingFrame"
+	| "TextBox"
+	| "VideoFrame"
+	| "ViewportFrame"
+	| "ImageButton"
+	| "ImageLabel"
+	| "BillboardGui"
+	| "ScreenGui"
+	| "SurfaceGui"
+	| "UICorner"
+	| "UIGradient"
+	| "UIPadding"
+	| "UIScale"
+	| "UIStroke"
+	| "UIGridLayout"
+	| "UIListLayout"
+	| "UIPageLayout"
+	| "UITableLayout"
+	| string
 ```

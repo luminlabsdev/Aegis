@@ -1,4 +1,4 @@
-# Managing computes
+# Managing Computes
 
 The Wikipedia provides a solid explanation on computation: **_[A computation is any type of arithmetic or non-arithmetic calculation that is well-defined.](https://en.wikipedia.org/wiki/Computation)_**
 
