@@ -1,3 +1,7 @@
+if not plugin then
+	return
+end
+
 -- // Services
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Studio = settings().Studio

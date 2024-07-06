@@ -1,11 +1,11 @@
 -- Folder
 local Utility = script.Parent.Parent.Utility
-local Init = script.Parent.Parent
+local Root = script.Parent.Parent
 
 -- Dependencies
 local Debugger = require(Utility.Debugger)
 local Utils = require(Utility.Utils)
-local Types = require(Init.Types)
+local Types = require(Root.Types)
 
 -- Functions
 --[[
@@ -15,9 +15,9 @@ local Types = require(Init.Types)
 	@return Instance
 ]]
 local function new(
-	objectOrClass: Types.ClassName | (props: { [string | Types.Key]: any }?) -> Instance,
-	propertyTable: { [any]: any }?,
-	childrenTable: { [any]: Instance }?
+	objectOrClass: Types.ClassName | ((props: Types.PropertyTable) -> Instance),
+	propertyTable: Types.PropertyTable?,
+	childrenTable: Types.ChildrenTable?
 ): Instance
 	local Object
 
@@ -51,16 +51,14 @@ local function new(
 			Debugger.Error("FailedToCreate", objectOrClass, Result)
 		end
 	else
-		if childrenTable then -- Append Children to property table for React-like behavior
-			local NewPropertyTable = {}
-			if propertyTable then
-				for key, value in propertyTable do
-					NewPropertyTable[key] = value
-				end
+		if childrenTable then
+			if not propertyTable then
+				propertyTable = {}
 			end
-			NewPropertyTable["Children"] = childrenTable
+			(propertyTable :: Types.PropertyTable).Children = childrenTable
 		end
-		Object = objectOrClass(propertyTable)
+
+		Object = objectOrClass(propertyTable :: any)
 	end
 
 	return Object
