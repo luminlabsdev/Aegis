@@ -2,6 +2,17 @@
 
 This is a changelog which is changed every update, and we follow semver.
 
+## [0.2.1](https://github.com/lumin-dev/Aegis/releases/tag/v0.2.1)
+
+### Improvements
+
+- Adds 2 new exported types
+- Adds documentation for components
+- Adds general component support
+- Adds `props.Children` when using component children
+- Reformats code for better comment support
+- Fix documentation inconsistencies
+
 ## [0.2.0](https://github.com/lumin-dev/Aegis/releases/tag/v0.2.0)
 
 ### Improvements
