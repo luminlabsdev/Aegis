@@ -65,8 +65,15 @@ function Class._init(self: Types.Spring, prop: string, instance: Instance)
 
 		if not Connection then
 			Connection = Scheduler:Add(Mode, function(delta: number)
-				self:_update(TargetLinearPosition, delta);
-				(instance :: any)[prop] = self._type.FromLinear(self._currentLinearPosition)
+				if self and self._update then
+					self:_update(TargetLinearPosition, delta);
+					(instance :: any)[prop] = self._type.FromLinear(self._currentLinearPosition)
+				else
+					if Connection then
+						Scheduler:Remove(Mode, Connection)
+						return
+					end
+				end
 
 				if IsSpringSettled(self._currentLinearPosition, TargetLinearPosition) == true and Connection then
 					Scheduler:Remove(Mode, Connection)
