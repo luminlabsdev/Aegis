@@ -2,6 +2,12 @@
 
 This is a changelog which is changed every update, and we follow semver.
 
+## [0.2.2](https://github.com/lumin-dev/Aegis/releases/tag/v0.2.2)
+
+### Fixes
+
+- Fixed infinite error on spring destruction bug ( [#5 by @dazscripts](https://github.com/lumin-dev/Aegis/pull/5) )
+
 ## [0.2.1](https://github.com/lumin-dev/Aegis/releases/tag/v0.2.1)
 
 ### Improvements
