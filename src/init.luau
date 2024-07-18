@@ -18,9 +18,10 @@ export type Key = Types.Key
 export type State = Types.State
 export type Spring = Types.Spring
 export type Compute = Types.Compute
-export type SpringInfo = Types.SpringInfo
 export type Animatable = Types.Animatable
+export type SpringInfo = Types.SpringInfo
 export type DefaultKeys = Types.DefaultKeys
+export type Component<T> = Types.Component<T>
 
 return table.freeze({
 	-- Constructors

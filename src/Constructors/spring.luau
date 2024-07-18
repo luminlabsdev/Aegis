@@ -163,7 +163,7 @@ end
 	@param springInfo Types.SpringInfo
 	@return Spring
 ]]
-local function spring(springInfo: Types.SpringInfo): Types.Spring
+return function(springInfo: Types.SpringInfo): Types.Spring
 	-- Checks
 	if Is.AegisConstructor(springInfo.State :: any) == false then
 		Debugger.Error("TypeMismatch", "Aegis.State", typeof(springInfo.State))
@@ -190,6 +190,3 @@ local function spring(springInfo: Types.SpringInfo): Types.Spring
 
 	return self
 end
-
--- Returning
-return spring

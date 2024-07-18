@@ -98,7 +98,7 @@ end
 	@param protectType Whether to do type checking when setting value (default: true)
 	@return State
 ]]
-local function state(initialState: any, protectType: boolean?): Types.State
+return function(initialState: any, protectType: boolean?): Types.State
 	local Type = type(initialState)
 
 	if Type == "table" then
@@ -115,6 +115,3 @@ local function state(initialState: any, protectType: boolean?): Types.State
 
 	return self
 end
-
--- Returning
-return state

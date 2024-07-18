@@ -9,24 +9,23 @@ local Types = require(Root.Types)
 
 -- Functions
 --[[
-	@param objectOrClass The class name of the instance to create
-	@param propertyTable Properties to be passed to the `objectOrClass` created
-	@param childrenTable A table of children to be parented to `objectOrClass`
+	@param classOrComponent The class name of the instance to create, or a provided component
+	@param properties Properties to be passed to the `classOrComponent` created
+	@param children A table of children to be parented to `classOrComponent`
 	@return Instance
 ]]
-local function new(
-	objectOrClass: Types.ClassName | ((props: Types.PropertyTable) -> Instance),
-	propertyTable: Types.PropertyTable?,
-	childrenTable: Types.ChildrenTable?
+return function <T>(
+	classOrComponent: Types.ClassName | Types.Component<T>,
+	properties: (T & Types.Properties)?,
+	children: Types.Children?
 ): Instance
-	local Object
-
-	if type(objectOrClass) == "string" then
-		local Success, Result = pcall(Instance.new, objectOrClass) -- Create the instance wrapped inside pcall
+	local Component
+	if type(classOrComponent) == "string" then
+		local Success, Result = pcall(Instance.new, classOrComponent) -- Create the instance wrapped inside pcall
 
 		if Success == true then
-			if propertyTable then
-				for property, value in propertyTable do
+			if properties then
+				for property, value in properties :: any do
 					if property == "Parent" then
 						continue
 					end
@@ -34,35 +33,31 @@ local function new(
 					Utils.ApplyProperty(Result, property, value)
 				end
 
-				if (propertyTable :: any).Parent then
-					Utils.ApplyProperty(Result, "Parent", (propertyTable :: any).Parent)
+				if (properties :: any).Parent then
+					Utils.ApplyProperty(Result, "Parent", (properties :: any).Parent)
 				end
 			end
 
-			if childrenTable then
-				for name, value in childrenTable do
+			if children then
+				for name, value in children do
 					value.Parent = Result
 					value.Name = if type(name) == "string" then name else value.Name
 				end
 			end
 
-			Object = Result
+			Component = Result
 		else -- If it wasn't successful, error it because instance creation has to be complete.
-			Debugger.Error("FailedToCreate", objectOrClass, Result)
+			Debugger.Error("FailedToCreate", classOrComponent, Result)
 		end
 	else
-		if childrenTable then
-			if not propertyTable then
-				propertyTable = {}
+		if children then
+			if not properties then
+				properties = {} :: any
 			end
-			(propertyTable :: Types.PropertyTable).Children = childrenTable
+			(properties :: any).Children = children
 		end
 
-		Object = objectOrClass(propertyTable :: any)
+		Component = classOrComponent(properties :: any)
 	end
-
-	return Object
+	return Component
 end
-
--- Returning
-return new

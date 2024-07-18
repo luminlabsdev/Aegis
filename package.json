@@ -1,8 +1,4 @@
 {
-	"name": "aegis",
-	"version": "0.2.2",
-	"description": "A simple strictly typed UI framework made specifically for Roblox.",
-	"main": "index.js",
 	"directories": {
 		"test": "test"
 	},
@@ -12,23 +8,6 @@
 		"docs:build": "vitepress build docs",
 		"docs:preview": "vitepress preview docs"
 	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/lumin-dev/Aegis.git"
-	},
-	"keywords": [
-		"lumin",
-		"organized",
-		"simple",
-		"ui",
-		"framework"
-	],
-	"author": "lumin-dev",
-	"license": "MIT",
-	"bugs": {
-		"url": "https://github.com/lumin-dev/Aegis/issues"
-	},
-	"homepage": "https://lumin-dev.github.io/Aegis/",
 	"devDependencies": {
 		"markdown-it-mathjax3": "^4.3.2",
 		"vitepress": "^1.2.3"

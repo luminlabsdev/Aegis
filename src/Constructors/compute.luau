@@ -74,7 +74,7 @@ end
 	@param dependencies A table of dependencies whose values will be listened to
 	@return compute
 ]]
-local function compute(
+return function(
 	processor: (get: typeof(get)) -> (),
 	dependencies: { Types.State | Types.Spring | Types.Constructor }?
 ): Types.Compute
@@ -113,6 +113,3 @@ local function compute(
 
 	return self
 end
-
--- Returning
-return compute

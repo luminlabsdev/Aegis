@@ -89,10 +89,10 @@ local function CleanMetatable(t)
 end
 
 -- Returning
-return {
+return table.freeze({
 	CheckTypeAndCall = CheckTypeAndCall,
 	ApplyConstructorProperty = ApplyConstructorProperty,
 	ApplyProperty = ApplyProperty,
 	Spawn = Spawn,
 	CleanMetatable = CleanMetatable,
-}
+})

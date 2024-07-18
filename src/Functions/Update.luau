@@ -1,5 +1,6 @@
 -- Dependencies
 local Utils = require(script.Parent.Parent.Utility.Utils)
+local Types = require(script.Parent.Parent.Types)
 
 -- Functions
 --[[
@@ -8,29 +9,26 @@ local Utils = require(script.Parent.Parent.Utility.Utils)
 	@param childrenTable Table of instances to be parented to the instance.
 	@return Instance
 ]]
-local function Update(instance: Instance, propertyTable: { [any]: any }?, childrenTable: { [any]: Instance }?): Instance
-	if propertyTable then
-		for property, value in propertyTable do
+return function(component: Instance, properties: Types.Properties?, children: Types.Children?): Instance
+	if properties then
+		for property, value in properties do
 			if property == "Parent" then
 				continue
 			end
 
-			Utils.ApplyProperty(instance, property, value)
+			Utils.ApplyProperty(component, property, value)
 		end
-		if (propertyTable :: any).Parent then
-			Utils.ApplyProperty(instance, "Parent", (propertyTable :: any).Parent)
+		if (properties :: any).Parent then
+			Utils.ApplyProperty(component, "Parent", (properties :: any).Parent)
 		end
 	end
 
-	if childrenTable then
-		for name, value in childrenTable do
-			value.Parent = instance
+	if children then
+		for name, value in children do
+			value.Parent = component
 			value.Name = type(name) == "string" and name or value.Name
 		end
 	end
 
-	return instance
+	return component
 end
-
--- Returning
-return Update

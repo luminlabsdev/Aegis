@@ -10,7 +10,7 @@ local Debugger = require(Aegis.Utility.Debugger)
 	@param key Either the name of the key or the key itself.
 	@return nil
 ]]
-function UnregisterKey(key: string): ()
+return function(key: string): ()
 	if not Storage.RegisteredKeys[key] then
 		Debugger.Warn("KeyNotFound", key)
 		return
@@ -19,6 +19,3 @@ function UnregisterKey(key: string): ()
 	table.clear(Storage.RegisteredKeys[key])
 	Storage.RegisteredKeys[key] = nil
 end
-
--- Returning
-return UnregisterKey

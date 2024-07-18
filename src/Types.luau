@@ -16,8 +16,10 @@ export type Animatable =
 	| NumberRange
 	| Rect
 
-export type PropertyTable = { [string | Key]: any }
-export type ChildrenTable = { [string | any]: any }
+export type Component<T> = (props: T) -> Instance
+
+export type Properties = { [string | Key]: any }
+export type Children = { [string | number]: any }
 
 export type DefaultKeys = "Ref" | "Events" | "Changes" | "Cleanup" | "Attributes" | "Tags"
 export type ClassName =
