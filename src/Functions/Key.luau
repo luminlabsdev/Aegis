@@ -11,12 +11,11 @@ local Debugger = require(Aegis.Utility.Debugger)
 	@param keyName: `string` The key to access
 	@return Key?
 ]]
-return function(keyName: Types.DefaultKeys | string): Types.Key?
+return function(keyName: Types.DefaultKeys | string): Types.Key
 	local FoundKey = Storage.RegisteredKeys[keyName]
 
 	if not FoundKey then
-		Debugger.Warn("KeyNotFound", keyName)
-		return nil
+		Debugger.Error("KeyNotFound", keyName)
 	end
 
 	return FoundKey
