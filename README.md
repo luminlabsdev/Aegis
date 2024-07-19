@@ -1,11 +1,10 @@
 <div align="center">
 
 # Aegis
-[![Release](https://img.shields.io/github/v/release/lumin-dev/Aegis)](https://github.com/lumin-dev/Aegis/releases/latest)
-[![Discord](https://img.shields.io/discord/1105688855375511642?logo=discord&logoColor=white&label=discord&color=4d3dff)](https://discord.gg/cwwcZtqJAt)
+[![Wally](https://gist.githubusercontent.com/2jammers/fb0ec771a9fe1c5f7674872a784a0fa8/raw/50c2114d7c3971d15d14972d72a9eb346c35af9e/Wally.svg)](https://wally.run/package/lumin/aegis)
+[![GitHub](https://gist.githubusercontent.com/2jammers/fb0ec771a9fe1c5f7674872a784a0fa8/raw/50c2114d7c3971d15d14972d72a9eb346c35af9e/GitHubRelease.svg)](https://github.com/lumin-dev/Aegis/releases/latest)
+[![Discord](https://gist.githubusercontent.com/2jammers/fb0ec771a9fe1c5f7674872a784a0fa8/raw/50c2114d7c3971d15d14972d72a9eb346c35af9e/Discord.svg)](https://lumin-dev.github.io/link/discord)
 
-![License](https://img.shields.io/github/license/lumin-dev/Aegis)
-![Downloads](https://img.shields.io/github/downloads/lumin-dev/Aegis/latest/total)
-[![Builds](https://img.shields.io/github/actions/workflow/status/lumin-dev/Aegis/release.yml?label=builds)](https://github.com/lumin-dev/Aegis/actions)
+A simple strictly typed UI framework made specifically for Roblox.
 
 </div>
