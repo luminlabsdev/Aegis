@@ -11,7 +11,7 @@ local Types = require(Root.Types)
 --[[
 	@param classOrComponent The class name of the instance to create, or a provided component
 	@param properties Properties to be passed to the `classOrComponent` created
-	@param children A table of children to be parented to `classOrComponent`
+	@param children Children to be parented to `classOrComponent`
 	@return Instance
 ]]
 return function <T>(

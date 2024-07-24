@@ -5,8 +5,8 @@ local Types = require(script.Parent.Parent.Types)
 -- Functions
 --[[
 	@param instance The instance to update the properties of.
-	@param propertyTable Table of properties to be applied to the instance.
-	@param childrenTable Table of instances to be parented to the instance.
+	@param properties Properties to be applied to the instance.
+	@param children Children to be parented to the instance.
 	@return Instance
 ]]
 return function(component: Instance, properties: Types.Properties?, children: Types.Children?): Instance

@@ -3,7 +3,7 @@
 
 # To add a new tool, add an entry to this table.
 [tools]
-argon = "argon-rbx/argon@2.0.12"
+argon = "argon-rbx/argon@2.0.13"
 wally = "UpliftGames/wally@0.3.2"
 selene = "Kampfkarren/selene@0.26.1"
 stylua = "JohnnyMorganz/StyLua@0.20.0"

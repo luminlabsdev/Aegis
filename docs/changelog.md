@@ -2,6 +2,16 @@
 
 This is a changelog which is changed every update, and we follow semver.
 
+## [0.2.3](https://github.com/lumin-dev/Aegis/releases/tag/v0.2.3)
+
+### Fixes
+
+- Fixes types not being inferenced when creating components
+- Fixes docs not being up-to-date with code
+- Enforces better code practices in some areas
+- Adds a `Component<T>` type
+- Improves Git workflows to automatically announce new updates
+
 ## [0.2.2](https://github.com/lumin-dev/Aegis/releases/tag/v0.2.2)
 
 ### Fixes

@@ -10,12 +10,12 @@ Creates a new instance with the specified `ClassName` and property table.
 
 #### Parameters
 
-- **className:** **[ClassName](/api/#classname) | `(props: {[string]: any}?) -> (Instance)`**\
-  Class name of the instance to be created.
-- **propertyTable:** `{ [any]: any }?`\
-  Table of properties to be applied to the instance. **(Optional)**
-- **childrenTable:** `{ [string]: any }?`\
-  Table of children to be parented to the instance. **(Optional)**
+- **classOrComponent:** **[ClassName](/api/#classname) | [Component<T>](/api/#component)**\
+  The class name of the instance to create, or a provided component
+- **properties:** **[Properties](/api/#properties)**\
+  Properties to be passed to the `classOrComponent` created **(Optional)**
+- **children:** **[Children](/api/#children)**\
+  Children to be parented to `classOrComponent` **(Optional)**
 
 #### Returns
 
@@ -85,16 +85,16 @@ Update instance's properties.
 #### Parameters
 
 - **instance:** `Instance`\
-  A singular instance or a table of instances
-- **propertyTable:** `{ [any]: any }?`
-  Table of properties to be applied to the specified instance(s).
-- **propertyTable:** `{ [any]: Instance }?`
-  Table of instances to be parented to the parent instance.
+  The instance to update the properties of.
+- **properties:** **[Properties](/api/#properties)**\
+  Properties to be applied to the instance.
+- **children:** **[Children](/api/#children)**\
+  Children to be parented to the instance.
 
 #### Returns
 
 - **[Instance](https://create.roblox.com/docs/reference/engine/classes/Instance)**\
-  The parent instance
+  The instance provided with updated properties and children
 
 ---
 
@@ -104,7 +104,7 @@ Indexes a registered key.
 
 #### Parameters
 
-- **keyName:** `string`\
+- **name:** `string`\
   The name of the key you want to index.
 
 #### Returns
@@ -232,31 +232,8 @@ export type Animatable =
 export type DefaultKeys = "Ref" | "Events" | "Changes" | "Cleanup" | "Attributes" | "Tags"
 ```
 
-### `ClassName`
+### `Component`
 
 ```lua
-export type ClassName =
-	"CanvasGroup"
-	| "Frame"
-	| "TextButton"
-	| "TextLabel"
-	| "ScrollingFrame"
-	| "TextBox"
-	| "VideoFrame"
-	| "ViewportFrame"
-	| "ImageButton"
-	| "ImageLabel"
-	| "BillboardGui"
-	| "ScreenGui"
-	| "SurfaceGui"
-	| "UICorner"
-	| "UIGradient"
-	| "UIPadding"
-	| "UIScale"
-	| "UIStroke"
-	| "UIGridLayout"
-	| "UIListLayout"
-	| "UIPageLayout"
-	| "UITableLayout"
-	| string
+export type Component<T> = (props: T) -> Instance
 ```
