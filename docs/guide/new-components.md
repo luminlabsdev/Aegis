@@ -7,7 +7,7 @@ While working with user interface, you may start to realize that creating the sa
 ::: code-group
 ```lua:line-numbers [Component]
 local Aegis = require(path.to.Aegis)
-local new = Aegis.new
+local New = Aegis.new
 
 type BackgroundProps = {
     Color: Color3,
@@ -16,7 +16,7 @@ type BackgroundProps = {
 }
 
 return function(props: BackgroundProps)
-    return new("Frame", {
+    return New("Frame", {
         BackgroundColor3 = props.Color,
         AnchorPoint = Vector2.new(0.5, 0.5),
         BroderSizePixel = 0,
@@ -28,7 +28,7 @@ end
 
 ```lua:line-numbers [Script]
 local Aegis = require(path.to.Aegis)
-local new = Aegis.new
+local New = Aegis.new
 
 local BackgroundComponent = require(path.to.BackgroundComponent)
 
@@ -49,7 +49,7 @@ local Main = new("ScreenGui", {
 :::
 
 :::warning
-Do not include a key named `Children` inside of your props table, it will be overwritten!
+Do not include a key named `Children` inside your props table, it will be overwritten!
 :::
 
-The way you create components in Aegis is very similar to how you do it in React as well, but better performance and less confusion.
+Creating components in Aegis is very similar to how you would in React; we have found that this is the most user-friendly way to do so.

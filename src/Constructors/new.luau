@@ -15,7 +15,7 @@ local Types = require(Root.Types)
 	@return Instance
 ]]
 return function <T>(
-	classOrComponent: Types.ClassName | Types.Component<T>,
+	classOrComponent: string | Types.Component<T>,
 	properties: (T & Types.Properties)?,
 	children: Types.Children?
 ): Instance
@@ -23,7 +23,7 @@ return function <T>(
 	if type(classOrComponent) == "string" then
 		local Success, Result = pcall(Instance.new, classOrComponent) -- Create the instance wrapped inside pcall
 
-		if Success == true then
+		if Success then
 			if properties then
 				for property, value in properties :: any do
 					if property == "Parent" then

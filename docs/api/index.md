@@ -64,7 +64,7 @@ Creates a new compute object.
 #### Parameters
 
 - **processor:** `(get: (Constructor | any) -> ()) -> ()`\
-  The main function which will be run everytime the value changes
+  The main function which will be run every time the value changes
 
 - **dependencies:** `{ State | Spring | Constructor }?`\
   A table of dependencies whose values will be listened to
