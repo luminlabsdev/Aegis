@@ -1,13 +1,13 @@
--- Services
+-- SERVICES >
 local RunService = game:GetService("RunService")
 
--- Dependencies
+-- DEPENDENCIES >
 local Storage = require(script.Parent.Storage)
 
--- Variables
+-- VARIABLES >
 local Scheduler = {}
 
--- Functions
+-- FUNCTIONS >
 function Scheduler:Add(to: string, taskFn: (deltaTime: number) -> ())
 	local Tab = Storage.Scheduler[to]
 

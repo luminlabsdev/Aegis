@@ -1,4 +1,4 @@
--- Returning
+-- RETURNING >
 return {
 	KeyName = "Attributes",
 	ApplyKey = function(instance: Instance, value: { [string]: any })

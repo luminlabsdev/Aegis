@@ -1,16 +1,34 @@
--- Folders
+-- FOLDERS >
 local Aegis = script.Parent.Parent
 
--- Dependencies
+-- DEPENDENCIES >
 local Types = require(Aegis.Types)
 local Is = require(Aegis.Utility.Is)
 local Storage = require(Aegis.Runtime.Storage)
 local Debugger = require(Aegis.Utility.Debugger)
 
--- Functions
+-- FUNCTIONS >
 --[[
-	@param key The key to be registered.
-	@return Key?
+	## `Aegis.RegisterKey`
+	A new key to register.
+	#### Parameters
+	- **key:** The key to index.
+	#### Returns
+	- [`Key?`](https://lumin-dev.github.io/Aegis/api/keys/) | [`Tutorial`](https://lumin-dev.github.io/Aegis/guide/managing-keys)
+	#### Example
+	```luau
+	local NamePrinterKey = Aegis.RegisterKey({
+		KeyName = "NamePrinter",
+		ApplyKey = function(instance: Instance, value: any)
+			print(instance.Name, value)
+		end,
+	})
+
+	Aegis.new("Frame", {
+		Name = "UI",
+		[NamePrinterKey] = "is made by Aegis!", -- UI is made by Aegis!
+	})
+	```
 ]]
 return function(key: Types.Key): Types.Key?
 	if Is.Key(key) then

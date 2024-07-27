@@ -1,7 +1,7 @@
--- Dependencies
+-- DEPENDENCIES >
 local Debugger = require(script.Parent.Parent.Utility.Debugger)
 
--- Returning
+-- RETURNING >
 return {
 	KeyName = "Events",
 	ApplyKey = function(instance: Instance, value: { [string]: (...any) -> () })

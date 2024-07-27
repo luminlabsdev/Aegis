@@ -1,4 +1,4 @@
--- Returning
+-- RETURNING >
 return {
 	KeyName = "Tags",
 	ApplyKey = function(instance: Instance, value: { string })

@@ -1,21 +1,39 @@
--- Folder
-local Utility = script.Parent.Parent.Utility
+-- FOLDERS >
 local Root = script.Parent.Parent
+local Utility = Root.Utility
 
--- Dependencies
+-- DEPENDENCIES >
 local Debugger = require(Utility.Debugger)
 local Utils = require(Utility.Utils)
 local Types = require(Root.Types)
 
--- Functions
+-- FUNCTIONS >
 --[[
-	@param classOrComponent The class name of the instance to create, or a provided component
-	@param properties Properties to be passed to the `classOrComponent` created
-	@param children Children to be parented to `classOrComponent`
-	@return Instance
+	## `Aegis.new`
+	A constructor to create new instances.
+	#### Parameters
+	- **classOrComponent:** The class name of the instance or the component to create.
+	- **properties:** A table of properties to be applied to the parent instance.
+	- **children:** A table of descendant instances to be parented to the parent instance.
+	#### Returns
+	- [`Instance`](https://create.roblox.com/docs/reference/engine/classes/Instance) | [`Tutorial`](https://lumin-dev.github.io/Aegis/guide/new-instances)
+	#### Example
+	```luau
+	local BackgroundComponent = require(path.to.BackgroundComponent)
+
+	local MenuUI = Aegis.new("ScreenGui", {
+		Name = "MenuUI",
+		IgnoreGuiInset = true,
+		Parent = Player:WaitForChild("PlayerGui"),
+	}, {
+		Background = Aegis.new(BackgroundComponent, {
+			Color = Color3.fromRGB(24, 24, 24),
+		}),
+	})
+	```
 ]]
-return function <T>(
-	classOrComponent: Types.ClassName | Types.Component<T>,
+return function<T>(
+	classOrComponent: string | Types.Component<T>,
 	properties: (T & Types.Properties)?,
 	children: Types.Children?
 ): Instance
@@ -23,7 +41,7 @@ return function <T>(
 	if type(classOrComponent) == "string" then
 		local Success, Result = pcall(Instance.new, classOrComponent) -- Create the instance wrapped inside pcall
 
-		if Success == true then
+		if Success then
 			if properties then
 				for property, value in properties :: any do
 					if property == "Parent" then

@@ -1,6 +1,6 @@
 # Changelog
 
-This is a changelog which is changed every update, and we follow semver.
+This is the changelog which is changed every update, and we follow semver.
 
 ## [0.2.3](https://github.com/lumin-dev/Aegis/releases/tag/v0.2.3)
 
@@ -10,7 +10,6 @@ This is a changelog which is changed every update, and we follow semver.
 - Fixes docs not being up-to-date with code
 - Enforces better code practices in some areas
 - Adds a `Component<T>` type
-- Improves Git workflows to automatically announce new updates
 
 ## [0.2.2](https://github.com/lumin-dev/Aegis/releases/tag/v0.2.2)
 

@@ -1,18 +1,18 @@
--- Folders
+-- FOLDERS >
 local Aegis = script.Parent.Parent
 local Utility = Aegis.Utility
 
--- Dependencies
+-- DEPENDENCIES >
 local Types = require(Aegis.Types)
 
 local Utils = require(Utility.Utils)
 local Debugger = require(Utility.Debugger)
 
--- Variables
+-- VARIABLES >
 local Class = {} :: Types.StateFunc
 
--- Functions
-local function SetNewValue(self: Types.State, oldValue: any, newValue: any)
+-- FUNCTIONS >
+local function SetNewValue(self: Types.State, newValue: any, oldValue: any)
 	-- Setting the actual value and triggering the listeners
 	self._state = newValue
 
@@ -23,15 +23,39 @@ local function SetNewValue(self: Types.State, oldValue: any, newValue: any)
 end
 
 --[[
-	@return T
+	### `State:Get()`
+	Returns the runtime value of the state object.
+
+	#### Returns
+	- `any`
+
+	#### Examples
+	```luau
+	local MyState = Aegis.state(1)
+	print(MyState:Get()) -- 1
+	```
 ]]
 function Class.Get(self: Types.State): any
 	return self._state
 end
 
 --[[
-	@param newValue The value to change to
-	@return State
+	### `State:Set(newValue: any)`
+	Sets a new value for the state.
+
+	#### Parameters
+	- **newValue:** The new value for the state.
+
+	#### Returns
+	- [`state`](https://lumin-dev.github.io/Aegis/api/state) | [`Tutorial`](https://lumin-dev.github.io/Aegis/guide/managing-states)
+
+	#### Example
+	```luau
+	local MyState = Aegis.state(1)
+	print(MyState:Get()) -- 1
+	MyState:Set(2)
+	print(MyState:Get()) -- 2
+	```
 ]]
 function Class.Set(self: Types.State, newValue: any): Types.State
 	local Type = type(newValue)
@@ -49,17 +73,35 @@ function Class.Set(self: Types.State, newValue: any): Types.State
 	end
 
 	if self._protectType == true then
-		Utils.CheckTypeAndCall(OldValue, newValue, SetNewValue :: any, self, OldValue, newValue)
+		Utils.CheckTypeAndCall(OldValue, newValue, SetNewValue :: any, self, newValue, OldValue)
 	else
-		SetNewValue(self, OldValue, newValue)
+		SetNewValue(self, newValue, OldValue)
 	end
 
 	return self
 end
 
 --[[
-	@param listenerFunction The listener function that the paths will listen to.
-	@return function
+	### `State:Listen(listenerFunction: (newValue: any, oldValue: any) -> ())`
+	Listens to state changes.
+
+	#### Parameters
+	- **listenerFunction:** The listener function that will be called on value change.
+
+	#### Returns
+	- `DisconnectingFunction: () -> ()`
+
+	#### Example
+	```luau
+	local MyState = Aegis.state(1)
+	local DisconnectListener = MyState:Listen(function(newValue, oldValue)
+		print(`Old: {oldValue} | New: {newValue}`)
+	end)
+
+	MyState:Set(2) -- Old: 1 | New: 2
+
+	DisconnectListener() -- listener no longer valid.
+	```
 ]]
 function Class.Listen(self: Types.State, listenerFunction: (newValue: any, oldValue: any) -> ()): () -> ()
 	table.insert(self._listeners, listenerFunction) -- Add a listener
@@ -77,7 +119,7 @@ function Class.Listen(self: Types.State, listenerFunction: (newValue: any, oldVa
 	end
 end
 
-function Class._init(self: Types.State, prop: string, instance: Instance)
+function Class._bind(self: Types.State, prop: string, instance: Instance)
 	(instance :: any)[prop] = self._state
 
 	self:Listen(function(newValue)
@@ -86,7 +128,17 @@ function Class._init(self: Types.State, prop: string, instance: Instance)
 end
 
 --[[
-	@return nil
+	### `State:Destroy()`
+	Destroys and removes the state.
+
+	#### Returns
+	- `nil`
+
+	#### Example
+	```luau
+	local MyState = Aegis.state(1)
+	MyState:Destroy() -- state no longer valid.
+	```
 ]]
 function Class.Destroy(self: Types.State): nil
 	Utils.CleanMetatable(self :: any)
@@ -94,22 +146,48 @@ function Class.Destroy(self: Types.State): nil
 end
 
 --[[
-	@param initialState Create a state class
-	@param protectType Whether to do type checking when setting value (default: true)
-	@return State
+	## `Aegis.state`
+	A constructor to create new state objects.
+	#### Parameters
+	- **initialValue:** The initial value of the state object.
+	- **protectType:** Whether to do type checking when setting value (default: true)
+	#### Returns
+	- [`state`](https://lumin-dev.github.io/Aegis/api/state) | [`Tutorial`](https://lumin-dev.github.io/Aegis/guide/managing-states)
+	#### Example
+	```luau
+	local MyState = Aegis.state("Hello Aegis")
+
+	MyState:Listen(function(newValue: string, oldValue: string)
+		print(`Before: {oldValue}`)
+		print(`After: {newValue}`)
+		print("-----")
+	end)
+
+	MyState:Set("hi fellow developers")
+	MyState:Set("how are you guys")
+	```
+
+	#### Output:
+	```txt
+	Before: Hello Aegis
+	After: hi fellow developers
+	-----
+	Before: hi fellow developers
+	After: how are you guys
+	-----
 ]]
-return function(initialState: any, protectType: boolean?): Types.State
-	local Type = type(initialState)
+return function(initialValue: any, protectType: boolean?): Types.State
+	local Type = type(initialValue)
 
 	if Type == "table" then
 		Debugger.Warn("RestrictedType", Type)
-		initialState = initialState or nil
+		initialValue = initialValue or nil
 	end
 
 	local self = setmetatable({} :: Types.StateProps, { __index = Class } :: { __index: Types.StateFunc })
 
 	self.ConstructorClass = "state"
-	self._state = initialState
+	self._state = initialValue
 	self._listeners = {}
 	self._protectType = protectType or true
 

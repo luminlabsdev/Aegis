@@ -1,12 +1,12 @@
--- Folders
+-- FOLDERS >
 local Utility = script.Parent.Parent.Utility
 
--- Dependencies
+-- DEPENDENCIES >
 local Is = require(Utility.Is)
 local Utils = require(Utility.Utils)
 local Types = require(script.Parent.Parent.Types)
 
--- Functions
+-- FUNCTIONS >
 local function CleanupElement(value: any, type: string)
 	if Is.AegisConstructor(value) == true then
 		(value :: Types.Constructor):Destroy()
@@ -19,7 +19,7 @@ local function CleanupElement(value: any, type: string)
 	end
 end
 
--- Returning
+-- RETURNING >
 return {
 	KeyName = "Cleanup",
 	ApplyKey = function(instance: Instance, value: any): ()

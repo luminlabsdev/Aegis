@@ -1,4 +1,4 @@
--- Variables
+-- VARIABLES >
 local Logs = {
 	TypeMismatch = "Expected type (%s); received (%s)",
 	MissingChild = "Could not find (%s) in (%s).",
@@ -13,7 +13,7 @@ local Logs = {
 	ConstructorNotSupported = "`%s` constructor is not supported.",
 }
 
--- Functions
+-- FUNCTIONS >
 local function Warn(id: string, ...: any)
 	local FoundId = Logs[id] or nil :: string?
 
@@ -30,7 +30,7 @@ local function Error(id: string, ...: any)
 	end
 end
 
--- Returning
+-- RETURNING >
 return table.freeze({
 	Warn = Warn,
 	Error = Error,

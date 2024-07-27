@@ -3,15 +3,15 @@
 	Thank you @DervexDev!
 ]]
 
--- Services
+-- SERVICES >
 local RunService = game:GetService("RunService")
 
--- Folders
+-- FOLDERS >
 local Aegis = script.Parent.Parent
 local Runtime = Aegis.Runtime
 local Utility = Aegis.Utility
 
--- Dependencies
+-- DEPENDENCIES >
 local Scheduler = require(Runtime.Scheduler)
 local Storage = require(Runtime.Storage)
 
@@ -21,7 +21,7 @@ local Is = require(Utility.Is)
 
 local Types = require(Aegis.Types)
 
--- Variables
+-- VARIABLES >
 local Class = {} :: Types.SpringFunc
 
 local Epsilon = 1e-4
@@ -32,7 +32,7 @@ local cos = math.cos
 local sin = math.sin
 local pi = math.pi
 
--- Functions
+-- FUNCTIONS >
 local function IsSpringSettled(currentLinearPosition: { number }, targetLinearPosition: { number }): boolean
 	for index, value in currentLinearPosition do
 		if math.abs(value - targetLinearPosition[index]) > Epsilon then
@@ -44,7 +44,7 @@ local function IsSpringSettled(currentLinearPosition: { number }, targetLinearPo
 	return true
 end
 
-function Class._init(self: Types.Spring, prop: string, instance: Instance)
+function Class._bind(self: Types.Spring, prop: string, instance: Instance)
 	local Mode = RunService:IsClient() and "Client" or "Server"
 	local Connection: ((number) -> ())?
 
@@ -142,7 +142,18 @@ function Class._update(self: Types.Spring, targetLinearPosition: { number }, del
 end
 
 --[[
-	@return Position
+	### `Spring:Get()`
+	Returns the runtime position of the spring object.
+
+	#### Returns
+	- `Position`
+
+	#### Examples
+	```luau
+	local MyState = Aegis.state(Vector3.new(0, 5, 0))
+	local MySpring = Aegis.spring({ State = MyState })
+	print(MySpring:Get()) -- 0, 5, 0
+	```
 ]]
 function Class.Get(self: Types.Spring): Types.Animatable
 	-- Return the unpacked format for improved clarity
@@ -150,7 +161,17 @@ function Class.Get(self: Types.Spring): Types.Animatable
 end
 
 --[[
-	@return nil
+	### `Spring:Destroy()`
+	Destroys and removes the spring.
+
+	#### Returns
+	- `nil`
+
+	#### Example
+	```luau
+	local MySpring = Aegis.spring({ ... })
+	MySpring:Destroy() -- spring no longer valid.
+	```
 ]]
 function Class.Destroy(self: Types.Spring): nil
 	self._state:Destroy()
@@ -159,9 +180,28 @@ function Class.Destroy(self: Types.Spring): nil
 end
 
 --[[
-	@param target Types.State
-	@param springInfo Types.SpringInfo
-	@return Spring
+	## `Aegis.spring`
+	A constructor to create new spring objects.
+	#### Parameters
+	- **springInfo:** Table of information to create a new spring object.
+	#### Returns
+	- [`spring`](https://lumin-dev.github.io/Aegis/api/state) | [`Tutorial`](https://lumin-dev.github.io/Aegis/guide/managing-springs)
+	#### Example
+	```luau
+	local MyState = Aegis.state(Vector3.new(0, 5, 0))
+	local CustomSpring = Aegis.spring({
+		State = MyState,
+		Damping = 0.3,
+		Frequency = 1.5,
+	})
+
+	Aegis.new("Part", {
+		Size = Vector3.new(4, 4, 4),
+		Anchored = true,
+		Parent = workspace,
+		Position = CustomSpring,
+	})
+	```
 ]]
 return function(springInfo: Types.SpringInfo): Types.Spring
 	-- Checks

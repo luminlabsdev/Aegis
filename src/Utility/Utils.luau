@@ -1,7 +1,7 @@
--- Folders
+-- FOLDERS >
 local Utility = script.Parent
 
--- Dependencies
+-- DEPENDENCIES >
 local Storage = require(script.Parent.Parent.Runtime.Storage)
 local Types = require(script.Parent.Parent.Types)
 local Debugger = require(Utility.Debugger)
@@ -37,9 +37,9 @@ end
 local function ApplyConstructorProperty(instance: Instance, prop: string, value: Types.Constructor)
 	local Property = (instance :: any)[prop]
 
-	-- Call the _initservice method of the Service.
+	-- Call the _bind method of the Service.
 	CheckTypeAndCall(Property, value:Get(), function()
-		(value :: Types.Constructor):_init(prop, instance)
+		(value :: Types.Constructor):_bind(prop, instance)
 	end)
 end
 
@@ -88,7 +88,7 @@ local function CleanMetatable(t)
 	setmetatable(t, nil) -- Removes the attached metatable
 end
 
--- Returning
+-- RETURNING >
 return table.freeze({
 	CheckTypeAndCall = CheckTypeAndCall,
 	ApplyConstructorProperty = ApplyConstructorProperty,

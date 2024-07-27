@@ -1,21 +1,35 @@
--- Folders
+-- FOLDERS >
 local Aegis = script.Parent.Parent
 local Utility = Aegis.Utility
 
--- Dependencies
+-- DEPENDENCIES >
 local Debugger = require(Utility.Debugger)
 local Utils = require(Utility.Utils)
 local Is = require(Utility.Is)
 
 local Types = require(Aegis.Types)
 
--- Variables
+-- VARIABLES >
 local Class = {}
 
--- Functions
+-- FUNCTIONS >
 --[[
-	@param value Either a constructor or any data type
-	@return any
+	### `get(Types.Constructor | any)`
+	Get the runtime value of a constructor or a data type.
+
+	#### Parameters
+	- **value:** The constructor or data type to get the value of.
+
+	#### Returns
+	- `any`
+
+	#### Example
+	```luau
+	local MyState = Aegis.state(1)
+	local ReturnDouble = Aegis.compute(function(get)
+		return get(MyState) * 2 -- get(MyState) returns `2` here.
+	end, { MyState })
+	```
 ]]
 local function get(value: Types.Constructor | any)
 	if Is.AegisConstructor(value) then
@@ -38,13 +52,29 @@ local function ListenerFunction(self: Types.Compute)
 end
 
 --[[
-	@return any
+	### `Compute:Get()`
+	Returns the runtime value of the compute object.
+
+	#### Returns
+	- `any`
+
+	#### Examples
+	```luau
+	local MyState = Aegis.state(1)
+	local ReturnDouble = Aegis.compute(function(get)
+		return get(MyState) * 2
+	end, { MyState })
+
+	MyState:Set(2)
+
+	print(ReturnDouble:Get()) -- 4
+	```
 ]]
 function Class.Get(self: Types.Compute): any
 	return self._result
 end
 
-function Class._init(self: Types.Compute, prop: string, instance: Instance)
+function Class._bind(self: Types.Compute, prop: string, instance: Instance)
 	if self._instances == nil then
 		self._instances = {}
 	end
@@ -54,7 +84,20 @@ function Class._init(self: Types.Compute, prop: string, instance: Instance)
 end
 
 --[[
-	@return nil
+	### `Compute:Destroy()`
+	Destroys and removes the compute object.
+
+	#### Returns
+	- `nil`
+
+	#### Example
+	```luau
+	local MyCompute = Aegis.compute(function()
+		-- code
+	end)
+
+	MyCompute:Destroy() -- compute object no longer valid.
+	```
 ]]
 function Class.Destroy(self: Types.Compute): nil
 	if self._dependencies then
@@ -70,9 +113,29 @@ function Class.Destroy(self: Types.Compute): nil
 end
 
 --[[
-	@param processor The main function which will be run everytime the value changes
-	@param dependencies A table of dependencies whose values will be listened to
-	@return compute
+	## `Aegis.compute`
+	A constructor that calculates the result while listening to the value of its dependencies.
+	#### Parameters
+	- **processor:** The processing function that will run everytime the value changes.
+	- **dependencies:** Table of dependencies whose values will be listened to.
+	#### Returns
+	- [`compute`](https://lumin-dev.github.io/Aegis/api/compute) | [`Tutorial`](https://lumin-dev.github.io/Aegis/guide/managing-computes)
+	#### Example
+	```luau
+	local state = Aegis.state
+	local compute = Aegis.compute
+
+	local Coins = state(100) -- State object for coins
+	local Price = state(50) -- State object for price value
+
+	local CalculateCoins = compute(function(get)
+		return get(Coins) - get(Price)
+	end, { Coins }) -- adding a dependency
+
+	print(CalculateCoins:Get()) -- 50
+	Coins:Set(200) -- changing the value
+	print(CalculateCoins:Get()) -- 150
+	```
 ]]
 return function(
 	processor: (get: typeof(get)) -> (),

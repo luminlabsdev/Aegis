@@ -1,9 +1,9 @@
--- Dependencies
+-- DEPENDENCIES >
 local Types = require(script.Parent.Parent.Types)
 
--- Functions
+-- FUNCTIONS >
 local function AegisConstructor(t: Types.Constructor)
-	return if type(t) == "table" and t.ConstructorClass and t._init and t.Get then true else false
+	return if type(t) == "table" and t.ConstructorClass and t._bind and t.Get then true else false
 end
 
 local function Key(t: Types.Key)
@@ -14,7 +14,7 @@ local function TypeSame(v1: any, v2: any)
 	return typeof(v1) == typeof(v2)
 end
 
--- Returning
+-- RETURNING >
 return table.freeze({
 	AegisConstructor = AegisConstructor,
 	Key = Key,

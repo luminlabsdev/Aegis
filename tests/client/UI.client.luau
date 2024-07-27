@@ -1,15 +1,15 @@
--- Services
+-- SERVICES >
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Players = game:GetService("Players")
 
--- Folders
+-- FOLDERS >
 local Packages = ReplicatedStorage.Packages
 
--- Dependencies
+-- DEPENDENCIES >
 local Aegis = require(Packages.Aegis)
 local MyComponent = require(script.Parent.components.Background)
 
--- Variables
+-- VARIABLES >
 local Player = Players.LocalPlayer
 local New = Aegis.new
 
@@ -27,7 +27,7 @@ New("ScreenGui", {
 	}),
 	ComponentBackgroundChildren = New(MyComponent, {
 		Color = Color3.fromRGB(151, 71, 71),
-		Position = UDim2.fromScale(0.5, 0.9)
+		Position = UDim2.fromScale(0.5, 0.9),
 	}, {
 		New("TextLabel", {
 			Text = "HI",
