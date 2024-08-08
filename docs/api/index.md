@@ -10,7 +10,7 @@ Creates a new instance with the specified `ClassName` and property table.
 
 #### Parameters
 
-- **classOrComponent:** **[ClassName](/api/#classname) | [Component<T>](/api/#component)**\
+- **classOrComponent:** **[ClassName](/api/#classname) | [Component](/api/#component)**\
   The class name of the instance to create, or a provided component
 - **properties:** **[Properties](/api/#properties)**\
   Properties to be passed to the `classOrComponent` created **(Optional)**
@@ -73,8 +73,6 @@ Creates a new compute object.
 
 - **[Compute](/api/compute)**\
   The compute object that was created.
-
----
 
 ## Functions
 

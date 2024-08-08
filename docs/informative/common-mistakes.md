@@ -2,8 +2,6 @@
 
 There are some common mistakes that many developers do when using Aegis. These common mistakes are listed below:
 
----
-
 ## Using `Get` on state/spring
 
 If you try to follow the values of the state or spring, you'd only use the following state. But many accidentally use the `Get` method, which only gets the value of the constructor at **that** specific moment.
@@ -27,8 +25,6 @@ local NumVal = Aegis.new("NumberValue", { Value = MyState })
 MyState:Set(1)
 print(NumVal.Value) -- 1
 ```
-
----
 
 ## Using `Get` inside the `compute` processor function
 

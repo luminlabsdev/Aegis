@@ -2,8 +2,8 @@ import { defineConfig, type DefaultTheme } from 'vitepress'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-	head: [['link', { rel: 'icon', href: '/favicon.ico' }]],
 	base: '/Aegis/',
+	head: [['link',{ rel: 'icon', type: 'image/x-icon', href: '/Aegis/favicon.ico' }]],
 	title: 'Aegis',
 	titleTemplate: ':title - Lumin',
 	description: 'A simple strictly typed UI framework made specifically for Roblox.',
@@ -20,12 +20,12 @@ export default defineConfig({
 
 		outline: [2, 3],
 		search: { provider: 'local' },
-		logo: { src: '/logo.png', width: 20, height: 33.8 },
+		logo: { src: '/logo.svg', width: 25, height: 33.8 },
 		editLink: { pattern: 'https://github.com/lumin-dev/Aegis/edit/main/docs/:path' },
 
 		socialLinks: [
 			{ icon: 'github', link: 'https://github.com/lumin-dev/Aegis' },
-			{ icon: 'discord', link: 'https://discord.gg/UDMphPwX2C' },
+			{ icon: 'discord', link: 'https://lumin-dev.github.io/link/discord' },
 		]
 	}
 })
