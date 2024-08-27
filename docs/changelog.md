@@ -1,45 +1,73 @@
 # Changelog
 
-This is the changelog which is changed every update, and we follow semver.
+All notable changes to this project will be documented in this file.
 
-## [0.2.3](https://github.com/lumin-dev/Aegis/releases/tag/v0.2.3)
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-### Fixes
+## [Unreleased]
+
+### Changed
+
+- Migrates to new github actions and changelog format
+
+### Added
+
+- Added Rokit as the default package manager
+
+## [0.2.3] - 2024-07-25
+
+### Added
+
+- Adds a `Component<T>` type
+
+### Changed
+
+- Enforces better code practices in some areas
+
+### Fixed
 
 - Fixes types not being inferenced when creating components
 - Fixes docs not being up-to-date with code
-- Enforces better code practices in some areas
-- Adds a `Component<T>` type
 
-## [0.2.2](https://github.com/lumin-dev/Aegis/releases/tag/v0.2.2)
+## [0.2.2] - 2024-07-12
 
-### Fixes
+### Fixed
 
 - Fixed infinite error on spring destruction bug ( [#5 by @dazscripts](https://github.com/lumin-dev/Aegis/pull/5) )
 
-## [0.2.1](https://github.com/lumin-dev/Aegis/releases/tag/v0.2.1)
+## [0.2.1] - 2024-07-06
 
-### Improvements
+### Added
 
 - Adds 2 new exported types
 - Adds documentation for components
 - Adds general component support
 - Adds `props.Children` when using component children
+
+### Changed
+
 - Reformats code for better comment support
+
+### Fixed
+
 - Fix documentation inconsistencies
 
-## [0.2.0](https://github.com/lumin-dev/Aegis/releases/tag/v0.2.0)
+## [0.2.0] - 2024-07-04
 
-### Improvements
+### Added
 
 - Added `compute` constructor.
 - Added `childrenTable` parameter for `new` constructor
 - Added `Spring:Destroy()` method.
 - `State:Listen(...)` now returns a function to disconnect the listener.
+
+### Changed
+
 - Exported more types.
 - Improved documentation
 
-### Fixes
+### Fixed
 
 - Fixed `State` object's listener function's value order being typed wrong.
 
@@ -49,9 +77,9 @@ This is the changelog which is changed every update, and we follow semver.
 - Removed the ability to pass key tables in the `UnregisterKey` function.
 - Removed support for nested tables.
 
-## [0.1.0](https://github.com/lumin-dev/Aegis/releases/tag/v0.1.0)
+## [0.1.0] - 2024-06-23
 
-### Improvements
+### Added
 
 - Added `Aegis.Update` function.
 - Added `Aegis.UnregisterKey` function.
@@ -59,13 +87,16 @@ This is the changelog which is changed every update, and we follow semver.
 - Added restriction for `table` types for states.
 - Added nested table support for `Children` key.
 - Added more animatable types: `boolean`, `BrickColor`, `CFrame`, `Vector3int16`, `Vector2int16`, `NumberSequence`, `NumberRange` and `Rect`.
+
+### Changed
+
 - Improved `Aegis.Key` function.
 - Reduced spring memory usage
-- Types are now properly exported.
 - Made documentation a lot better with in-depth explanation, FAQ, comparisons and tutorials.
 
-### Fixes
+### Fixed
 
+- Types are now properly exported.
 - Fixed `Color3` spring animation.
 - Fixed issue with `Children` key not parenting instances properly.
 
@@ -73,18 +104,18 @@ This is the changelog which is changed every update, and we follow semver.
 
 - `SpringInfo.Velocity`
 
-## [0.0.3](https://github.com/lumin-dev/Aegis/releases/tag/v0.0.3)
+## [0.0.3] - 2024-05-27
 
-### Improvements
+### Fixed
 
 - Fix documentation
 
-## [0.0.2](https://github.com/lumin-dev/Aegis/releases/tag/v0.0.2)
+## [0.0.2] - 2024-05-27
 
-### Improvements
+### Fixed
 
 - Fixed documentation page and wally package
 
-## [0.0.1](https://github.com/lumin-dev/Aegis/releases/tag/v0.0.1)
+## [0.0.1] - 2024-05-27
 
 - Released [Aegis](/)!

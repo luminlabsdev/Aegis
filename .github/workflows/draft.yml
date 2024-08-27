@@ -1,0 +1,86 @@
+name: Draft
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+permissions:
+  contents: write
+
+jobs:
+    bump:
+        name: Bump Versions
+        runs-on: ubuntu-latest
+        outputs:
+          release-body: ${{ steps.update-changelog.outputs.release-notes }}
+        steps:
+          - name: Checkout repository
+            uses: actions/checkout@v4
+            with:
+              ref: "main"
+
+          - name: Update changelog
+            id: update-changelog
+            uses: thomaseizinger/keep-a-changelog-new-release@3.1.0
+            with:
+              tag: ${{ github.ref_name }}
+              changelogPath: "docs/changelog.md"
+
+          - name: Bump Wally version
+            id: version-bump
+            uses: DervexDev/file-version-bumper@v1
+            with:
+              path: ./wally.toml
+
+          - name: Commit and push
+            uses: EndBug/add-and-commit@v9
+            if: ${{ github.ref_name != steps.version-bump.outputs.old_version }}
+            with:
+              message: Bump version to ${{ github.ref_name }}
+              default_author: github_actions
+
+          - name: Update tag
+            if: ${{ github.ref_name != steps.version-bump.outputs.old_version }}
+            run: |
+              git tag -f ${{ github.ref_name }}
+              git push -f --tags
+
+    draft-build:
+        name: Draft & Build Assets
+        runs-on: ubuntu-latest
+        needs: bump
+        steps:
+          - name: Checkout Repository
+            uses: actions/checkout@v4
+
+          - name: Setup Rokit
+            uses: CompeyDev/setup-rokit@v0.1.0
+
+          - name: Install Wally dependencies
+            run: wally install
+
+          - name: Generate sourcemap
+            run: argon sourcemap standalone.project.json --output sourcemap.json
+
+          - name: Generate Wally types
+            run: wally-package-types --sourcemap sourcemap.json Packages
+
+          - name: Format code
+            run: stylua src/
+
+          - name: Build standalone
+            run: argon build standalone.project.json --output ./Standalone.rbxm
+
+          - name: Draft release
+            uses: softprops/action-gh-release@v2.0.8
+            with:
+              tag_name: ${{ github.ref_name }}
+              name: ${{ github.ref_name }}
+              draft: true
+              prerelease: ${{ contains(github.ref_name, 'rc') }}
+              body: |
+                ## Changelog
+                ${{ needs.bump.outputs.release-body }}
+              files: |
+                ./Standalone.rbxm
