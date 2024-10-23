@@ -1,6 +1,10 @@
-docs/.vitepress/dist
-docs/.vitepress/cache
-node_modules
-sourcemap.json
+# Mkdocs
+venv
+
+# Wally
+Packages
+DevPackages
 wally.lock
-Playground.rbxl
+
+# Rojo
+sourcemap.json

@@ -1,10 +1,7 @@
-<div align="center">
+# UI Framework
 
-# Aegis
-[![Wally](https://gist.githubusercontent.com/2jammers/fb0ec771a9fe1c5f7674872a784a0fa8/raw/50c2114d7c3971d15d14972d72a9eb346c35af9e/Wally.svg)](https://wally.run/package/lumin/aegis)
-[![GitHub](https://gist.githubusercontent.com/2jammers/fb0ec771a9fe1c5f7674872a784a0fa8/raw/50c2114d7c3971d15d14972d72a9eb346c35af9e/GitHubRelease.svg)](https://github.com/lumin-dev/Aegis/releases/latest)
-[![Discord](https://gist.githubusercontent.com/2jammers/fb0ec771a9fe1c5f7674872a784a0fa8/raw/50c2114d7c3971d15d14972d72a9eb346c35af9e/Discord.svg)](https://lumin-dev.github.io/link/discord)
+[![license](https://img.shields.io/github/license/luminlabsdev/framework)](https://github.com/luminlabsdev/ui-framework/blob/main/LICENSE)
+[![release](https://img.shields.io/github/v/release/luminlabsdev/framework)](https://github.com/luminlabsdev/ui-framework/releases/latest)
+[![discord](https://img.shields.io/discord/1105688855375511642?logo=discord&logoColor=white&label=discord&color=4d3dff)](https://luminlabsdev.github.io/link/discord)
 
-A simple strictly typed UI framework made specifically for Roblox.
-
-</div>
+A lightweight and embeddable UI framework.

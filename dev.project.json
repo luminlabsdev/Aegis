@@ -28,8 +28,8 @@
 		"ReplicatedStorage": {
 			"$path": "tests/shared",
 			"Packages": {
-				"$className": "Folder",
-				"Aegis": {
+				"$path": "Packages",
+				"ui-framework": {
 					"$path": "src"
 				}
 			}

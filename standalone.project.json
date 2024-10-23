@@ -1,8 +1,8 @@
 {
-    "name": "standalone-build",
+    "name": "standalone",
     "tree": {
-        "$className": "Folder",
-        "Aegis": {
+        "$path": "Packages",
+        "ui-framework": {
             "$path": "src"
         }
     }
